@@ -1,0 +1,570 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.dongkap</groupId>
+	<artifactId>do-root</artifactId>
+	<packaging>pom</packaging>
+	<version>1.0.0-SNAPSHOT</version>
+
+	<properties>
+		<!-- LIBRARY VERSION PROPERTIES -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<activemq.version>5.9.1</activemq.version>
+		<apache.cxf.version>2.7.7</apache.cxf.version>
+		<bcpg-jdk15on.version>1.47</bcpg-jdk15on.version>
+		<bcpg-jdk16.version>1.46</bcpg-jdk16.version>
+		<bsf.version>2.4.0</bsf.version>
+		<commons-codec.version>1.10</commons-codec.version>
+		<commons-fileupload.version>[1.3.3,)</commons-fileupload.version>
+		<commons-httpclient.version>3.1</commons-httpclient.version>
+		<commons-io.version>2.1</commons-io.version>
+		<commons-lang.version>2.6</commons-lang.version>
+		<commons-lang3.version>3.4</commons-lang3.version>
+		<commons-validator.version>1.5.0</commons-validator.version>
+		<hibernate.version>5.0.12.Final</hibernate.version>
+		<jasperreports.version>6.3.1</jasperreports.version>
+		<java.jms.version>1.1</java.jms.version>
+		<java.version>1.8</java.version>
+		<javax.mail.version>1.4.7</javax.mail.version>
+		<jersey.version>1.19.1</jersey.version>
+		<jgroups.version>3.6.4.Final</jgroups.version>
+		<maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
+		<neo4j-cypher-compiler-2.2.version>2.2.5</neo4j-cypher-compiler-2.2.version>
+		<org.codehaus.jackson.version>2.6.5</org.codehaus.jackson.version>
+		<org.neo4j.version>2.1.5</org.neo4j.version>
+		<poi.version>3.13</poi.version>
+		<quartz.version>2.2.1</quartz.version>
+		<scala-library.version>2.10.4</scala-library.version>
+		<spring-boot-maven.version>2.1.2.RELEASE</spring-boot-maven.version>
+		<spring-boot.version>2.1.2.RELEASE</spring-boot.version>
+		<spring-cloud.version>Greenwich.RELEASE</spring-cloud.version>
+		<spring.cloud.version>2.1.2.RELEASE</spring.cloud.version>
+		<spring.cloud.feign.version>1.4.6.RELEASE</spring.cloud.feign.version>
+		<spring.cloud.zipkin.version>2.1.2.RELEASE</spring.cloud.zipkin.version>
+		<spring.cloud.kafka.version>2.1.2.RELEASE</spring.cloud.kafka.version>
+		<spring.cloud.starter.config.version>2.1.0.RELEASE</spring.cloud.starter.config.version>
+		<spring.cloud.starter.eureka.version>1.4.6.RELEASE</spring.cloud.starter.eureka.version>
+		<spring.cloud.starter.zuul.version>1.4.6.RELEASE</spring.cloud.starter.zuul.version>
+		<spring-session.version>1.3.5.RELEASE</spring-session.version>
+		<spring-security-oauth2.version>2.3.6.RELEASE</spring-security-oauth2.version>
+		<spring-security-oauth2-resource-server.version>5.1.3.RELEASE</spring-security-oauth2-resource-server.version>
+		<spring-security-jwt.version>1.0.10.RELEASE</spring-security-jwt.version>
+		<spring-batch-integration.version>4.1.1.RELEASE</spring-batch-integration.version>
+		<spring-support.version>2.0.8</spring-support.version>
+		<thymeleaf-security.version>3.0.2.RELEASE</thymeleaf-security.version>
+		<thymeleaf.version>3.0.6.RELEASE</thymeleaf.version>
+		<thymeleaf-layout-dialect.version>2.2.2</thymeleaf-layout-dialect.version>
+		<xalan.version>2.7.1</xalan.version>
+		<netflix.common.util>0.3.0</netflix.common.util>
+		<svnkit.version>1.9.0</svnkit.version>
+		<postgresql.version>42.2.5</postgresql.version>
+		<zipkin.server.version>2.2.1</zipkin.server.version>
+		<zipkin.elasticsearch.version>2.2.1</zipkin.elasticsearch.version>
+		<hazelcast.version>3.9</hazelcast.version>
+		<jose4j.version>0.7.0</jose4j.version>
+		<web-push.version>5.1.0</web-push.version>
+		<logstash-encoder.version>4.6</logstash-encoder.version>
+		<swagger.version>2.7.0</swagger.version>
+		
+		<dcm4che.version>3.3.5</dcm4che.version>
+		
+		<failOnMissingWebXml>false</failOnMissingWebXml>
+		<javax.servlet-api.version>3.1.0</javax.servlet-api.version>
+
+		<logging.path>../log/</logging.path>
+		<logging.hibernate.level>ERROR</logging.hibernate.level>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+		<modelmapper.version>1.1.0</modelmapper.version>
+		<!-- APPLICATION FINAL NAME -->
+	</properties>
+	
+    <modules>
+        <module>do-common</module> 
+        <module>do-feign</module>
+        <module>do-file</module>
+        <module>do-general</module>
+        <module>do-notification</module>
+        <module>do-panic</module>
+        <module>do-master</module>
+        <module>do-security</module>
+        <module>do-main</module>
+    </modules>
+	
+	<build>
+		<finalName>${web-gui.finalName}</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${maven-compiler-plugin.version}</version>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	
+	<dependencyManagement>
+		<dependencies>
+			
+			<dependency>
+			    <groupId>org.springframework.cloud</groupId>
+			    <artifactId>spring-cloud-starter-parent</artifactId>
+			    <version>${spring-cloud.version}</version>
+			    <type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-starter-feign</artifactId>
+				<version>${spring.cloud.feign.version}</version>
+				<exclusions>
+					<exclusion>								
+						<groupId>commons-lang</groupId>
+						<artifactId>commons-lang</artifactId>
+					</exclusion>				
+				</exclusions>
+			</dependency>
+					
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-starter-eureka-server</artifactId>
+				<version>${spring.cloud.starter.eureka.version}</version>
+			</dependency>
+			<dependency>		
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-starter-eureka</artifactId>
+				<version>${spring.cloud.starter.eureka.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-starter-config</artifactId>
+				<version>${spring.cloud.starter.config.version}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-config-server</artifactId>
+				<version>${spring.cloud.version}</version>
+			</dependency>	
+	        <dependency>
+	            <groupId>org.springframework.cloud</groupId>
+	            <artifactId>spring-cloud-config</artifactId>
+	            <version>${spring.cloud.version}</version>
+	        </dependency>
+	        	
+	        <dependency>
+	            <groupId>org.springframework.cloud</groupId>
+	            <artifactId>spring-cloud-netflix</artifactId>
+	            <version>${spring.cloud.version}</version>
+	        </dependency>
+			
+		    <dependency>
+		        <groupId>org.springframework.cloud</groupId>
+		        <artifactId>spring-cloud-starter-zuul</artifactId>
+				<version>${spring.cloud.starter.zuul.version}</version>
+		    </dependency>
+			
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-starter-hystrix</artifactId>
+				<version>${spring.cloud.version}</version>
+			</dependency>
+		
+			<!-- SPRING-BOOT ... -->
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-parent</artifactId>
+				<type>pom</type>
+				<version>${spring-boot.version}</version>
+				<scope>import</scope>
+			</dependency>
+	
+			<dependency>
+				<groupId>org.springframework.session</groupId>
+				<artifactId>spring-session</artifactId>
+				<version>${spring-session.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.security.oauth</groupId>
+				<artifactId>spring-security-oauth2</artifactId>
+				<version>${spring-security-oauth2.version}</version>
+			</dependency>
+			<dependency>
+			    <groupId>org.springframework.security</groupId>
+			    <artifactId>spring-security-oauth2-resource-server</artifactId>
+			    <version>${spring-security-oauth2-resource-server.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.security.oauth.boot</groupId>
+				<artifactId>spring-security-oauth2-autoconfigure</artifactId>
+				<version>${spring-boot.version}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-jwt</artifactId>
+				<version>${spring-security-jwt.version}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-support</artifactId>
+				<version>${spring-support.version}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>org.springframework.batch</groupId>
+				<artifactId>spring-batch-integration</artifactId>
+				<version>${spring-batch-integration.version}</version>
+			</dependency>
+	
+			<!-- Others -->
+
+			<dependency>
+				<groupId>org.modelmapper</groupId>
+				<artifactId>modelmapper</artifactId>
+				<version>${modelmapper.version}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>com.netflix.netflix-commons</groupId>
+				<artifactId>netflix-commons-util</artifactId>
+				<version>${netflix.common.util}</version>
+			</dependency>
+	
+			<!-- THYMELEAF -->
+			<dependency>
+				<groupId>org.thymeleaf.extras</groupId>
+				<artifactId>thymeleaf-extras-springsecurity4</artifactId>
+				<version>${thymeleaf-security.version}</version>
+			</dependency>
+			<!-- APACHE COMMON FILE UPLOAD -->
+			<dependency>
+				<groupId>commons-fileupload</groupId>
+				<artifactId>commons-fileupload</artifactId>
+				<version>${commons-fileupload.version}</version>
+			</dependency>
+			<!-- APACHE COMMON LANG -->
+			<dependency>
+				<groupId>commons-lang</groupId>
+				<artifactId>commons-lang</artifactId>
+				<version>${commons-lang.version}</version>
+				<scope>compile</scope>
+			</dependency>
+			<!-- APACHE CXF -->
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-frontend-jaxws</artifactId>
+				<version>${apache.cxf.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-transports-http</artifactId>
+				<version>${apache.cxf.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.neo4j</groupId>
+				<artifactId>neo4j-cypher-compiler-2.1</artifactId>
+				<version>${org.neo4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-io</groupId>
+				<artifactId>commons-io</artifactId>
+				<version>${commons-io.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>xalan</groupId>
+				<artifactId>xalan</artifactId>
+				<version>${xalan.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>bsf</groupId>
+				<artifactId>bsf</artifactId>
+				<version>${bsf.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.hazelcast</groupId>
+				<artifactId>hazelcast</artifactId>
+				<version>${hazelcast.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.hazelcast</groupId>
+				<artifactId>hazelcast-client</artifactId>
+				<version>${hazelcast.version}</version>
+			</dependency>
+			<!-- 
+			<dependency>
+				<groupId>com.hazelcast</groupId>
+				<artifactId>hazelcast-hibernate4</artifactId>
+				<version>${hazelcast-hibernate4.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.hazelcast</groupId>
+				<artifactId>hazelcast-hibernate5</artifactId>
+				<version>${hazelcast-hibernate5.version}</version>
+			</dependency>
+			 -->
+			<dependency>
+				<groupId>com.hazelcast</groupId>
+				<artifactId>hazelcast-spring</artifactId>
+				<version>${hazelcast.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.scala-lang</groupId>
+				<artifactId>scala-library</artifactId>
+				<version>${scala-library.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.bouncycastle</groupId>
+				<artifactId>bcpg-jdk16</artifactId>
+				<version>${bcpg-jdk16.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.bouncycastle</groupId>
+				<artifactId>bcpg-jdk15on</artifactId>
+				<version>${bcpg-jdk15on.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-codec</groupId>
+				<artifactId>commons-codec</artifactId>
+				<version>${commons-codec.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-lang3</artifactId>
+				<version>${commons-lang3.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>javax.jms</groupId>
+				<artifactId>jms</artifactId>
+				<version>${java.jms.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.jgroups</groupId>
+				<artifactId>jgroups</artifactId>
+				<version>${jgroups.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.neo4j</groupId>
+				<artifactId>neo4j-cypher-compiler-2.2</artifactId>
+				<version>${neo4j-cypher-compiler-2.2.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.quartz-scheduler</groupId>
+				<artifactId>quartz</artifactId>
+				<version>${quartz.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.poi</groupId>
+				<artifactId>poi</artifactId>
+				<version>${poi.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-httpclient</groupId>
+				<artifactId>commons-httpclient</artifactId>
+				<version>${commons-httpclient.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-validator</groupId>
+				<artifactId>commons-validator</artifactId>
+				<version>${commons-validator.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.sf.jasperreports</groupId>
+				<artifactId>jasperreports</artifactId>
+				<version>${jasperreports.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.sun.jersey</groupId>
+				<artifactId>jersey-json</artifactId>
+				<version>${jersey.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.sun.jersey</groupId>
+				<artifactId>jersey-servlet</artifactId>
+				<version>${jersey.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.sun.jersey</groupId>
+				<artifactId>jersey-server</artifactId>
+				<version>${jersey.version}</version>
+			</dependency>
+	       <dependency>
+	           <groupId>org.hibernate</groupId>
+	           <artifactId>hibernate-c3p0</artifactId>
+	           <version>${hibernate.version}</version>
+		</dependency>
+		
+			<dependency>
+			    <groupId>org.thymeleaf</groupId>
+			    <artifactId>thymeleaf</artifactId>
+			    <version>${thymeleaf.version}</version>
+			</dependency>
+			<dependency>
+			    <groupId>org.thymeleaf</groupId>
+			    <artifactId>thymeleaf-spring4</artifactId>
+			    <version>${thymeleaf.version}</version>
+			</dependency>
+			<dependency>
+			    <groupId>nz.net.ultraq.thymeleaf</groupId>
+			    <artifactId>thymeleaf-layout-dialect</artifactId>
+			    <version>${thymeleaf-layout-dialect.version}</version>
+			</dependency>
+				
+			<dependency>
+				<groupId>javax.servlet</groupId>
+				<artifactId>javax.servlet-api</artifactId>
+				<version>${javax.servlet-api.version}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>org.tmatesoft.svnkit</groupId>
+				<artifactId>svnkit</artifactId>
+				<version>${svnkit.version}</version>
+			</dependency>
+			
+			
+			<dependency>
+				<groupId>org.postgresql</groupId>
+				<artifactId>postgresql</artifactId>
+				<version>${postgresql.version}</version>
+			</dependency>
+			
+	        <dependency>
+	            <groupId>org.springframework.cloud</groupId>
+	            <artifactId>spring-cloud-sleuth-zipkin</artifactId>
+	            <version>${spring.cloud.zipkin.version}</version>
+	        </dependency>
+	        <dependency>
+	            <groupId>org.springframework.cloud</groupId>
+	            <artifactId>spring-cloud-starter-stream-kafka</artifactId>
+	            <version>${spring.cloud.kafka.version}</version>
+	        </dependency>
+	        <dependency>
+	            <groupId>org.springframework.cloud</groupId>
+	            <artifactId>spring-cloud-stream-test-support</artifactId>
+	            <version>${spring.cloud.zipkin.version}</version>
+	        </dependency>
+	        
+			<dependency>
+			    <groupId>io.zipkin.java</groupId>
+			    <artifactId>zipkin-server</artifactId>
+			    <version>${zipkin.server.version}</version>
+			</dependency>
+			<dependency>
+			    <groupId>io.zipkin.java</groupId>
+			    <artifactId>zipkin-autoconfigure-ui</artifactId>
+			    <version>${zipkin.server.version}</version>
+			</dependency>
+			
+		    <dependency>
+		        <groupId>org.springframework.cloud</groupId>
+		        <artifactId>spring-cloud-starter-sleuth</artifactId>
+		        <version>${spring.cloud.zipkin.version}</version>
+		    </dependency>
+			
+			<dependency>
+			    <groupId>io.zipkin.java</groupId>
+			    <artifactId>zipkin-storage-elasticsearch-http</artifactId>
+			    <version>${zipkin.elasticsearch.version}</version>
+			</dependency>
+			
+			<dependency>
+			    <groupId>io.zipkin.java</groupId>
+			    <artifactId>zipkin-autoconfigure-storage-elasticsearch-http</artifactId>
+			    <version>${zipkin.elasticsearch.version}</version>
+			</dependency>
+			
+	        <dependency>
+	            <groupId>net.logstash.logback</groupId>
+	            <artifactId>logstash-logback-encoder</artifactId>
+	            <version>${logstash-encoder.version}</version>
+	            <exclusions>
+	                <exclusion>
+	                    <groupId>ch.qos.logback</groupId>
+	                    <artifactId>logback-core</artifactId>
+	                </exclusion>
+	                <exclusion>
+	                    <groupId>ch.qos.logback</groupId>
+	                    <artifactId>logback-classic</artifactId>
+	                </exclusion>
+	                <exclusion>
+	                    <groupId>ch.qos.logback</groupId>
+	                    <artifactId>logback-access</artifactId>
+	                </exclusion>
+	            </exclusions>
+	        </dependency>
+	        
+			<dependency>
+				<groupId>io.springfox</groupId>
+				<artifactId>springfox-swagger2</artifactId>
+				<version>${swagger.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.springfox</groupId>
+				<artifactId>springfox-swagger-ui</artifactId>
+				<version>${swagger.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+	
+	<repositories>
+		<repository>
+			<id>maven-snapshots</id>
+			<name>Maven Snapshots</name>
+			<url>https://repo1.maven.org/maven2</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		<!--
+		<repository>
+			<id>dcm4chee-maven</id>
+			<name>DCM4CHE Repository</name>
+			<url>http://www.dcm4che.org/maven2</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>central-maven</id>
+			<name>Central Maven Snapshots</name>
+			<url>https://central.maven.org/maven2</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>spring-snapshots</id>
+			<name>Spring Snapshots</name>
+			<url>https://repo.spring.io/snapshot</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>spring-milestone</id>
+			<name>Spring Milestone</name>
+			<url>https://repo.spring.io/milestone</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>spring-milestones</id>
+			<name>Spring Milestones</name>
+			<url>https://repo.spring.io/libs-milestone</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		-->
+	</repositories>
+</project>

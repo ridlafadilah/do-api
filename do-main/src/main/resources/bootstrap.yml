@@ -1,0 +1,178 @@
+server:
+  port: ${PORT:8085}
+  servlet:
+    context-path: /do
+
+spring:
+  application:
+    name: ${application.name}
+  messages:
+    basename: i18n/messages
+    encoding: UTF-8
+  aop:
+    proxy-target-class: true
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_NAME}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+    platform: postgres
+    type: com.mchange.v2.c3p0.ComboPooledDataSource
+    tomcat:
+      validation-query: SELECT 1
+      initial-size: 10
+      max-active: 100
+      max-idle: 20
+      max-wait: 3000
+      test-while-idle: true
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+#    database-platform: org.hibernate.spatial.dialect.postgis.PostgisDialect
+    database: POSTGRESQL
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        current_session_context_class: org.springframework.orm.hibernate5.SpringSessionContext
+        temp:
+          use_jdbc_metadata_defaults: false
+        show_sql: true
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+  mvc:
+    locale: en_US
+  cloud:
+    discovery:
+      enabled: false
+    config:
+      enabled: false
+      discovery:
+        enabled: false
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 60MB
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-name: Google
+            clientId: 78147135611-bqt2hupv53ntg1hfg10q1peo6eo325k9.apps.googleusercontent.com
+            clientSecret: EDglz7KC79T340at8jhZiTqd
+#            redirectUri: "{baseUrl}/oauth2/callback/{registrationId}"
+            scope:
+              email
+              profile
+          facebook:
+            client-name: Facebook
+            clientId: 121189305185277
+            clientSecret: 42ffe5aa7379e8326387e0fe16f34132
+#            redirectUri: "{baseUrl}/oauth2/callback/{registrationId}"
+            scope:
+              email
+              public_profile
+          github:
+            client-name: Github
+            clientId: d3e47fc2ddd966fa4352
+            clientSecret: 3bc0f6b8332f93076354c2a5bada2f5a05aea60d
+#            redirectUri: "{baseUrl}/oauth2/callback/{registrationId}"
+            scope:
+              user:email
+              read:user
+        provider:
+          facebook:
+            authorizationUri: https://www.facebook.com/v3.0/dialog/oauth
+            tokenUri: https://graph.facebook.com/v3.0/oauth/access_token
+            userInfoUri: https://graph.facebook.com/v3.0/me?fields=id,first_name,middle_name,last_name,name,email,verified,is_verified,picture.width(250).height(250)
+
+eureka:
+  client:
+    enabled: false
+
+
+feign:
+  compression:
+    request:
+      enabled: true
+    response:
+      enabled: true
+  hystrix:
+    enabled: true
+  client:
+    config:
+      do-file:
+        connectTimeout: 30000
+        readTimeout: 30000
+        loggerLevel: full
+        errorDecoder: com.dongkap.feign.decoder.FeignErrorDecoder
+      do-profile:
+        connectTimeout: 30000
+        readTimeout: 30000
+        loggerLevel: full
+        errorDecoder: com.dongkap.feign.decoder.FeignErrorDecoder
+      do-security:
+        connectTimeout: 30000
+        readTimeout: 30000
+        loggerLevel: full
+        errorDecoder: com.dongkap.feign.decoder.FeignErrorDecoder
+
+hystrix:
+  shareSecurityContext: true
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 30000
+    do-file:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 30000
+    do-profile:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 30000
+    do-security:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 30000
+
+ribbon:
+  eureka:
+    enabled: false
+
+do-file:
+  ribbon:
+    ReadTimeout: 30000
+    MaxAutoRetries: 3
+    OkToRetryOnAllOperations: false
+    listOfServers: localhost:8085
+
+do-profile:
+  ribbon:
+    ReadTimeout: 30000
+    MaxAutoRetries: 3
+    OkToRetryOnAllOperations: false
+    listOfServers: localhost:8085
+
+do-security:
+  ribbon:
+    ReadTimeout: 30000
+    MaxAutoRetries: 3
+    OkToRetryOnAllOperations: false
+    listOfServers: localhost:8085
+
+security:
+  oauth2:
+    resource:
+      filter-order: 3
+      jwt:
+        key-value: CfZKBe7IZHxBCgH9Dz49
+      prefer-token-info: true

@@ -1,0 +1,1 @@
+psql -d xa -f "xa-data-support.sql" -U postgres
