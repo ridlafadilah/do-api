@@ -36,7 +36,7 @@
 		<org.codehaus.jackson.version>2.6.5</org.codehaus.jackson.version>
 		<org.neo4j.version>2.1.5</org.neo4j.version>
 		<poi.version>3.13</poi.version>
-		<quartz.version>2.2.1</quartz.version>
+		<quartz.version>2.3.2</quartz.version>
 		<scala-library.version>2.10.4</scala-library.version>
 		<spring-boot-maven.version>2.1.2.RELEASE</spring-boot-maven.version>
 		<spring-boot.version>2.1.2.RELEASE</spring-boot.version>
