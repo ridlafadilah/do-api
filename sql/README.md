@@ -1,1 +1,1 @@
-psql -d xa -f "xa-data-support.sql" -U postgres
+psql -d do -f "do-data-support.sql" -U dongkap

@@ -19,3 +19,5 @@ CREATE TABLE "file".file_metadata (
 	PRIMARY KEY (file_metadata_uuid)
 );
 ALTER TABLE "file".file_metadata ADD CONSTRAINT file_checksum UNIQUE (file_checksum);
+
+GRANT ALL ON TABLE file.file_metadata TO dongkap;

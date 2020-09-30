@@ -190,21 +190,6 @@ CREATE TABLE security.sec_personal_info (
 	contact_user_uuid varchar(36) NOT NULL,
 	PRIMARY KEY (personal_info_uuid)
 );
-CREATE TABLE security.sec_personal_support (
-	personal_support_uuid varchar(36) NOT NULL,
-	reference_name varchar(200) NOT NULL,
-	reference_address text,
-	reference_phone_number varchar(20),
-	relationship varchar(50),
-	"version" int DEFAULT 0 NOT NULL,
-	is_active boolean DEFAULT true NOT NULL,
-	created_date timestamp DEFAULT CURRENT_TIMESTAMP,
-	created_by varchar(25),
-	modified_date timestamp,
-	modified_by varchar(25),
-	personal_info_uuid varchar(36) NOT NULL,
-	PRIMARY KEY (personal_support_uuid)
-);
 CREATE TABLE security.sec_settings (
 	settings_uuid varchar(36) NOT NULL,
 	locale_code varchar(10) DEFAULT 'en-US' NOT NULL,
@@ -228,10 +213,6 @@ ALTER TABLE security.sec_corporate ADD CONSTRAINT corporate_id UNIQUE (corporate
 ALTER TABLE security.sec_personal_info
 	ADD FOREIGN KEY (contact_user_uuid) 
 	REFERENCES security.sec_contact_user (contact_user_uuid);
-
-ALTER TABLE security.sec_personal_support
-	ADD FOREIGN KEY (personal_info_uuid) 
-	REFERENCES security.sec_personal_info (personal_info_uuid);
 
 ALTER TABLE security.sec_function
 	ADD FOREIGN KEY (role_uuid) 
@@ -272,3 +253,37 @@ ALTER TABLE security.sec_contact_user
 ALTER TABLE security.sec_settings
 	ADD FOREIGN KEY (user_uuid) 
 	REFERENCES security.sec_user (user_uuid);
+
+GRANT ALL ON TABLE security.oauth_access_token TO dongkap;
+
+GRANT ALL ON TABLE security.oauth_approvals TO dongkap;
+
+GRANT ALL ON TABLE security.oauth_client_details TO dongkap;
+
+GRANT ALL ON TABLE security.oauth_client_token TO dongkap;
+
+GRANT ALL ON TABLE security.oauth_code TO dongkap;
+
+GRANT ALL ON TABLE security.oauth_refresh_token TO dongkap;
+
+GRANT ALL ON TABLE security.sec_contact_user TO dongkap;
+
+GRANT ALL ON TABLE security.sec_corporate TO dongkap;
+
+GRANT ALL ON TABLE security.sec_function TO dongkap;
+
+GRANT ALL ON TABLE security.sec_menu TO dongkap;
+
+GRANT ALL ON TABLE security.sec_menu_i18n TO dongkap;
+
+GRANT ALL ON TABLE security.sec_personal_info TO dongkap;
+
+GRANT ALL ON TABLE security.sec_r_user_corporate TO dongkap;
+
+GRANT ALL ON TABLE security.sec_r_user_role TO dongkap;
+
+GRANT ALL ON TABLE security.sec_role TO dongkap;
+
+GRANT ALL ON TABLE security.sec_settings TO dongkap;
+
+GRANT ALL ON TABLE security.sec_user TO dongkap;

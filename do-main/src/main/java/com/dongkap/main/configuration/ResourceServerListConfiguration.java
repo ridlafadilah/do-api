@@ -16,7 +16,6 @@ import com.dongkap.file.configuration.ResourceServerFileAdapter;
 import com.dongkap.general.configuration.ResourceServerGeneralAdapter;
 import com.dongkap.master.configuration.ResourceServerMasterAdapter;
 import com.dongkap.notification.configuration.ResourceServerNotificationAdapter;
-import com.dongkap.panic.configuration.ResourceServerPanicAdapter;
 import com.dongkap.security.configuration.ResourceServerProfileAdapter;
 import com.dongkap.security.configuration.ResourceServerSecurityAdapter;
 
@@ -65,18 +64,6 @@ public class ResourceServerListConfiguration {
 		};
 		resource.setConfigurers(Arrays.<ResourceServerConfigurer> asList(new ResourceServerMasterAdapter(tokenStore, accessDeniedHandler, authenticationEntryPoint)));
 		resource.setOrder(-15);
-		return resource;
-	}
-
-	@Bean
-	protected ResourceServerConfiguration panicResources() {
-		ResourceServerConfiguration resource = new ResourceServerConfiguration() {
-			public void setConfigurers(List<ResourceServerConfigurer> configurers) {
-				super.setConfigurers(configurers);
-			}
-		};
-		resource.setConfigurers(Arrays.<ResourceServerConfigurer> asList(new ResourceServerPanicAdapter(tokenStore, accessDeniedHandler, authenticationEntryPoint)));
-		resource.setOrder(-16);
 		return resource;
 	}
 

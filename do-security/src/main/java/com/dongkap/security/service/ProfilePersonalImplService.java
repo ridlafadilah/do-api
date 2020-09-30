@@ -23,7 +23,6 @@ import com.dongkap.feign.service.ProfilePersonalService;
 import com.dongkap.security.dao.ContactUserRepo;
 import com.dongkap.security.entity.ContactUserEntity;
 import com.dongkap.security.entity.PersonalInfoEntity;
-import com.dongkap.security.entity.PersonalSupportEntity;
 import com.dongkap.security.entity.UserEntity;
 
 @Service("profilePersonalService")
@@ -71,17 +70,6 @@ public class ProfilePersonalImplService implements ProfilePersonalService {
 				personalInfo.setGender(p_dto.getGender());
 				personalInfo.setPlaceOfBirth(p_dto.getPlaceOfBirth());
 				personalInfo.setDateOfBirth(DateUtil.DATE.parse(p_dto.getDateOfBirth()));
-				PersonalSupportEntity personalSupport = new PersonalSupportEntity();
-				personalSupport.setReferenceName(p_dto.getReferenceName());
-				personalSupport.setReferenceAddress(p_dto.getReferenceAddress());
-				if (p_dto.getReferencePhoneNumber() != null) {
-					if (p_dto.getReferencePhoneNumber().matches(PatternGlobal.PHONE_NUMBER.getRegex())) {
-						personalSupport.setReferencePhoneNumber(p_dto.getReferencePhoneNumber());	
-					} else
-						throw new SystemErrorException(ErrorCode.ERR_SCR0007A);
-				}
-				personalSupport.setRelationship(p_dto.getRelationship());
-				personalInfo.setPersonalSupport(personalSupport);
 				profile.setPersonalInfo(personalInfo);
 				this.contactUserRepo.save(profile);
 			}
@@ -127,16 +115,6 @@ public class ProfilePersonalImplService implements ProfilePersonalService {
 				} catch (Exception e) {}
 				dto.setPlaceOfBirth(profile.getPersonalInfo().getPlaceOfBirth());	
 				dto.setDateOfBirth(DateUtil.DATE.format(profile.getPersonalInfo().getDateOfBirth()));
-				if(profile.getPersonalInfo().getPersonalSupport() != null) {
-					dto.setReferenceName(profile.getPersonalInfo().getPersonalSupport().getReferenceName());
-					dto.setReferenceAddress(profile.getPersonalInfo().getPersonalSupport().getReferenceAddress());
-					dto.setReferencePhoneNumber(profile.getPersonalInfo().getPersonalSupport().getReferencePhoneNumber());
-					temp.put("parameterCode", profile.getPersonalInfo().getPersonalSupport().getRelationship());
-					dto.setRelationship(profile.getPersonalInfo().getPersonalSupport().getRelationship());
-					try {
-						dto.setRelationship(parameterI18nService.getParameter(temp, p_locale).getParameterValue());
-					} catch (Exception e) {}
-				}
 			}
 			return dto;
 		} else
@@ -170,16 +148,6 @@ public class ProfilePersonalImplService implements ProfilePersonalService {
 				} catch (Exception e) {}
 				dto.setPlaceOfBirth(profile.getPersonalInfo().getPlaceOfBirth());	
 				dto.setDateOfBirth(DateUtil.DATE.format(profile.getPersonalInfo().getDateOfBirth()));
-				if(profile.getPersonalInfo().getPersonalSupport() != null) {
-					dto.setReferenceName(profile.getPersonalInfo().getPersonalSupport().getReferenceName());
-					dto.setReferenceAddress(profile.getPersonalInfo().getPersonalSupport().getReferenceAddress());
-					dto.setReferencePhoneNumber(profile.getPersonalInfo().getPersonalSupport().getReferencePhoneNumber());
-					temp.put("parameterCode", profile.getPersonalInfo().getPersonalSupport().getRelationship());
-					dto.setRelationship(profile.getPersonalInfo().getPersonalSupport().getRelationship());
-					try {
-						dto.setRelationship(parameterI18nService.getParameter(temp, p_locale).getParameterValue());
-					} catch (Exception e) {}
-				}
 			}
 			return dto;
 		} else

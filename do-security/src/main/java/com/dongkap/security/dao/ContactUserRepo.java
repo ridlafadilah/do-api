@@ -11,7 +11,7 @@ public interface ContactUserRepo extends JpaRepository<ContactUserEntity, String
 
 	ContactUserEntity findByUser_Username(String username);
 	
-	@Query("SELECT cu FROM UserEntity u JOIN u.contactUser cu JOIN FETCH cu.personalInfo pi JOIN FETCH pi.personalSupport ps WHERE LOWER(u.username) = :username OR LOWER(u.email) = :username")
+	@Query("SELECT cu FROM UserEntity u JOIN u.contactUser cu JOIN FETCH cu.personalInfo pi WHERE LOWER(u.username) = :username OR LOWER(u.email) = :username")
 	ContactUserEntity loadPersonalDataByUsername(@Param("username") String username);
 
 }

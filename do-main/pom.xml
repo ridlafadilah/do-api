@@ -100,11 +100,6 @@
 		</dependency>
 		<dependency>
 			<groupId>com.dongkap</groupId>
-			<artifactId>do-panic</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.dongkap</groupId>
 			<artifactId>do-file</artifactId>
 			<version>${project.version}</version>
 		</dependency>

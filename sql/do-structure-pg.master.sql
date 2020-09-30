@@ -207,3 +207,29 @@ ALTER TABLE master.mst_parameter
 ALTER TABLE master.mst_parameter_i18n
 	ADD FOREIGN KEY (parameter_uuid) 
 	REFERENCES master.mst_parameter (parameter_uuid);
+
+GRANT ALL ON TABLE master.mst_city TO dongkap;
+
+GRANT ALL ON TABLE master.mst_country TO dongkap;
+
+GRANT ALL ON TABLE master.mst_currency TO dongkap;
+
+GRANT ALL ON TABLE master.mst_district TO dongkap;
+
+GRANT ALL ON TABLE master.mst_language TO dongkap;
+
+GRANT ALL ON TABLE master.mst_locale TO dongkap;
+
+GRANT ALL ON TABLE master.mst_parameter TO dongkap;
+
+GRANT ALL ON TABLE master.mst_parameter_group TO dongkap;
+
+GRANT ALL ON TABLE master.mst_parameter_i18n TO dongkap;
+
+GRANT ALL ON TABLE master.mst_province TO dongkap;
+
+GRANT ALL ON TABLE master.mst_r_country_currency TO dongkap;
+
+GRANT ALL ON TABLE master.mst_subdistrict TO dongkap;
+
+GRANT ALL ON TABLE master.mst_zipcode TO dongkap;

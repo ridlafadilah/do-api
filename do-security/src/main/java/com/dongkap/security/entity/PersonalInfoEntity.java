@@ -2,7 +2,6 @@ package com.dongkap.security.entity;
 
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -26,8 +25,8 @@ import lombok.ToString;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper=false, exclude={"contactUser", "personalSupport"})
-@ToString(exclude={"contactUser", "personalSupport"})
+@EqualsAndHashCode(callSuper=false, exclude={"contactUser"})
+@ToString(exclude={"contactUser"})
 @Entity
 @Table(name = "sec_personal_info", schema = SchemaDatabase.SECURITY)
 public class PersonalInfoEntity extends BaseAuditEntity {
@@ -58,8 +57,5 @@ public class PersonalInfoEntity extends BaseAuditEntity {
 	@OneToOne(targetEntity = ContactUserEntity.class, fetch = FetchType.LAZY)
 	@JoinColumn(name = "contact_user_uuid", nullable = false, updatable = false)
 	private ContactUserEntity contactUser;
-	
-	@OneToOne(mappedBy = "personalInfo", targetEntity = PersonalSupportEntity.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private PersonalSupportEntity personalSupport;
 
 }

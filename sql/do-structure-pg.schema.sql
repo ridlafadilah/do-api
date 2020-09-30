@@ -14,5 +14,5 @@ CREATE SCHEMA "file"
     AUTHORIZATION dongkap;
 CREATE SCHEMA notification
     AUTHORIZATION dongkap;
-CREATE SCHEMA panic
+CREATE SCHEMA finance
     AUTHORIZATION dongkap;

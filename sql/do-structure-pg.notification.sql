@@ -16,3 +16,5 @@ CREATE TABLE "notification".notif_subscription (
 	PRIMARY KEY (notif_subscription_uuid)
 );
 ALTER TABLE "notification".notif_subscription ADD CONSTRAINT endpoint UNIQUE (endpoint);
+
+GRANT ALL ON TABLE notification.notif_subscription TO dongkap;
