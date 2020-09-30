@@ -1,1 +1,1 @@
-web java -Dserver.port=$PORT $JAVA_OPTS -jar xa-main/target/app.war
+web java -Dserver.port=$PORT $JAVA_OPTS -jar do-main/target/app.war
