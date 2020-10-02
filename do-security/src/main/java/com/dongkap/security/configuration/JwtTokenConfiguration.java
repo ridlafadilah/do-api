@@ -16,13 +16,13 @@ import com.dongkap.common.utils.DateUtil;
 @Configuration
 public class JwtTokenConfiguration {
 	
-	@Value("${xa.client-id.web}")
+	@Value("${do.client-id.web}")
 	private String clientIdWeb;
 	
     @Value("${security.oauth2.resource.jwt.key-value}")
     private String jwtKey;
 	
-	@Value("${xa.signature.public-key}")
+	@Value("${do.signature.public-key}")
 	private String publicKey;
     
     @Bean

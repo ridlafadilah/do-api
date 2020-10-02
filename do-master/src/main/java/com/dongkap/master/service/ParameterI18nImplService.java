@@ -48,7 +48,7 @@ public class ParameterI18nImplService extends CommonService implements Parameter
 	@Autowired
 	private ParameterRepo parameterRepo;
 
-	@Value("${xa.locale}")
+	@Value("${do.locale}")
 	private String locale;
 
 	public List<ParameterI18nDto> getParameterCode(Map<String, Object> filter) throws Exception {

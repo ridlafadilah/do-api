@@ -15,7 +15,7 @@ public class ApiErrorResponse {
 	@Autowired
 	private MessageSource messageSource;
 	
-	@Value("${xa.locale}")
+	@Value("${do.locale}")
 	private String locale;
 	
 	public String errorDescriptionResponse(ErrorCode errorCode, Locale locale) {

@@ -35,7 +35,7 @@ public class FileEvidenceImplService implements FileGenericService {
 	@Autowired
 	private FileUtils fileUtils;
 	
-    @Value("${xa.file.path.evidence}")
+    @Value("${do.file.path.evidence}")
     protected String filePath;
 
 	@Transactional

@@ -29,8 +29,8 @@ public class CorsFilterRequest implements Filter {
 
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow-Methods", "POST, PUT, GET, OPTIONS, DELETE");
-        response.setHeader("Access-Control-Allow-Headers",  "x-requested-with, x-forwarded-for, x-xa-signature, x-xa-timestamp, x-xa-key, x-xa-mark, Authorization, Content-Type, enctype, responseType, Content-Disposition");
-        response.setHeader("Access-Control-Expose-Headers", "x-requested-with, x-forwarded-for, x-xa-signature, x-xa-timestamp, x-xa-key, x-xa-mark, Authorization, Content-Type, enctype, responseType, Content-Disposition");
+        response.setHeader("Access-Control-Allow-Headers",  "x-requested-with, x-forwarded-for, x-dongkap-signature, x-dongkap-timestamp, x-dongkap-key, x-dongkap-mark, Authorization, Content-Type, enctype, responseType, Content-Disposition");
+        response.setHeader("Access-Control-Expose-Headers", "x-requested-with, x-forwarded-for, x-dongkap-signature, x-dongkap-timestamp, x-dongkap-key, x-dongkap-mark, Authorization, Content-Type, enctype, responseType, Content-Disposition");
         response.setHeader("Access-Control-Max-Age", "3600");
         if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
             response.setStatus(HttpServletResponse.SC_OK);

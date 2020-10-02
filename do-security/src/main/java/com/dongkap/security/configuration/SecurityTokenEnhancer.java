@@ -24,14 +24,14 @@ public class SecurityTokenEnhancer implements TokenEnhancer {
 
     protected Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 	
-	@Value("${xa.client-id.web}")
+	@Value("${do.client-id.web}")
 	private String clientIdWeb;
 	
 	@Autowired
 	@Qualifier("menuService")
 	private MenuImplService menuService;
 	
-	@Value("${xa.signature.public-key}")
+	@Value("${do.signature.public-key}")
 	private String publicKey;
 
 	@Override

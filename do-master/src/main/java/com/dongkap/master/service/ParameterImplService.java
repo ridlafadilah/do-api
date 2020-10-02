@@ -27,7 +27,7 @@ public class ParameterImplService extends CommonService {
 	@Autowired
 	private ParameterRepo parameterRepo;
 
-	@Value("${xa.locale}")
+	@Value("${do.locale}")
 	private String locale;
 
 	public CommonResponseDto<ParameterDto> getDatatableParameter(FilterDto filter) throws Exception {

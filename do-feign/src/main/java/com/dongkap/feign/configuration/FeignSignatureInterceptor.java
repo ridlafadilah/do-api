@@ -13,10 +13,10 @@ import com.dongkap.common.utils.DateUtil;
 @Service
 public class FeignSignatureInterceptor {
 	
-	@Value("${xa.signature.private-key}")
+	@Value("${do.signature.private-key}")
 	private String privateKey;
 	
-	@Value("${xa.signature.public-key}")
+	@Value("${do.signature.public-key}")
 	private String publicKey;
 	
 	public String getTimestamp() {

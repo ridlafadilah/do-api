@@ -25,7 +25,7 @@ public class FileEvidenceController extends BaseControllerException {
 	@Autowired
 	private FileGenericImplService fileGenericService;
 	
-    @Value("${xa.file.path.evidence}")
+    @Value("${do.file.path.evidence}")
     protected String path;
 
 	@RequestMapping(value = "/vw/get/evidence/v.1/{checksum}/{user}", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)	

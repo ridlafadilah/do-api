@@ -7,6 +7,6 @@ public class SchemaDatabase {
 	public static final String WORKFLOW = "workflow";
 	public static final String FILE = "file";
 	public static final String NOTIFICATION = "notification";
-	public static final String PANIC = "panic";
+	public static final String FINANCE = "finance";
 
 }

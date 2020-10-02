@@ -40,11 +40,20 @@ public class SignatureInterceptor implements Filter {
 
 	protected Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 	
-	@Value("${xa.signature.private-key}")
+	@Value("${do.signature.private-key}")
 	private String privateKey;
 	
-	@Value("${xa.signature.public-key}")
+	@Value("${do.signature.public-key}")
 	private String publicKey;
+
+	@Value("${do.signature.param-key}")
+	private String paramKey;
+
+	@Value("${do.signature.param-timestamp}")
+	private String paramTimestamp;
+
+	@Value("${do.signature.param-signature}")
+	private String paramSignature;
 
 	private String message;
 
@@ -72,35 +81,35 @@ public class SignatureInterceptor implements Filter {
         if (!"OPTIONS".equalsIgnoreCase(request.getMethod()) &&
     		StringUtils.containsIgnoreCase(request.getHeader("Authorization"), "bearer")) {
         	try {
-        		if(request.getHeader("X-XA-Key") == null
-        				&& request.getHeader("X-XA-Timestamp") == null
-        				&& request.getHeader("X-XA-Signature") == null)
+        		if(request.getHeader(this.paramKey) == null
+        				&& request.getHeader(this.paramTimestamp) == null
+        				&& request.getHeader(this.paramSignature) == null)
     				throw new SystemErrorException(ErrorCode.ERR_UNAUTHORIZED);
-            	if(!request.getHeader("X-XA-Key").equals(publicKey))
-    				throw new SystemErrorException(ErrorCode.ERR_XXAKEY);
+            	if(!request.getHeader(this.paramKey).equals(publicKey))
+    				throw new SystemErrorException(ErrorCode.ERR_XDOKEY);
             	try {
-            		datenow = DateUtil.formatDate(new Date(new Long(request.getHeader("X-XA-Timestamp")) * 1000), DateUtil.DEFAULT_FORMAT_DATE);
+            		datenow = DateUtil.formatDate(new Date(new Long(request.getHeader(this.paramTimestamp)) * 1000), DateUtil.DEFAULT_FORMAT_DATE);
             		if(!datenow.equals(DateUtil.DATE.format(new Date())))
-        				throw new SystemErrorException(ErrorCode.ERR_XXATIMESTAMP);
+        				throw new SystemErrorException(ErrorCode.ERR_XDOTIMESTAMP);
     			} catch (Exception e) {
-    				throw new SystemErrorException(ErrorCode.ERR_XXATIMESTAMP);
+    				throw new SystemErrorException(ErrorCode.ERR_XDOTIMESTAMP);
     			}
-        		message = 	request.getHeader("X-XA-Key") + ":" + 
-							request.getHeader("X-XA-Timestamp") + ":" +
+        		message = 	request.getHeader(this.paramKey) + ":" + 
+							request.getHeader(this.paramTimestamp) + ":" +
 							datenow  + ":" +
 							request.getRequestURI()  + ":" +
 							request.getHeader("Authorization").replaceAll("(?i)bearer ", "");
         		hashMessage = SignatureEncrypt.getInstance().hash(this.privateKey, message);
-        		if(!hashMessage.equals(request.getHeader("X-XA-Signature")))
-    				throw new SystemErrorException(ErrorCode.ERR_XXASIGNATURE);
+        		if(!hashMessage.equals(request.getHeader(this.paramSignature)))
+    				throw new SystemErrorException(ErrorCode.ERR_XDOSIGNATURE);
         		chain.doFilter(req, res);
 			} catch (SystemErrorException e) {
-				LOGGER.error("Signature Header : {} , Signature Server : {}", request.getHeader("X-XA-Signature"), hashMessage);
+				LOGGER.error("Signature Header : {} , Signature Server : {}", request.getHeader(this.paramSignature), hashMessage);
 				response.getWriter().write(unauthorized(e.getErrorCode(), request));
 				response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 				response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 			} catch (Exception e) {
-				LOGGER.error("Signature Header : {} , Exception : {}", request.getHeader("X-XA-Signature"), e);
+				LOGGER.error("Signature Header : {} , Exception : {}", request.getHeader(this.paramSignature), e);
 				response.getWriter().write(unauthorized(ErrorCode.ERR_UNAUTHORIZED, request));
 				response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 				response.setContentType(MediaType.APPLICATION_JSON_VALUE);

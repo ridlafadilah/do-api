@@ -38,7 +38,7 @@ public class UserImplService extends CommonService implements UserDetailsService
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	
-	@Value("${xa.signature.aes.secret-key}")
+	@Value("${do.signature.aes.secret-key}")
 	private String secretKey;
 	
 	@Override

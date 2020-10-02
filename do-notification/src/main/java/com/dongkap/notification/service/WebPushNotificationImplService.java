@@ -31,10 +31,10 @@ import nl.martijndwars.webpush.PushService;
 @Service("webPushNotificationService")
 public class WebPushNotificationImplService implements WebPushNotificationService {
 	
-	@Value("${xa.vapid.private-key}")
+	@Value("${do.vapid.private-key}")
 	private String privateKey;
 	
-	@Value("${xa.vapid.public-key}")
+	@Value("${do.vapid.public-key}")
 	private String publicKey;
 	
 	@Autowired

@@ -22,7 +22,7 @@ public class ChangePasswordImplService {
 
 	protected Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 	
-	@Value("${xa.signature.aes.secret-key}")
+	@Value("${do.signature.aes.secret-key}")
 	private String secretKey;
 
 	@Autowired

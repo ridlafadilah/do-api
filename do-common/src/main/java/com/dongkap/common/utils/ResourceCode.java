@@ -5,7 +5,7 @@ public enum ResourceCode {
 	PROFILE("profile"),
 	SECURITY("security"),
 	MASTER("master"),
-	PANIC("panic"),
+	FINANCE("finance"),
 	NOTIFICATION("notification"),
 	GENERAL("general"),
 	FILE("file"),

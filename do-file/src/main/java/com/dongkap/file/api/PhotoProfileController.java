@@ -35,7 +35,7 @@ public class PhotoProfileController extends BaseControllerException {
 	@Autowired
 	private FileGenericImplService fileGenericService;
 	
-    @Value("${xa.file.path.image.profile}")
+    @Value("${do.file.path.image.profile}")
     protected String path;
 
     @ResponseSuccess(SuccessCode.OK_SCR005)

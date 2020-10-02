@@ -26,7 +26,7 @@ public class MenuImplService {
 	@Qualifier("menuRepo")
 	private MenuRepo menuRepo;
 	
-	@Value("${xa.locale}")
+	@Value("${do.locale}")
 	private String locale;
 	
 	public Map<String, List<MenuDto>> loadAllMenuByRole(String role, Locale locale) throws Exception {

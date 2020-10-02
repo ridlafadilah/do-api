@@ -37,7 +37,7 @@ public class FileGenericImplService implements FileGenericService {
 	@Autowired
 	private FileUtils fileUtils;
 	
-    @Value("${xa.file.path.tmp}")
+    @Value("${do.file.path.tmp}")
     protected String filePath;
 
 	@Transactional(noRollbackFor = { ConstraintViolationException.class }, propagation = Propagation.REQUIRES_NEW)
