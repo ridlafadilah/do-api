@@ -1,4 +1,4 @@
-package com.dongkap.feign.dto.panic;
+package com.dongkap.feign.dto.security;
 
 import com.dongkap.feign.dto.common.BaseAuditDto;
 
@@ -13,14 +13,13 @@ import lombok.ToString;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 @ToString
-public class FakeDetailDto extends BaseAuditDto {
+public class RoleDto extends BaseAuditDto {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 6414375187443950132L;
-	private String fileChecksum;
-	private LocationDto location;
-	private DeviceDto device;
+	private static final long serialVersionUID = 8874124628846019913L;
+	private String authority;
+	private String description;
 
 }

@@ -6,5 +6,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import com.dongkap.security.entity.RoleEntity;
 
 public interface RoleRepo extends JpaRepository<RoleEntity, String>, JpaSpecificationExecutor<RoleEntity> {
+
+	RoleEntity findByAuthority(String authority);
 	
 }

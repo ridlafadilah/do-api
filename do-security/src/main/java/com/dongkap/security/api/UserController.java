@@ -23,7 +23,7 @@ public class UserController extends BaseControllerException {
 	@Autowired
 	private UserImplService userService;
 
-	@RequestMapping(value = "/vw/post/datatable/user/v.1", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/vw/auth/datatable/user/v.1", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<CommonResponseDto<ProfileDto>> getDatatableUser(Authentication authentication,
 			@RequestBody(required = true) FilterDto filter) throws Exception {
 		return new ResponseEntity<CommonResponseDto<ProfileDto>>(this.userService.getDatatableUser(filter), HttpStatus.OK);

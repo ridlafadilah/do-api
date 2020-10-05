@@ -19,8 +19,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.stereotype.Component;
 
 import com.dongkap.common.exceptions.SystemErrorException;
 import com.dongkap.common.security.SignatureEncrypt;
@@ -34,8 +37,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * @see <a href="https://angular-exercise-signature.stackblitz.io/">Generate Signature Header</a>
  */
 
-// @Component
-// @Order(Ordered.HIGHEST_PRECEDENCE)
+@Component
+@Order(Ordered.HIGHEST_PRECEDENCE)
 public class SignatureInterceptor implements Filter {
 
 	protected Logger LOGGER = LoggerFactory.getLogger(this.getClass());
