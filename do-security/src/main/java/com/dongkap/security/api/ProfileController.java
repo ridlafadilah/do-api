@@ -1,7 +1,5 @@
 package com.dongkap.security.api;
 
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -18,54 +16,50 @@ import com.dongkap.common.aspect.ResponseSuccess;
 import com.dongkap.common.exceptions.BaseControllerException;
 import com.dongkap.common.http.ApiBaseResponse;
 import com.dongkap.common.utils.SuccessCode;
-import com.dongkap.feign.dto.security.PersonalDto;
+import com.dongkap.feign.dto.security.PersonalInfoDto;
 import com.dongkap.feign.dto.security.ProfileDto;
 import com.dongkap.security.entity.UserEntity;
-import com.dongkap.security.service.ProfileBaseImplService;
-import com.dongkap.security.service.ProfilePersonalImplService;
+import com.dongkap.security.service.ProfileImplService;
+import com.dongkap.security.service.ProfileSystemImplService;
 
 @RestController
+@RequestMapping("/api/profile")
 public class ProfileController extends BaseControllerException {
 
 	@Autowired
-	private ProfileBaseImplService profileBaseService;
+	private ProfileImplService profileService;
 
 	@Autowired
-	private ProfilePersonalImplService profilePersonalService;
+	private ProfileSystemImplService profileSystemService;
 	
 	@ResponseSuccess(SuccessCode.OK_SCR004)
-	@RequestMapping(value = "/api/profile/trx/auth/profile/v.1", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ApiBaseResponse> putBaseProfile(Authentication authentication,
+	@RequestMapping(value = "/trx/post/profile/v.1", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ApiBaseResponse> putProfile(Authentication authentication,
+			@RequestHeader(name = HttpHeaders.ACCEPT_LANGUAGE, required = false) String locale,
+			@RequestBody(required = true) PersonalInfoDto p_dto) throws Exception {
+		UserEntity user = (UserEntity) authentication.getPrincipal();
+		return new ResponseEntity<ApiBaseResponse>(profileService.doUpdateProfile(p_dto, user, locale), HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/vw/get/profile/v.1", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<PersonalInfoDto> getProfile(Authentication authentication,
+			@RequestHeader(name = HttpHeaders.ACCEPT_LANGUAGE, required = false) String locale) throws Exception {
+		return new ResponseEntity<PersonalInfoDto>(profileService.getProfile(authentication, locale), HttpStatus.OK);
+	}
+	
+	@ResponseSuccess(SuccessCode.OK_SCR004)
+	@RequestMapping(value = "/trx/auth/profile-system/v.1", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ApiBaseResponse> putProfileSystem(Authentication authentication,
 			@RequestHeader(name = HttpHeaders.ACCEPT_LANGUAGE, required = false) String locale,
 			@RequestBody(required = true) ProfileDto p_dto) throws Exception {
 		UserEntity user = (UserEntity) authentication.getPrincipal();
-		return new ResponseEntity<ApiBaseResponse>(profileBaseService.doUpdateProfileBase(p_dto, user, locale), HttpStatus.OK);
+		return new ResponseEntity<ApiBaseResponse>(profileSystemService.doUpdateProfileSystem(p_dto, user, locale), HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "/api/profile/vw/get/profile/v.1", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ProfileDto> getBaseProfile(Authentication authentication,
+	@RequestMapping(value = "/vw/auth/profile-system/v.1", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ProfileDto> getProfileSystemAuth(Authentication authentication,
 			@RequestHeader(name = HttpHeaders.ACCEPT_LANGUAGE, required = false) String locale) throws Exception {
-		UserEntity user = (UserEntity) authentication.getPrincipal();
-		return new ResponseEntity<ProfileDto>(profileBaseService.getProfileBase(user, locale), HttpStatus.OK);
-	}
-	
-	@RequestMapping(value = "/api/security/trx/auth/profile/v.1", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ProfileDto> getBaseProfileAuth(@RequestHeader(name = HttpHeaders.ACCEPT_LANGUAGE, required = false) String locale,
-			@RequestBody(required = true) Map<String, Object> param) throws Exception {
-		return new ResponseEntity<ProfileDto>(profileBaseService.getBaseProfileAuth(param, locale), HttpStatus.OK);
-	}
-	
-	@RequestMapping(value = "/api/profile/vw/get/profile-personal/v.1", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<PersonalDto> getProfilePersonal(Authentication authentication,
-			@RequestHeader(name = HttpHeaders.ACCEPT_LANGUAGE, required = false) String locale) throws Exception {
-		UserEntity user = (UserEntity) authentication.getPrincipal();
-		return new ResponseEntity<PersonalDto>(profilePersonalService.getProfilePersonal(user, locale), HttpStatus.OK);
-	}
-	
-	@RequestMapping(value = "/api/security/trx/auth/profile-personal/v.1", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<PersonalDto> getProfilePersonalAuth(@RequestHeader(name = HttpHeaders.ACCEPT_LANGUAGE, required = false) String locale,
-			@RequestBody(required = true) Map<String, Object> param) throws Exception {
-		return new ResponseEntity<PersonalDto>(profilePersonalService.getProfilePersonalAuth(param, locale), HttpStatus.OK);
+		return new ResponseEntity<ProfileDto>(profileSystemService.getProfileSystemAuth(authentication, locale), HttpStatus.OK);
 	}
 	
 }

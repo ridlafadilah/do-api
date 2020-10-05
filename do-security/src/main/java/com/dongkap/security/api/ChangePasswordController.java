@@ -28,7 +28,7 @@ public class ChangePasswordController extends BaseControllerException {
 	private ChangePasswordImplService changePasswordService;
 	
 	@ResponseSuccess(SuccessCode.OK_SCR001)
-	@RequestMapping(value = "/trx/auth/change-password/v.1", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/trx/post/change-password/v.1", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ApiBaseResponse> putChangePassword(Authentication authentication,
 			@RequestHeader(name = HttpHeaders.ACCEPT_LANGUAGE, required = false) String locale,
 			@RequestBody(required = true) ChangePasswordDto p_dto) throws Exception {

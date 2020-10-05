@@ -1,6 +1,7 @@
 package com.dongkap.security.service;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -13,25 +14,31 @@ import org.springframework.transaction.annotation.Transactional;
 import com.dongkap.common.exceptions.SystemErrorException;
 import com.dongkap.common.http.ApiBaseResponse;
 import com.dongkap.common.pattern.PatternGlobal;
+import com.dongkap.common.utils.DateUtil;
 import com.dongkap.common.utils.ErrorCode;
-import com.dongkap.feign.dto.security.ProfileDto;
+import com.dongkap.feign.dto.security.PersonalInfoDto;
+import com.dongkap.feign.service.ParameterI18nService;
 import com.dongkap.feign.service.ProfileService;
 import com.dongkap.security.dao.ContactUserRepo;
 import com.dongkap.security.entity.ContactUserEntity;
+import com.dongkap.security.entity.PersonalInfoEntity;
 import com.dongkap.security.entity.UserEntity;
 
-@Service("profileBaseService")
-public class ProfileBaseImplService implements ProfileService {
+@Service("profileService")
+public class ProfileImplService implements ProfileService {
 
 	protected Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired
 	private ContactUserRepo contactUserRepo;
+	
+	@Autowired
+	private ParameterI18nService parameterI18nService;
 
 	@Transactional
-	public ApiBaseResponse doUpdateProfileBase(ProfileDto p_dto, UserEntity p_user, String p_locale) throws Exception {
+	public ApiBaseResponse doUpdateProfile(PersonalInfoDto p_dto, UserEntity p_user, String p_locale) throws Exception {
 		if (p_user.getUsername() != null) {
-			ContactUserEntity profile = this.contactUserRepo.findByUser_Username(p_user.getUsername());
+			ContactUserEntity profile = this.contactUserRepo.loadPersonalDataByUsername(p_user.getUsername());
 			if (profile != null) {
 				profile.setAddress(p_dto.getAddress());
 				profile.setCountry(p_dto.getCountry());
@@ -57,40 +64,39 @@ public class ProfileBaseImplService implements ProfileService {
 				}
 				profile.setModifiedBy(p_user.getUsername());
 				profile.setModifiedDate(new Date());
+				PersonalInfoEntity personalInfo = new PersonalInfoEntity();
+				personalInfo.setIdNumber(p_dto.getIdNumber());
+				personalInfo.setGender(p_dto.getGenderCode());
+				personalInfo.setPlaceOfBirth(p_dto.getPlaceOfBirth());
+				personalInfo.setDateOfBirth(DateUtil.DATE.parse(p_dto.getDateOfBirth()));
+				profile.setPersonalInfo(personalInfo);
 				this.contactUserRepo.save(profile);
 			}
 			return null;
 		} else
 			throw new SystemErrorException(ErrorCode.ERR_SYS0404);
 	}
-	
-	public ProfileDto getProfileBase(UserEntity p_user, String p_locale) throws Exception {
-		if (p_user.getUsername() != null) {
-			ProfileDto dto = new ProfileDto();
-			ContactUserEntity profile = this.contactUserRepo.findByUser_Username(p_user.getUsername());
-			dto.setUsername(p_user.getUsername());
-			dto.setName(profile.getName());
-			dto.setEmail(p_user.getEmail());
-			dto.setAddress(profile.getAddress());
-			dto.setCountry(profile.getCountry());
-			dto.setProvince(profile.getProvince());
-			dto.setCity(profile.getCity());
-			dto.setDistrict(profile.getDistrict());
-			dto.setSubDistrict(profile.getSubDistrict());
-			dto.setZipcode(profile.getZipcode());
-			dto.setImage(profile.getImage());
-			dto.setPhoneNumber(profile.getPhoneNumber());
-			dto.setDescription(profile.getDescription());
-			return dto;
+
+	public PersonalInfoDto getProfile(Authentication authentication, String p_locale) throws Exception {
+		UserEntity user = (UserEntity) authentication.getPrincipal();
+		if (user.getUsername() != null) {
+			return getProfile(user.getUsername(), p_locale);
 		} else
 			throw new SystemErrorException(ErrorCode.ERR_SYS0404);
 	}
 	
-	public ProfileDto getBaseProfileAuth(Map<String, Object> param, String p_locale) throws Exception {
+	public PersonalInfoDto getProfileOtherAuth(Map<String, Object> param, String p_locale) throws Exception {
 		if (!param.isEmpty()) {
-			ProfileDto dto = new ProfileDto();
-			ContactUserEntity profile = this.contactUserRepo.findByUser_Username(param.get("username").toString());
-			dto.setUsername(param.get("username").toString());
+			return getProfile(param.get("username").toString(), p_locale);
+		} else
+			throw new SystemErrorException(ErrorCode.ERR_SYS0404);
+	}
+	
+	private PersonalInfoDto getProfile(String p_username, String p_locale) throws Exception {
+		if (p_username != null) {
+			PersonalInfoDto dto = new PersonalInfoDto();
+			ContactUserEntity profile = this.contactUserRepo.findByUser_Username(p_username);
+			dto.setUsername(p_username);
 			dto.setName(profile.getName());
 			dto.setEmail(profile.getUser().getEmail());
 			dto.setAddress(profile.getAddress());
@@ -103,6 +109,17 @@ public class ProfileBaseImplService implements ProfileService {
 			dto.setImage(profile.getImage());
 			dto.setPhoneNumber(profile.getPhoneNumber());
 			dto.setDescription(profile.getDescription());
+			if(profile.getPersonalInfo() != null) {
+				dto.setIdNumber(profile.getPersonalInfo().getIdNumber());
+				Map<String, Object> temp = new HashMap<String, Object>();
+				temp.put("parameterCode", profile.getPersonalInfo().getGender());
+				dto.setGenderCode(profile.getPersonalInfo().getGender());
+				try {
+					dto.setGender(parameterI18nService.getParameter(temp, p_locale).getParameterValue());
+				} catch (Exception e) {}
+				dto.setPlaceOfBirth(profile.getPersonalInfo().getPlaceOfBirth());	
+				dto.setDateOfBirth(DateUtil.DATE.format(profile.getPersonalInfo().getDateOfBirth()));
+			}
 			return dto;
 		} else
 			throw new SystemErrorException(ErrorCode.ERR_SYS0404);

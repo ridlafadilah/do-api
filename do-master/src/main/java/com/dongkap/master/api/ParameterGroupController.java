@@ -28,14 +28,14 @@ public class ParameterGroupController extends BaseControllerException {
 	@Autowired
 	private ParameterGroupImplService parameterGroupService;
 
-	@RequestMapping(value = "/vw/post/datatable/parameter-group/v.1", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/vw/auth/datatable/parameter-group/v.1", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<CommonResponseDto<ParameterGroupDto>> getDatatableParameter(Authentication authentication,
 			@RequestBody(required = true) FilterDto filter) throws Exception {
 		return new ResponseEntity<CommonResponseDto<ParameterGroupDto>>(this.parameterGroupService.getDatatableParameterGroup(filter), HttpStatus.OK);
 	}
 	
 	@ResponseSuccess(SuccessCode.OK_SCR009)
-	@RequestMapping(value = "/trx/post/parameter-group/v.1", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/trx/auth/parameter-group/v.1", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ApiBaseResponse> postParameterGroup(Authentication authentication,
 			@RequestBody(required = true) ParameterGroupDto data) throws Exception {
 		String username = authentication.getName();
@@ -44,7 +44,7 @@ public class ParameterGroupController extends BaseControllerException {
 	}
 	
 	@ResponseSuccess(SuccessCode.OK_SCR009)
-	@RequestMapping(value = "/trx/delete/parameter-group/v.1", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/trx/auth/delete/parameter-group/v.1", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ApiBaseResponse> deleteParameterGroup(Authentication authentication,
 			@RequestBody(required = true) List<String> datas) throws Exception {
 		this.parameterGroupService.deleteParameterGroup(datas);

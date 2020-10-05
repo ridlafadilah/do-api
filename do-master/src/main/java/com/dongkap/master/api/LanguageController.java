@@ -30,7 +30,7 @@ public class LanguageController extends BaseControllerException {
 		return new ResponseEntity<SelectResponseDto>(languageService.getSelectLocale(filter), HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/vw/post/datatable/language/v.1", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/vw/auth/datatable/language/v.1", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<CommonResponseDto<LanguageDto>> getDatatableLocale(Authentication authentication,
 			@RequestBody(required = true) FilterDto filter) throws Exception {
 		return new ResponseEntity<CommonResponseDto<LanguageDto>>(this.languageService.getDatatableLocale(filter), HttpStatus.OK);

@@ -29,7 +29,7 @@ public class DeactivatedAccountController extends BaseControllerException {
 	private DeactivatedAccountImplService deactivatedAccountService;
 	
 	@ResponseSuccess(SuccessCode.OK_SCR003)
-	@RequestMapping(value = "/trx/auth/deactivated/v.1", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/trx/post/deactivated/v.1", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ApiBaseResponse> putSettings(Authentication authentication,
 			@RequestHeader(name = HttpHeaders.ACCEPT_LANGUAGE, required = false) String locale,
 			@RequestBody(required = true) Map<String, String> dto) throws Exception {

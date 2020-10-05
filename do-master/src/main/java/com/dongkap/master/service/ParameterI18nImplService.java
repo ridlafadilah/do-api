@@ -147,11 +147,11 @@ public class ParameterI18nImplService extends CommonService implements Parameter
 	}
 
 	public SelectResponseDto getSelect(FilterDto filter, String locale) throws Exception {
-	    	Locale i18n = Locale.forLanguageTag(locale);
-	    	if(i18n.getDisplayLanguage().isEmpty()) {
-	    		locale = this.locale;
-	    	}
-	    	filter.getKeyword().put("localeCode", locale);
+    	Locale i18n = Locale.forLanguageTag(locale);
+    	if(i18n.getDisplayLanguage().isEmpty()) {
+    		locale = this.locale;
+    	}
+    	filter.getKeyword().put("localeCode", locale);
 		Page<ParameterI18nEntity> parameter = parameterI18nRepo.findAll(ParameterI18nSpecification.getSelect(filter.getKeyword()), page(filter.getOrder(), filter.getOffset(), filter.getLimit()));
 		SelectResponseDto response = new SelectResponseDto();
 		response.setTotalFiltered(new Long(parameter.getContent().size()));

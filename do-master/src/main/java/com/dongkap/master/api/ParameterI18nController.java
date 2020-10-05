@@ -39,14 +39,14 @@ public class ParameterI18nController extends BaseControllerException {
 		return new ResponseEntity<SelectResponseDto>(this.parameterI18nService.getSelect(filter, locale), HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/vw/post/parameter-i18n/v.1", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/vw/auth/all/parameter-i18n/v.1", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<ParameterI18nDto>> getParameterCode(Authentication authentication,
 			@RequestBody(required = true) Map<String, Object> filter) throws Exception {
 		return new ResponseEntity<List<ParameterI18nDto>>(this.parameterI18nService.getParameterCode(filter), HttpStatus.OK);
 	}
 	
 	@ResponseSuccess(SuccessCode.OK_SCR009)
-	@RequestMapping(value = "/trx/post/parameter-i18n/v.1", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/trx/auth/parameter-i18n/v.1", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ApiBaseResponse> postParameterCode(Authentication authentication,
 			@RequestBody(required = true) ParameterRequestDto data) throws Exception {
 		String username = authentication.getName();

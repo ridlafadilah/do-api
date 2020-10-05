@@ -45,14 +45,14 @@ public class LocaleController extends BaseControllerException {
 		return new ResponseEntity<List<LocaleDto>>(localeService.getAllLocale(), HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/vw/post/datatable/locale/v.1", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/vw/auth/datatable/locale/v.1", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<CommonResponseDto<LocaleDto>> getDatatableLocale(Authentication authentication,
 			@RequestBody(required = true) FilterDto filter) throws Exception {
 		return new ResponseEntity<CommonResponseDto<LocaleDto>>(this.localeService.getDatatableLocale(filter), HttpStatus.OK);
 	}
 	
 	@ResponseSuccess(SuccessCode.OK_SCR010)
-	@RequestMapping(value = "/trx/post/locale/v.1", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/trx/auth/locale/v.1", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ApiBaseResponse> postLocale(Authentication authentication,
 			@RequestBody(required = true) LocaleDto data) throws Exception {
 		String username = authentication.getName();

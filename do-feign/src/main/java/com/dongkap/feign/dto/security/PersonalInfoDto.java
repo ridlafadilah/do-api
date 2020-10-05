@@ -11,7 +11,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 @ToString
-public class PersonalDto extends ProfileDto {
+public class PersonalInfoDto extends ProfileDto {
 	
 	/**
 	 * 
