@@ -1,5 +1,8 @@
 package com.dongkap.feign.dto.security;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.dongkap.feign.dto.common.BaseAuditDto;
 
 import lombok.AllArgsConstructor;
@@ -24,7 +27,13 @@ public class MenuItemDto extends BaseAuditDto {
 	private String icon;
     private String link;
     private String type;
+	private Integer level;
+    private Integer ordering;
+    private String orderingStr;
     private Boolean home = false;
     private Boolean group = false;
+    private Boolean leaf = false;
+    private Map<String, String> i18n = new HashMap<String, String>();
+    private Map<String, String> parentMenu = new HashMap<String, String>();
 
 }

@@ -3,7 +3,7 @@
 --
 
 INSERT INTO security.sec_menu (menu_uuid, code, url, "level", ordering, ordering_str, icon, is_leaf, is_home, is_group, "version", is_active, created_date, created_by, modified_date, modified_by, parent_uuid) VALUES
-('502bc59b-c2cd-4920-bfdf-6931354f02d0', '#EXERCISE-PAGE', '/app/exercise', 0, 999, '999', 'layout-outline', false, true, false, 0, true, '2018-12-04 13:35:36', NULL, NULL, NULL, NULL);
+('502bc59b-c2cd-4920-bfdf-6931354f02d0', '#EXERCISE-PAGE', '/app/exercise', 0, 999, '999', 'layout-outline', false, false, false, 0, true, '2018-12-04 13:35:36', NULL, NULL, NULL, NULL);
 
 --
 -- Dumping data for table sec_menu_i18n

@@ -80,7 +80,7 @@ CREATE TABLE security.sec_function (
 );
 CREATE TABLE security.sec_menu (
 	menu_uuid varchar(36) NOT NULL,
-	code varchar(200),
+	code varchar(200) DEFAULT 'N/A' NOT NULL,
 	url text,
 	"level" int NOT NULL,
 	"ordering" int NOT NULL,

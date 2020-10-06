@@ -70,7 +70,7 @@ public class MenuImplService {
 		} catch (Exception e) {
 			locale = this.locale;
 		}
-		List<TreeDto<MenuItemDto>> treeMenuDtos = this.constructTreeMenu(this.menuRepo.loadTypeMenuI18n(type, locale));
+		List<TreeDto<MenuItemDto>> treeMenuDtos = this.constructTreeMenu(this.menuRepo.findByType(type), locale);
 		return treeMenuDtos;
 	}
 	
@@ -102,41 +102,60 @@ public class MenuImplService {
 		return menuDtos;
 	}
 	
-	private List<TreeDto<MenuItemDto>> constructTreeMenu(List<MenuEntity> menus) {
+	private List<TreeDto<MenuItemDto>> constructTreeMenu(List<MenuEntity> menus, String locale) {
 		List<TreeDto<MenuItemDto>> treeMenuDtos = new ArrayList<TreeDto<MenuItemDto>>();
 		menus.forEach(menu->{
 			if(menu.getLevel() == 0) {
-				treeMenuDtos.add(this.getTreeObject(menu));
+				treeMenuDtos.add(this.getTreeObject(menu, locale));
 			}			
 		});
 		return treeMenuDtos;
 	}
 
-	private List<TreeDto<MenuItemDto>> getTreeChildren(MenuEntity menu) {
+	private List<TreeDto<MenuItemDto>> getTreeChildren(MenuEntity menu, String locale) {
 		if(menu.getChildsMenu().size() <= 0 || menu.getLeaf())
 			return null;
 		List<TreeDto<MenuItemDto>> treeMenuDtos = new ArrayList<TreeDto<MenuItemDto>>();
 		menu.getChildsMenu().forEach(data->{
-			treeMenuDtos.add(this.getTreeObject(data));
+			treeMenuDtos.add(this.getTreeObject(data, locale));
 		});
 		return treeMenuDtos;
 	}
 	
-	private TreeDto<MenuItemDto> getTreeObject(MenuEntity menu) {
+	private TreeDto<MenuItemDto> getTreeObject(MenuEntity menu, String locale) {
 		TreeDto<MenuItemDto> treeMenuDto = new TreeDto<MenuItemDto>();
 		treeMenuDto.setId(menu.getId());
+		Map<String, String> menuI18n = new HashMap<String, String>();
+		Map<String, String> parentMenu = new HashMap<String, String>();
 		MenuItemDto menuItemDto = new MenuItemDto();
 		menuItemDto.setCode(menu.getCode());
 		menuItemDto.setIcon(menu.getIcon());
 		menuItemDto.setLink(menu.getUrl());
 		menuItemDto.setType(menu.getType());
+		menuItemDto.setLevel(menu.getLevel());
+		menuItemDto.setOrdering(menu.getOrdering());
+		menuItemDto.setOrderingStr(menu.getOrderingStr());
 		menuItemDto.setHome(menu.getHome());
 		menuItemDto.setGroup(menu.getGroup());
+		menuItemDto.setLeaf(menu.getLeaf());
 		menu.getMenuI18n().forEach(i18n->{
-			treeMenuDto.setName(i18n.getTitle());
-			menuItemDto.setTitle(i18n.getTitle());
+			if(i18n.getLocale().equals(locale)) {
+				treeMenuDto.setName(i18n.getTitle());
+				menuItemDto.setTitle(i18n.getTitle());	
+			}
+			menuI18n.put(i18n.getLocale(), i18n.getTitle());
 		});
-		treeMenuDto.setChildren(this.getTreeChildren(menu));
+		if(menu.getParentMenu() != null) {
+			parentMenu.put("id", menu.getParentMenu().getId());
+			menu.getParentMenu().getMenuI18n().forEach(i18n->{
+				if(i18n.getLocale().equals(locale)) {
+					parentMenu.put("title", i18n.getTitle());	
+				}
+			});
+			menuItemDto.setParentMenu(parentMenu);
+		}
+		menuItemDto.setI18n(menuI18n);
+		treeMenuDto.setChildren(this.getTreeChildren(menu, locale));
 		treeMenuDto.setItem(menuItemDto);
 		treeMenuDto.setDisabled(!menu.isActive());
 		return treeMenuDto;
