@@ -23,7 +23,6 @@ public class MenuItemDto extends BaseAuditDto {
 	private String title;
 	private String icon;
     private String link;
-    private String access;
     private String type;
     private Boolean home = false;
     private Boolean group = false;

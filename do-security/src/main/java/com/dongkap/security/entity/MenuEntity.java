@@ -103,18 +103,18 @@ public class MenuEntity extends BaseAuditEntity {
 	private Set<FunctionEntity> function = new HashSet<FunctionEntity>();
 	
 	@Transient
-	public List<MenuDto> getChildrenI18n() {
+	public List<MenuDto> getChildren() {
 		if(childsMenu.size() <= 0 || this.leaf)
 			return null;
 		List<MenuDto> menuDtos = new ArrayList<MenuDto>();
 		childsMenu.forEach(data->{
-			menuDtos.add(data.toObjectI18n());
+			menuDtos.add(data.getObject());
 		});
 		return menuDtos;
 	}
 	
 	@Transient
-	public MenuDto toObjectI18n() {
+	public MenuDto getObject() {
 		MenuDto menuDto = new MenuDto();
 		function.forEach(funct->{
 			menuDto.setCode(this.code);
@@ -124,7 +124,7 @@ public class MenuEntity extends BaseAuditEntity {
 			menuDto.setType(this.type);
 			menuDto.setHome(this.home);
 			menuDto.setGroup(this.group);
-			menuDto.setChildren(this.getChildrenI18n());
+			menuDto.setChildren(this.getChildren());
 		});
 		this.menuI18n.forEach(i18n->{
 			menuDto.setTitle(i18n.getTitle());

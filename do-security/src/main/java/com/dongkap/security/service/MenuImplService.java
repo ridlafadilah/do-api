@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.dongkap.feign.dto.security.MenuDto;
+import com.dongkap.feign.dto.security.MenuItemDto;
+import com.dongkap.feign.dto.tree.TreeDto;
 import com.dongkap.security.dao.MenuRepo;
 import com.dongkap.security.entity.MenuEntity;
 
@@ -41,7 +43,7 @@ public class MenuImplService {
 		} catch (Exception e) {
 			locale = this.locale;
 		}
-		List<MenuDto> allMenus = constructMenu(this.menuRepo.loadAllMenuByRoleI18n(role, locale));
+		List<MenuDto> allMenus = this.constructMenu(this.menuRepo.loadAllMenuByRoleI18n(role, locale));
 		return filterMenu(allMenus);
 	}
 	
@@ -58,6 +60,18 @@ public class MenuImplService {
 			locale = this.locale;
 		}
 		return constructMenu(this.menuRepo.loadTypeMenuByRoleI18n(role, locale, type));
+	}
+	
+	public List<TreeDto<MenuItemDto>> loadTreeMenu(String type, String locale) throws Exception {
+		if(locale == null)
+			locale = this.locale;
+		try {
+			locale = locale.split(",")[0];	
+		} catch (Exception e) {
+			locale = this.locale;
+		}
+		List<TreeDto<MenuItemDto>> treeMenuDtos = this.constructTreeMenu(this.menuRepo.loadTypeMenuI18n(type, locale));
+		return treeMenuDtos;
 	}
 	
 	private Map<String, List<MenuDto>> filterMenu(List<MenuDto> menus) {
@@ -82,10 +96,50 @@ public class MenuImplService {
 		List<MenuDto> menuDtos = new ArrayList<MenuDto>();
 		menus.forEach(menu->{
 			if(menu.getLevel() == 0) {
-				menuDtos.add(menu.toObjectI18n());
+				menuDtos.add(menu.getObject());
 			}			
 		});
 		return menuDtos;
+	}
+	
+	private List<TreeDto<MenuItemDto>> constructTreeMenu(List<MenuEntity> menus) {
+		List<TreeDto<MenuItemDto>> treeMenuDtos = new ArrayList<TreeDto<MenuItemDto>>();
+		menus.forEach(menu->{
+			if(menu.getLevel() == 0) {
+				treeMenuDtos.add(this.getTreeObject(menu));
+			}			
+		});
+		return treeMenuDtos;
+	}
+
+	private List<TreeDto<MenuItemDto>> getTreeChildren(MenuEntity menu) {
+		if(menu.getChildsMenu().size() <= 0 || menu.getLeaf())
+			return null;
+		List<TreeDto<MenuItemDto>> treeMenuDtos = new ArrayList<TreeDto<MenuItemDto>>();
+		menu.getChildsMenu().forEach(data->{
+			treeMenuDtos.add(this.getTreeObject(data));
+		});
+		return treeMenuDtos;
+	}
+	
+	private TreeDto<MenuItemDto> getTreeObject(MenuEntity menu) {
+		TreeDto<MenuItemDto> treeMenuDto = new TreeDto<MenuItemDto>();
+		treeMenuDto.setId(menu.getId());
+		MenuItemDto menuItemDto = new MenuItemDto();
+		menuItemDto.setCode(menu.getCode());
+		menuItemDto.setIcon(menu.getIcon());
+		menuItemDto.setLink(menu.getUrl());
+		menuItemDto.setType(menu.getType());
+		menuItemDto.setHome(menu.getHome());
+		menuItemDto.setGroup(menu.getGroup());
+		menu.getMenuI18n().forEach(i18n->{
+			treeMenuDto.setName(i18n.getTitle());
+			menuItemDto.setTitle(i18n.getTitle());
+		});
+		treeMenuDto.setChildren(this.getTreeChildren(menu));
+		treeMenuDto.setItem(menuItemDto);
+		treeMenuDto.setDisabled(!menu.isActive());
+		return treeMenuDto;
 	}
 	
 }

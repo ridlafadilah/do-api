@@ -20,6 +20,7 @@ public class MenuDto extends MenuItemDto {
 	 * 
 	 */
 	private static final long serialVersionUID = 2624389791249022903L;
+    private String access;
     private List<MenuDto> children = new ArrayList<MenuDto>();
 
 }
