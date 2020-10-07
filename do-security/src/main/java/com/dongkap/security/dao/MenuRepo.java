@@ -19,7 +19,7 @@ public interface MenuRepo extends JpaRepository<MenuEntity, String>, JpaSpecific
 
 	List<MenuEntity> findByType(String type);
 
-	@Query("SELECT m FROM MenuEntity m JOIN FETCH m.menuI18n ml WHERE ml.type = :type AND ml.locale = :locale AND ml.level =:level ORDER BY m.orderingStr ASC")
+	@Query("SELECT m FROM MenuEntity m JOIN FETCH m.menuI18n ml WHERE m.type = :type AND ml.locale = :locale AND m.level =:level ORDER BY m.orderingStr ASC")
 	List<MenuEntity> loadRootMenuByTypeLevelI18n(@Param("type") String type, @Param("locale") String locale, @Param("level") Integer level);
 	
 	@Query("SELECT m FROM MenuEntity m JOIN FETCH m.function f JOIN FETCH m.menuI18n ml WHERE f.role.authority = :role AND ml.locale = :locale ORDER BY m.orderingStr ASC")

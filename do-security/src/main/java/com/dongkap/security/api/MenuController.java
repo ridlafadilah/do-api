@@ -44,11 +44,10 @@ public class MenuController extends BaseControllerException {
 		return new ResponseEntity<List<TreeDto<MenuItemDto>>>(menuService.loadTreeMenu(type, locale), HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/vw/auth/select/menus/v.1/{type}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<SelectResponseDto> getSelectRootMenus(Authentication authentication,
-			@PathVariable(required = true) String type,
+	@RequestMapping(value = "/vw/auth/select/main-menus/v.1/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<SelectResponseDto> getSelectRootMainMenus(Authentication authentication,
 			@RequestHeader(name = HttpHeaders.ACCEPT_LANGUAGE, required = false) String locale) throws Exception {
-		return new ResponseEntity<SelectResponseDto>(menuService.getSelectRootMenus(type,locale), HttpStatus.OK);
+		return new ResponseEntity<SelectResponseDto>(menuService.getSelectRootMainMenus("main",locale), HttpStatus.OK);
 	}
 	
 }

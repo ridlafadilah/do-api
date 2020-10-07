@@ -76,7 +76,7 @@ public class MenuImplService {
 		return treeMenuDtos;
 	}
 	
-	public SelectResponseDto getSelectRootMenus(String type, String locale) throws Exception {
+	public SelectResponseDto getSelectRootMainMenus(String type, String locale) throws Exception {
 		List<MenuEntity> menus = menuRepo.loadRootMenuByTypeLevelI18n(type, locale, 0);
 		SelectResponseDto response = new SelectResponseDto();
 		response.setTotalFiltered(new Long(menus.size()));
