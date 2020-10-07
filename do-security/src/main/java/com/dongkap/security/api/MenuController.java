@@ -10,12 +10,16 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dongkap.common.aspect.ResponseSuccess;
 import com.dongkap.common.exceptions.BaseControllerException;
+import com.dongkap.common.http.ApiBaseResponse;
+import com.dongkap.common.utils.SuccessCode;
 import com.dongkap.feign.dto.security.MenuDto;
 import com.dongkap.feign.dto.security.MenuItemDto;
 import com.dongkap.feign.dto.select.SelectResponseDto;
@@ -44,10 +48,19 @@ public class MenuController extends BaseControllerException {
 		return new ResponseEntity<List<TreeDto<MenuItemDto>>>(menuService.loadTreeMenu(type, locale), HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/vw/auth/select/main-menus/v.1/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/vw/auth/select/main-menus/v.1", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<SelectResponseDto> getSelectRootMainMenus(Authentication authentication,
 			@RequestHeader(name = HttpHeaders.ACCEPT_LANGUAGE, required = false) String locale) throws Exception {
 		return new ResponseEntity<SelectResponseDto>(menuService.getSelectRootMainMenus("main",locale), HttpStatus.OK);
+	}
+	
+	@ResponseSuccess(SuccessCode.OK_DEFAULT)
+	@RequestMapping(value = "/trx/auth/menu/v.1", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ApiBaseResponse> putMenu(Authentication authentication,
+			@RequestHeader(name = HttpHeaders.ACCEPT_LANGUAGE, required = false) String locale,
+			@RequestBody(required = true) MenuItemDto p_dto) throws Exception {
+		UserEntity user = (UserEntity) authentication.getPrincipal();
+		return new ResponseEntity<ApiBaseResponse>(menuService.doPostMenu(p_dto, user, locale), HttpStatus.OK);
 	}
 	
 }

@@ -1,10 +1,13 @@
 package com.dongkap.security.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +15,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.dongkap.common.exceptions.SystemErrorException;
+import com.dongkap.common.http.ApiBaseResponse;
+import com.dongkap.common.utils.ErrorCode;
 import com.dongkap.feign.dto.security.MenuDto;
 import com.dongkap.feign.dto.security.MenuItemDto;
 import com.dongkap.feign.dto.select.SelectDto;
@@ -20,6 +27,8 @@ import com.dongkap.feign.dto.select.SelectResponseDto;
 import com.dongkap.feign.dto.tree.TreeDto;
 import com.dongkap.security.dao.MenuRepo;
 import com.dongkap.security.entity.MenuEntity;
+import com.dongkap.security.entity.MenuI18nEntity;
+import com.dongkap.security.entity.UserEntity;
 
 @Service("menuService")
 public class MenuImplService {
@@ -32,6 +41,71 @@ public class MenuImplService {
 	
 	@Value("${do.locale}")
 	private String locale;
+
+	@Transactional
+	public ApiBaseResponse doPostMenu(MenuItemDto p_dto, UserEntity user, String p_locale) throws Exception {
+		if (p_dto != null) {
+			if(p_dto.getI18n() == null)
+				throw new SystemErrorException(ErrorCode.ERR_SYS0404);
+			MenuEntity menu = this.menuRepo.findById(p_dto.getId()).orElse(null);
+			Set<MenuI18nEntity> menuI18nSet = new HashSet<MenuI18nEntity>();
+			MenuI18nEntity menuI18n = new MenuI18nEntity();
+			if (menu != null) {
+				menu.setModifiedBy(user.getUsername());
+				menu.setModifiedDate(new Date());
+				for(String key: p_dto.getI18n().keySet()) {
+					menuI18n = menu.getMenuI18n().stream().filter(i18n -> key.equals(i18n.getLocale())).findFirst().orElse(null);
+					if(menuI18n != null) {
+						menuI18n.setTitle(p_dto.getI18n().get(key));
+						menuI18n.setModifiedBy(user.getUsername());
+						menuI18n.setModifiedDate(new Date());
+					} else {
+						menuI18n = new MenuI18nEntity();
+						menuI18n.setLocale(key);
+						menuI18n.setTitle(p_dto.getI18n().get(key));
+						menuI18n.setCreatedBy(user.getUsername());
+						menuI18n.setCreatedDate(new Date());					
+					}
+					menuI18nSet.add(menuI18n);
+				}
+			} else {
+				menu = new MenuEntity();
+				menu.setCreatedBy(user.getUsername());
+				menu.setCreatedDate(new Date());
+				for(String key: p_dto.getI18n().keySet()) {
+					menuI18n = new MenuI18nEntity();
+					menuI18n.setLocale(key);
+					menuI18n.setTitle(p_dto.getI18n().get(key));
+					menuI18n.setCreatedBy(user.getUsername());
+					menuI18n.setCreatedDate(new Date());
+					menuI18nSet.add(menuI18n);
+				}				
+			}
+			menu.setCode(p_dto.getCode());
+			menu.setUrl(p_dto.getLink());
+			menu.setLevel(p_dto.getLevel());
+			menu.setOrdering(p_dto.getOrdering());
+			menu.setIcon(p_dto.getIcon());
+			menu.setType(p_dto.getType());
+			menu.setLeaf(p_dto.getLeaf());
+			menu.setHome(p_dto.getHome());
+			menu.setGroup(p_dto.getGroup());
+			if(p_dto.getParentMenu() != null) {
+				MenuEntity menuParent = this.menuRepo.findById(p_dto.getParentMenu().get("id")).orElse(null);
+				if (menuParent != null) {
+					menu.setParentId(menuParent.getId());
+					menu.setOrderingStr(menuParent.getOrderingStr()+"."+String.format("%03d", p_dto.getOrdering()));
+				} else
+					throw new SystemErrorException(ErrorCode.ERR_SYS0404);
+			} else {
+				menu.setParentId(null);
+				menu.setOrderingStr(String.format("%03d", p_dto.getOrdering()));				
+			}
+			this.menuRepo.save(menu);
+			return null;
+		} else
+			throw new SystemErrorException(ErrorCode.ERR_SYS0404);
+	}
 	
 	public Map<String, List<MenuDto>> loadAllMenuByRole(String role, Locale locale) throws Exception {
 		return loadAllMenuByRole(role, locale.toLanguageTag());
@@ -72,7 +146,7 @@ public class MenuImplService {
 		} catch (Exception e) {
 			locale = this.locale;
 		}
-		List<TreeDto<MenuItemDto>> treeMenuDtos = this.constructTreeMenu(this.menuRepo.findByType(type), locale);
+		List<TreeDto<MenuItemDto>> treeMenuDtos = this.constructTreeMenu(this.menuRepo.loadMenuByType(type), locale);
 		return treeMenuDtos;
 	}
 	

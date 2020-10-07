@@ -22,6 +22,7 @@ public class MenuItemDto extends BaseAuditDto {
 	 * 
 	 */
 	private static final long serialVersionUID = -1056030686541157137L;
+	private String id;
 	private String code;
 	private String title;
 	private String icon;
