@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 
 import com.dongkap.feign.dto.security.MenuDto;
 import com.dongkap.feign.dto.security.MenuItemDto;
+import com.dongkap.feign.dto.select.SelectDto;
+import com.dongkap.feign.dto.select.SelectResponseDto;
 import com.dongkap.feign.dto.tree.TreeDto;
 import com.dongkap.security.dao.MenuRepo;
 import com.dongkap.security.entity.MenuEntity;
@@ -72,6 +74,23 @@ public class MenuImplService {
 		}
 		List<TreeDto<MenuItemDto>> treeMenuDtos = this.constructTreeMenu(this.menuRepo.findByType(type), locale);
 		return treeMenuDtos;
+	}
+	
+	public SelectResponseDto getSelectRootMenus(String type, String locale) throws Exception {
+		List<MenuEntity> menus = menuRepo.loadRootMenuByTypeLevelI18n(type, locale, 0);
+		SelectResponseDto response = new SelectResponseDto();
+		response.setTotalFiltered(new Long(menus.size()));
+		response.setTotalRecord(new Long(menus.size()));
+		menus.forEach(value -> {
+			SelectDto data = new SelectDto();
+			value.getMenuI18n().forEach(i18n->{
+				data.setLabel(i18n.getTitle());
+				data.setValue(value.getId());
+				data.setDisabled(!value.isActive());
+			});
+			response.getData().add(data);
+		});
+		return response;
 	}
 	
 	private Map<String, List<MenuDto>> filterMenu(List<MenuDto> menus) {

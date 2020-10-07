@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.dongkap.common.exceptions.BaseControllerException;
 import com.dongkap.feign.dto.security.MenuDto;
 import com.dongkap.feign.dto.security.MenuItemDto;
+import com.dongkap.feign.dto.select.SelectResponseDto;
 import com.dongkap.feign.dto.tree.TreeDto;
 import com.dongkap.security.entity.UserEntity;
 import com.dongkap.security.service.MenuImplService;
@@ -41,6 +42,13 @@ public class MenuController extends BaseControllerException {
 			@PathVariable(required = true) String type,
 			@RequestHeader(name = HttpHeaders.ACCEPT_LANGUAGE, required = false) String locale) throws Exception {
 		return new ResponseEntity<List<TreeDto<MenuItemDto>>>(menuService.loadTreeMenu(type, locale), HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/vw/auth/select/menus/v.1/{type}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<SelectResponseDto> getSelectRootMenus(Authentication authentication,
+			@PathVariable(required = true) String type,
+			@RequestHeader(name = HttpHeaders.ACCEPT_LANGUAGE, required = false) String locale) throws Exception {
+		return new ResponseEntity<SelectResponseDto>(menuService.getSelectRootMenus(type,locale), HttpStatus.OK);
 	}
 	
 }
