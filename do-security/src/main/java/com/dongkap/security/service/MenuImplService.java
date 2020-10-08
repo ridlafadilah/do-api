@@ -3,11 +3,9 @@ package com.dongkap.security.service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,10 +45,12 @@ public class MenuImplService {
 		if (p_dto != null) {
 			if(p_dto.getI18n() == null)
 				throw new SystemErrorException(ErrorCode.ERR_SYS0404);
-			MenuEntity menu = this.menuRepo.findById(p_dto.getId()).orElse(null);
-			Set<MenuI18nEntity> menuI18nSet = new HashSet<MenuI18nEntity>();
 			MenuI18nEntity menuI18n = new MenuI18nEntity();
-			if (menu != null) {
+			MenuEntity menu;
+			if(p_dto.getId() != null) {
+				menu = this.menuRepo.findById(p_dto.getId()).orElse(null);
+				if (menu == null)
+					throw new SystemErrorException(ErrorCode.ERR_SYS0404);					
 				menu.setModifiedBy(user.getUsername());
 				menu.setModifiedDate(new Date());
 				for(String key: p_dto.getI18n().keySet()) {
@@ -59,14 +59,16 @@ public class MenuImplService {
 						menuI18n.setTitle(p_dto.getI18n().get(key));
 						menuI18n.setModifiedBy(user.getUsername());
 						menuI18n.setModifiedDate(new Date());
+						menuI18n.setMenu(menu);
 					} else {
 						menuI18n = new MenuI18nEntity();
 						menuI18n.setLocale(key);
 						menuI18n.setTitle(p_dto.getI18n().get(key));
 						menuI18n.setCreatedBy(user.getUsername());
-						menuI18n.setCreatedDate(new Date());					
+						menuI18n.setCreatedDate(new Date());
+						menuI18n.setMenu(menu);
 					}
-					menuI18nSet.add(menuI18n);
+					menu.getMenuI18n().add(menuI18n);
 				}
 			} else {
 				menu = new MenuEntity();
@@ -78,7 +80,8 @@ public class MenuImplService {
 					menuI18n.setTitle(p_dto.getI18n().get(key));
 					menuI18n.setCreatedBy(user.getUsername());
 					menuI18n.setCreatedDate(new Date());
-					menuI18nSet.add(menuI18n);
+					menuI18n.setMenu(menu);
+					menu.getMenuI18n().add(menuI18n);
 				}				
 			}
 			menu.setCode(p_dto.getCode());
@@ -101,7 +104,7 @@ public class MenuImplService {
 				menu.setParentId(null);
 				menu.setOrderingStr(String.format("%03d", p_dto.getOrdering()));				
 			}
-			this.menuRepo.save(menu);
+			this.menuRepo.saveAndFlush(menu);
 			return null;
 		} else
 			throw new SystemErrorException(ErrorCode.ERR_SYS0404);
@@ -151,7 +154,7 @@ public class MenuImplService {
 	}
 	
 	public SelectResponseDto getSelectRootMainMenus(String type, String locale) throws Exception {
-		List<MenuEntity> menus = menuRepo.loadRootMenuByTypeLevelI18n(type, locale, 0);
+		List<MenuEntity> menus = menuRepo.loadRootMenuByTypeLevelI18n(type, locale, 0, false);
 		SelectResponseDto response = new SelectResponseDto();
 		response.setTotalFiltered(new Long(menus.size()));
 		response.setTotalRecord(new Long(menus.size()));

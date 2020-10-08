@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -89,12 +90,12 @@ public class MenuEntity extends BaseAuditEntity {
 	@JoinColumn(name = "parent_uuid", nullable = true, insertable = false, updatable = false)
 	private MenuEntity parentMenu;
 
-	@OneToMany(mappedBy = "parentMenu", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "parentMenu", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
 	@Fetch(FetchMode.JOIN)
 	@OrderBy("orderingStr ASC")
 	private Set<MenuEntity> childsMenu = new HashSet<MenuEntity>();
 	
-	@OneToMany(mappedBy = "menu", targetEntity = MenuI18nEntity.class, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "menu", targetEntity = MenuI18nEntity.class, fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
 	@Fetch(FetchMode.SELECT)
 	private Set<MenuI18nEntity> menuI18n = new HashSet<MenuI18nEntity>();
 	
@@ -117,14 +118,16 @@ public class MenuEntity extends BaseAuditEntity {
 	public MenuDto getObject() {
 		MenuDto menuDto = new MenuDto();
 		function.forEach(funct->{
-			menuDto.setCode(this.code);
-			menuDto.setIcon(this.icon);
-			menuDto.setLink(this.url);
-			menuDto.setAccess(funct.getAccess());
-			menuDto.setType(this.type);
-			menuDto.setHome(this.home);
+			if(!this.group) {
+				menuDto.setCode(this.code);
+				menuDto.setIcon(this.icon);
+				menuDto.setLink(this.url);
+				menuDto.setType(this.type);
+				menuDto.setHome(this.home);
+				menuDto.setAccess(funct.getAccess());
+				menuDto.setChildren(this.getChildren());
+			}
 			menuDto.setGroup(this.group);
-			menuDto.setChildren(this.getChildren());
 		});
 		this.menuI18n.forEach(i18n->{
 			menuDto.setTitle(i18n.getTitle());

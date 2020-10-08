@@ -47,7 +47,7 @@ public class MenuI18nEntity extends BaseAuditEntity {
 	private String title;
 
 	@ManyToOne(targetEntity = MenuEntity.class, fetch = FetchType.LAZY)
-	@JoinColumn(name = "menu_uuid", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "menu_uuid", nullable = false, updatable = false)
 	private MenuEntity menu;
 
 }
