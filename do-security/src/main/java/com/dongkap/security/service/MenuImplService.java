@@ -99,12 +99,18 @@ public class MenuImplService {
 				MenuEntity menuParent = this.menuRepo.findById(p_dto.getParentMenu().get("id")).orElse(null);
 				if (menuParent != null) {
 					menu.setParentId(menuParent.getId());
-					menu.setOrderingStr(menuParent.getOrderingStr()+"."+String.format("%03d", p_dto.getOrdering()));
+					if(p_dto.getType() == "main")
+						menu.setOrderingStr(menuParent.getOrderingStr()+"."+String.format("%03d", p_dto.getOrdering()));
+					else
+						menu.setOrderingStr(menuParent.getOrderingStr()+"."+"1"+String.format("%02d", p_dto.getOrdering()));
 				} else
 					throw new SystemErrorException(ErrorCode.ERR_SYS0404);
 			} else {
 				menu.setParentId(null);
-				menu.setOrderingStr(String.format("%03d", p_dto.getOrdering()));				
+				if(p_dto.getType() == "main")
+					menu.setOrderingStr(String.format("%03d", p_dto.getOrdering()));
+				else
+					menu.setOrderingStr("1"+String.format("%02d", p_dto.getOrdering()));
 			}
 			this.menuRepo.saveAndFlush(menu);
 			return null;
@@ -172,7 +178,6 @@ public class MenuImplService {
 		return response;
 	}
 
-	@Transactional
 	public void deleteMenu(String id) throws Exception {
 		MenuEntity menu = this.menuRepo.findById(id).orElse(null);
 		if(menu == null)
@@ -182,8 +187,6 @@ public class MenuImplService {
 		} catch (DataIntegrityViolationException e) {
 			throw new SystemErrorException(ErrorCode.ERR_SCR0009);
 		} catch (ConstraintViolationException e) {
-			throw new SystemErrorException(ErrorCode.ERR_SCR0009);
-		} catch (Exception e) {
 			throw new SystemErrorException(ErrorCode.ERR_SCR0009);
 		}
 	}

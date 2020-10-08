@@ -21,6 +21,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 
+import com.dongkap.common.exceptions.SystemErrorException;
 import com.dongkap.common.http.ApiBaseResponse;
 import com.dongkap.common.utils.ErrorCode;
 import com.dongkap.common.utils.SuccessCode;
@@ -58,8 +59,14 @@ public class BaseResponseAspect {
 		    }
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
-			response.setRespStatusCode(ErrorCode.ERR_SYS0500.name());
-			response.getRespStatusMessage().put(ErrorCode.ERR_SYS0500.name(), messageSource.getMessage(ErrorCode.ERR_SYS0500.name(), null, locale));
+			if(e instanceof SystemErrorException) {
+				SystemErrorException see = (SystemErrorException)e;
+				response.setRespStatusCode(see.getErrorCode().name());
+				response.getRespStatusMessage().put(see.getErrorCode().name(), messageSource.getMessage(see.getErrorCode().name(), null, locale));
+			} else {
+				response.setRespStatusCode(ErrorCode.ERR_SYS0500.name());
+				response.getRespStatusMessage().put(ErrorCode.ERR_SYS0500.name(), messageSource.getMessage(ErrorCode.ERR_SYS0500.name(), null, locale));
+			}
 			result = new ResponseEntity<ApiBaseResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
         return result;

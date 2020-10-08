@@ -71,7 +71,6 @@ public class ParameterGroupImplService extends CommonService {
 		}
 	}
 
-	@Transactional
 	public void deleteParameterGroup(List<String> parameterGroupCodes) throws Exception {
 		List<ParameterGroupEntity> parameterGroups = parameterGroupRepo.findByParameterGroupCodeIn(parameterGroupCodes);
 		try {

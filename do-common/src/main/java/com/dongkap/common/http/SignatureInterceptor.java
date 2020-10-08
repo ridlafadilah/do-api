@@ -107,6 +107,7 @@ public class SignatureInterceptor implements Filter {
     				throw new SystemErrorException(ErrorCode.ERR_XDOSIGNATURE);
         		chain.doFilter(req, res);
 			} catch (SystemErrorException e) {
+				LOGGER.error("Plain Text Signature : {}", message);
 				LOGGER.error("Signature Header : {} , Signature Server : {}", request.getHeader(this.paramSignature), hashMessage);
 				response.getWriter().write(unauthorized(e.getErrorCode(), request));
 				response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
