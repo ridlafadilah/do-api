@@ -7,11 +7,13 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.hibernate.exception.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -168,6 +170,22 @@ public class MenuImplService {
 			response.getData().add(data);
 		});
 		return response;
+	}
+
+	@Transactional
+	public void deleteMenu(String id) throws Exception {
+		MenuEntity menu = this.menuRepo.findById(id).orElse(null);
+		if(menu == null)
+			throw new SystemErrorException(ErrorCode.ERR_SYS0404);
+		try {
+			this.menuRepo.delete(menu);
+		} catch (DataIntegrityViolationException e) {
+			throw new SystemErrorException(ErrorCode.ERR_SCR0009);
+		} catch (ConstraintViolationException e) {
+			throw new SystemErrorException(ErrorCode.ERR_SCR0009);
+		} catch (Exception e) {
+			throw new SystemErrorException(ErrorCode.ERR_SCR0009);
+		}
 	}
 	
 	private Map<String, List<MenuDto>> filterMenu(List<MenuDto> menus) {

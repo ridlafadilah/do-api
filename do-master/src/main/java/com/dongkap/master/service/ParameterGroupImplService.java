@@ -70,7 +70,8 @@ public class ParameterGroupImplService extends CommonService {
 			throw new SystemErrorException(ErrorCode.ERR_SYS0404);
 		}
 	}
-	
+
+	@Transactional
 	public void deleteParameterGroup(List<String> parameterGroupCodes) throws Exception {
 		List<ParameterGroupEntity> parameterGroups = parameterGroupRepo.findByParameterGroupCodeIn(parameterGroupCodes);
 		try {

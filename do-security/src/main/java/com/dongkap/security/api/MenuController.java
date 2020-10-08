@@ -63,4 +63,13 @@ public class MenuController extends BaseControllerException {
 		return new ResponseEntity<ApiBaseResponse>(menuService.doPostMenu(p_dto, user, locale), HttpStatus.OK);
 	}
 	
+	@ResponseSuccess(SuccessCode.OK_DELETED)
+	@RequestMapping(value = "/trx/auth/delete/menu/v.1/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ApiBaseResponse> deleteMenu(Authentication authentication,
+			@RequestHeader(name = HttpHeaders.ACCEPT_LANGUAGE, required = false) String locale,
+			@PathVariable(required = true) String id) throws Exception {
+		this.menuService.deleteMenu(id);
+		return new ResponseEntity<ApiBaseResponse>(new ApiBaseResponse(), HttpStatus.OK);
+	}
+	
 }
