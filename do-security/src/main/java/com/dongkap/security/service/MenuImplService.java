@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 import org.hibernate.exception.ConstraintViolationException;
 import org.slf4j.Logger;
@@ -130,7 +131,7 @@ public class MenuImplService {
 		} catch (Exception e) {
 			locale = this.locale;
 		}
-		List<MenuDto> allMenus = this.constructMenu(this.menuRepo.loadAllMenuByRoleI18n(role, locale));
+		List<MenuDto> allMenus = this.buildMenu(this.menuRepo.loadAllMenuByRoleI18n(role, locale));
 		return filterMenu(allMenus);
 	}
 	
@@ -146,7 +147,7 @@ public class MenuImplService {
 		} catch (Exception e) {
 			locale = this.locale;
 		}
-		return constructMenu(this.menuRepo.loadTypeMenuByRoleI18n(role, locale, type));
+		return this.buildMenu(this.menuRepo.loadTypeMenuByRoleI18n(role, locale, type));
 	}
 	
 	public List<TreeDto<MenuItemDto>> loadTreeMenu(String type, String locale) throws Exception {
@@ -157,7 +158,21 @@ public class MenuImplService {
 		} catch (Exception e) {
 			locale = this.locale;
 		}
-		List<TreeDto<MenuItemDto>> treeMenuDtos = this.constructTreeMenu(this.menuRepo.loadMenuByType(type), locale);
+		List<TreeDto<MenuItemDto>> treeMenuDtos = this.buildTreeMenu(this.menuRepo.loadMenuByType(type), locale);
+		return treeMenuDtos;
+	}
+	
+	public List<TreeDto<MenuItemDto>> loadTreeMenuFunctionControl(String type, String role, String locale) throws Exception {
+		if(locale == null)
+			locale = this.locale;
+		try {
+			locale = locale.split(",")[0];	
+		} catch (Exception e) {
+			locale = this.locale;
+		}
+		List<MenuEntity> menus = this.menuRepo.loadMenuByType(type);
+		Set<MenuEntity> functions = this.menuRepo.loadTypeMenuByRoleSet(type, role);
+		List<TreeDto<MenuItemDto>> treeMenuDtos = this.buildTreeFunctionMenu(menus, functions, locale);
 		return treeMenuDtos;
 	}
 	
@@ -209,7 +224,7 @@ public class MenuImplService {
 		return result;
 	}
 	
-	private List<MenuDto> constructMenu(List<MenuEntity> menus) {
+	private List<MenuDto> buildMenu(List<MenuEntity> menus) {
 		List<MenuDto> menuDtos = new ArrayList<MenuDto>();
 		menus.forEach(menu->{
 			if(menu.getLevel() == 0) {
@@ -219,11 +234,22 @@ public class MenuImplService {
 		return menuDtos;
 	}
 	
-	private List<TreeDto<MenuItemDto>> constructTreeMenu(List<MenuEntity> menus, String locale) {
+	private List<TreeDto<MenuItemDto>> buildTreeMenu(List<MenuEntity> menus, String locale) {
 		List<TreeDto<MenuItemDto>> treeMenuDtos = new ArrayList<TreeDto<MenuItemDto>>();
 		menus.forEach(menu->{
 			if(menu.getLevel() == 0) {
 				treeMenuDtos.add(this.getTreeObject(menu, locale));
+			}			
+		});
+		return treeMenuDtos;
+	}
+	
+	private List<TreeDto<MenuItemDto>> buildTreeFunctionMenu(List<MenuEntity> menus, Set<MenuEntity> functions, String locale) {
+		List<TreeDto<MenuItemDto>> treeMenuDtos = new ArrayList<TreeDto<MenuItemDto>>();
+		
+		menus.forEach(menu->{
+			if(menu.getLevel() == 0) {
+				treeMenuDtos.add(this.getTreeObjectFunction(menu, functions, locale));
 			}			
 		});
 		return treeMenuDtos;
@@ -273,6 +299,62 @@ public class MenuImplService {
 		}
 		menuItemDto.setI18n(menuI18n);
 		treeMenuDto.setChildren(this.getTreeChildren(menu, locale));
+		treeMenuDto.setItem(menuItemDto);
+		treeMenuDto.setDisabled(!menu.isActive());
+		return treeMenuDto;
+	}
+
+	private List<TreeDto<MenuItemDto>> getTreeChildrenFunction(MenuEntity menu, Set<MenuEntity> functions, String locale) {
+		if(menu.getChildsMenu().size() <= 0 || menu.getLeaf())
+			return null;
+		List<TreeDto<MenuItemDto>> treeMenuDtos = new ArrayList<TreeDto<MenuItemDto>>();
+		menu.getChildsMenu().forEach(data->{
+			treeMenuDtos.add(this.getTreeObjectFunction(data, functions, locale));
+		});
+		return treeMenuDtos;
+	}
+	
+	private TreeDto<MenuItemDto> getTreeObjectFunction(MenuEntity menu, Set<MenuEntity> functions, String locale) {
+		TreeDto<MenuItemDto> treeMenuDto = new TreeDto<MenuItemDto>();
+		treeMenuDto.setId(menu.getId());
+		Map<String, String> menuI18n = new HashMap<String, String>();
+		Map<String, String> parentMenu = new HashMap<String, String>();
+		MenuItemDto menuItemDto = new MenuItemDto();
+		menuItemDto.setId(menu.getId());
+		menuItemDto.setCode(menu.getCode());
+		menuItemDto.setIcon(menu.getIcon());
+		menuItemDto.setLink(menu.getUrl());
+		menuItemDto.setType(menu.getType());
+		menuItemDto.setLevel(menu.getLevel());
+		menuItemDto.setOrdering(menu.getOrdering());
+		menuItemDto.setOrderingStr(menu.getOrderingStr());
+		menuItemDto.setHome(menu.getHome());
+		menuItemDto.setGroup(menu.getGroup());
+		menuItemDto.setLeaf(menu.getLeaf());
+		menu.getMenuI18n().forEach(i18n->{
+			if(i18n.getLocale().equals(locale)) {
+				treeMenuDto.setName(i18n.getTitle());
+				menuItemDto.setTitle(i18n.getTitle());	
+			}
+			menuI18n.put(i18n.getLocale(), i18n.getTitle());
+		});
+		if(menu.getParentMenu() != null) {
+			parentMenu.put("id", menu.getParentMenu().getId());
+			menu.getParentMenu().getMenuI18n().forEach(i18n->{
+				if(i18n.getLocale().equals(locale)) {
+					parentMenu.put("title", i18n.getTitle());	
+				}
+			});
+			menuItemDto.setParentMenu(parentMenu);
+		}
+		menuItemDto.setI18n(menuI18n);
+		MenuEntity function = functions.stream().filter(funct -> menu.getId().equals(funct.getId())).findFirst().orElse(new MenuEntity());
+		function.getFunction().forEach(funct->{
+			if(menu.getId().equals(function.getId()) && funct.getAccess() != null) {
+				treeMenuDto.setSelected(true);
+			}
+		});
+		treeMenuDto.setChildren(this.getTreeChildrenFunction(menu, function.getChildsMenu(), locale));
 		treeMenuDto.setItem(menuItemDto);
 		treeMenuDto.setDisabled(!menu.isActive());
 		return treeMenuDto;

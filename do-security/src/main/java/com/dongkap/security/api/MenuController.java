@@ -54,6 +54,14 @@ public class MenuController extends BaseControllerException {
 		return new ResponseEntity<SelectResponseDto>(menuService.getSelectRootMainMenus("main",locale), HttpStatus.OK);
 	}
 	
+	@RequestMapping(value = "/vw/auth/tree/menu/function/v.1/{type}/{role}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<TreeDto<MenuItemDto>>> getTreeMenuFunctionControl(Authentication authentication,
+			@PathVariable(required = true) String type,
+			@PathVariable(required = true) String role,
+			@RequestHeader(name = HttpHeaders.ACCEPT_LANGUAGE, required = false) String locale) throws Exception {
+		return new ResponseEntity<List<TreeDto<MenuItemDto>>>(menuService.loadTreeMenuFunctionControl(type, role, locale), HttpStatus.OK);
+	}
+	
 	@ResponseSuccess(SuccessCode.OK_DEFAULT)
 	@RequestMapping(value = "/trx/auth/menu/v.1", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ApiBaseResponse> putMenu(Authentication authentication,

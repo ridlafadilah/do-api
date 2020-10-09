@@ -105,33 +105,41 @@ public class MenuEntity extends BaseAuditEntity {
 	
 	@Transient
 	public List<MenuDto> getChildren() {
-		if(childsMenu.size() <= 0 || this.leaf)
+		if(this.childsMenu.size() <= 0 || this.leaf)
 			return null;
 		List<MenuDto> menuDtos = new ArrayList<MenuDto>();
-		childsMenu.forEach(data->{
-			menuDtos.add(data.getObject());
-		});
+		for(MenuEntity data: this.childsMenu) {
+			for(FunctionEntity funct: data.getFunction()) {
+				if(funct.getAccess() != null) {
+					menuDtos.add(data.getObject());	
+				}
+			}
+		}
 		return menuDtos;
 	}
 	
 	@Transient
 	public MenuDto getObject() {
 		MenuDto menuDto = new MenuDto();
-		function.forEach(funct->{
-			if(!this.group) {
-				menuDto.setCode(this.code);
-				menuDto.setIcon(this.icon);
-				menuDto.setLink(this.url);
-				menuDto.setType(this.type);
-				menuDto.setHome(this.home);
-				menuDto.setAccess(funct.getAccess());
-				menuDto.setChildren(this.getChildren());
-			}
-			menuDto.setGroup(this.group);
-		});
-		this.menuI18n.forEach(i18n->{
-			menuDto.setTitle(i18n.getTitle());
-		});
+		for(FunctionEntity funct: this.function) {
+			if(funct.getAccess() != null) {
+				menuDto.setGroup(this.group);
+				if(!this.group) {
+					menuDto.setCode(this.code);
+					menuDto.setIcon(this.icon);
+					menuDto.setLink(this.url);
+					menuDto.setType(this.type);
+					menuDto.setHome(this.home);
+					menuDto.setAccess(funct.getAccess());
+					menuDto.setChildren(this.getChildren());
+				}
+				for(MenuI18nEntity i18n: this.menuI18n) {
+					menuDto.setTitle(i18n.getTitle());
+				}
+			} else {
+				menuDto = null;
+			}			
+		}
 		return menuDto;
 	}
 

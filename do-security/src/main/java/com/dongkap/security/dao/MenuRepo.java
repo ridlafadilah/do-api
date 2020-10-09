@@ -1,6 +1,7 @@
 package com.dongkap.security.dao;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -28,5 +29,8 @@ public interface MenuRepo extends JpaRepository<MenuEntity, String>, JpaSpecific
 	
 	@Query("SELECT m FROM MenuEntity m JOIN FETCH m.function f JOIN FETCH m.menuI18n ml WHERE m.type = :type AND f.role.authority = :role AND ml.locale = :locale ORDER BY m.orderingStr ASC")
 	List<MenuEntity> loadTypeMenuByRoleI18n(@Param("role") String role, @Param("locale") String locale, @Param("type") String type);
+	
+	@Query("SELECT m FROM MenuEntity m JOIN FETCH m.function f WHERE m.type = :type AND f.role.authority = :role ORDER BY m.orderingStr ASC")
+	Set<MenuEntity> loadTypeMenuByRoleSet(@Param("type") String type, @Param("role") String role);
 	
 }
