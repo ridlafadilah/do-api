@@ -12,6 +12,9 @@ import com.dongkap.security.entity.MenuEntity;
 
 public interface MenuRepo extends JpaRepository<MenuEntity, String>, JpaSpecificationExecutor<MenuEntity> {
 	
+	@Query("SELECT m FROM MenuEntity m WHERE m.id IN (:ids)")
+	List<MenuEntity> loadAllMenuInId(@Param("ids") List<String> ids);
+	
 	@Query("SELECT m FROM MenuEntity m JOIN FETCH m.function f WHERE f.role.authority = :role ORDER BY m.orderingStr ASC")
 	List<MenuEntity> loadAllMenuByRole(@Param("role") String role);
 	

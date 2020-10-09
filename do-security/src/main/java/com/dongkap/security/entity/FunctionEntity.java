@@ -43,6 +43,12 @@ public class FunctionEntity extends BaseAuditEntity {
 	@Column(name = "access")
 	private String access;
 
+	@Column(name = "menu_uuid", nullable = false)
+	private String menuId;
+
+	@Column(name = "role_uuid", nullable = false)
+	private String roleId;
+
 	@ManyToOne(targetEntity = MenuEntity.class, fetch = FetchType.LAZY)
 	@JoinColumn(name = "menu_uuid", nullable = false, insertable = false, updatable = false)
 	private MenuEntity menu;
