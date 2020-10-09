@@ -55,18 +55,18 @@ public class FunctionImplService {
 				List<FunctionEntity> functions = new ArrayList<FunctionEntity>();
 				List<MenuEntity> menus = this.menuRepo.loadAllMenuInId(p_dto.getMenus());
 				RoleEntity role = this.roleRepo.findByAuthority(p_dto.getAuthority());
-				FunctionEntity function = new FunctionEntity();
 				for(MenuEntity menu: menus) {
+					FunctionEntity function = new FunctionEntity();
 					function.setAccess("read,write,trust");
 					function.setMenuId(menu.getId());
 					function.setRoleId(role.getId());
-					function.setMenu(menu);
-					function.setRole(role);
+					// function.setMenu(menu);
+					// function.setRole(role);
 					function.setCreatedBy(user.getUsername());
 					function.setCreatedDate(new Date());
 					functions.add(function);
 				}
-				this.functionRepo.deleteFunctionInMenus(role.getId(), p_dto.getMenus());
+				this.functionRepo.deleteFunctionRoleByType(role.getId(), p_dto.getType());
 				this.functionRepo.saveAll(functions);
 			} catch (Exception e) {
 				throw new SystemErrorException(ErrorCode.ERR_SYS0500);

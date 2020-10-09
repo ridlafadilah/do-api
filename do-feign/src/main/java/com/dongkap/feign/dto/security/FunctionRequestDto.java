@@ -23,6 +23,7 @@ public class FunctionRequestDto extends BaseAuditDto {
 	 */
 	private static final long serialVersionUID = 8874124628846019913L;
 	private String authority;
+	private String type;
 	private List<String> menus = new ArrayList<String>();
 
 }

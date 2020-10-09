@@ -124,14 +124,19 @@ public class MenuEntity extends BaseAuditEntity {
 		for(FunctionEntity funct: this.function) {
 			if(funct.getAccess() != null) {
 				menuDto.setGroup(this.group);
+				menuDto.setType(this.type);
 				if(!this.group) {
 					menuDto.setCode(this.code);
 					menuDto.setIcon(this.icon);
 					menuDto.setLink(this.url);
-					menuDto.setType(this.type);
+					menuDto.setLevel(this.level);
 					menuDto.setHome(this.home);
+					menuDto.setOrdering(this.ordering);
+					menuDto.setOrderingStr(this.orderingStr);
 					menuDto.setAccess(funct.getAccess());
 					menuDto.setChildren(this.getChildren());
+				} else {
+					menuDto.setChildren(null);					
 				}
 				for(MenuI18nEntity i18n: this.menuI18n) {
 					menuDto.setTitle(i18n.getTitle());

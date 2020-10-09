@@ -1,7 +1,5 @@
 package com.dongkap.security.dao;
 
-import java.util.List;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
@@ -13,7 +11,8 @@ import com.dongkap.security.entity.FunctionEntity;
 public interface FunctionRepo extends JpaRepository<FunctionEntity, String>, JpaSpecificationExecutor<FunctionEntity> {
 
 	@Modifying
-	@Query("DELETE FROM FunctionEntity f WHERE f.roleId = :roleId AND f.menuId IN (:menuIds)")
-	void deleteFunctionInMenus(@Param("roleId") String roleId, @Param("menuIds") List<String> menuIds);
+	@Query("DELETE FROM FunctionEntity f WHERE f.roleId = :roleId AND f.menuId IN"
+			+ "(SELECT f.menuId FROM FunctionEntity f WHERE f.menu.type = :type)")
+	void deleteFunctionRoleByType(@Param("roleId") String roleId, @Param("type") String type);
 
 }
