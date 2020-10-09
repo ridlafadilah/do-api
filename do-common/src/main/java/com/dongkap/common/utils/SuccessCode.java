@@ -8,6 +8,7 @@ public enum SuccessCode {
 	OK_INSERTED(HttpStatus.OK),
 	OK_UPDATED(HttpStatus.OK),
 	OK_DELETED(HttpStatus.OK),
+	OK_LOGOUT(HttpStatus.OK),
 	OK_SCR001(HttpStatus.OK),
 	OK_SCR002(HttpStatus.OK),
 	OK_SCR003(HttpStatus.OK),

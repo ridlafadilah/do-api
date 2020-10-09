@@ -76,6 +76,7 @@ public class OAuth2ServerConfiguration extends AuthorizationServerConfigurerAdap
                 .authenticationManager(authenticationManager)
                 .userDetailsService(userDetailsService)
                 .tokenStore(tokenStore())
+                .reuseRefreshTokens(false)
                 .setClientDetailsService(jdbcClientDetailService());
         // @formatter:on
     }
