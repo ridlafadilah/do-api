@@ -39,9 +39,7 @@ public class BaseResponseAspect {
 			+ "@annotation(com.dongkap.common.aspect.ResponseSuccess)")
     public ResponseEntity<ApiBaseResponse> doBaseResponseSuccess(ProceedingJoinPoint pjp) throws Throwable {
 		ResponseEntity<ApiBaseResponse> result = extracted(pjp);
-		ApiBaseResponse response = new ApiBaseResponse(); 
-		if(result.getBody() != null)
-			response = result.getBody();
+		ApiBaseResponse response = new ApiBaseResponse();
 		Locale locale = Locale.getDefault();
 		try {
 			final Signature signature = pjp.getSignature();
@@ -52,9 +50,13 @@ public class BaseResponseAspect {
 				SuccessCode status = method.getAnnotation(ResponseSuccess.class).value();
 				HttpServletRequest request = (HttpServletRequest) attrs.resolveReference(RequestAttributes.REFERENCE_REQUEST);
 				if(request.getHeader(HttpHeaders.ACCEPT_LANGUAGE) != null)
-					locale = Locale.forLanguageTag(request.getHeader(HttpHeaders.ACCEPT_LANGUAGE));
-				response.setRespStatusCode(status.name());
-				response.getRespStatusMessage().put(response.getRespStatusCode(), messageSource.getMessage(status.name(), null, locale));
+					locale = Locale.forLanguageTag(request.getHeader(HttpHeaders.ACCEPT_LANGUAGE)); 
+				if(result.getBody() != null) {
+					response = result.getBody();					
+				} else {
+					response.setRespStatusCode(status.name());
+					response.getRespStatusMessage().put(response.getRespStatusCode(), messageSource.getMessage(status.name(), null, locale));	
+				}
 				result = new ResponseEntity<ApiBaseResponse>(response, status.getStatus());
 		    }
 		} catch (Exception e) {

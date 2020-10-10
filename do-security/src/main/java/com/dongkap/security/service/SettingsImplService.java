@@ -1,14 +1,18 @@
 package com.dongkap.security.service;
 
+import java.util.Locale;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.dongkap.common.exceptions.SystemErrorException;
 import com.dongkap.common.http.ApiBaseResponse;
 import com.dongkap.common.utils.ErrorCode;
+import com.dongkap.common.utils.SuccessCode;
 import com.dongkap.feign.dto.security.SettingsDto;
 import com.dongkap.security.dao.SettingsRepo;
 import com.dongkap.security.entity.SettingsEntity;
@@ -21,6 +25,9 @@ public class SettingsImplService {
 
 	@Autowired
 	private SettingsRepo settingsRepo;
+	
+	@Autowired
+	private MessageSource messageSource;
 
 	@Transactional
 	public ApiBaseResponse doUpdateSettings(SettingsDto p_dto, UserEntity p_user, String p_locale) throws Exception {
@@ -34,7 +41,11 @@ public class SettingsImplService {
 			if (p_dto.getLocaleIcon() != null)
 				settings.setLocaleIcon(p_dto.getLocaleIcon());
 			this.settingsRepo.save(settings);
-			return null;	
+			ApiBaseResponse response = new ApiBaseResponse();
+			Locale locale = Locale.forLanguageTag(p_dto.getLocaleCode());
+			response.setRespStatusCode(SuccessCode.OK_SCR002.name());
+			response.getRespStatusMessage().put(SuccessCode.OK_SCR002.name(), messageSource.getMessage(SuccessCode.OK_SCR002.name(), null, locale));
+			return response;
 		} else
 			throw new SystemErrorException(ErrorCode.ERR_SYS0404);
 	}
