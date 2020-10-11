@@ -67,6 +67,7 @@ public class AnonymousWebSecurityConfiguration extends WebSecurityConfigurerAdap
 		String tokenKeyPath = handlerMapping.getServletPath("/oauth/token_key");
 		String checkTokenPath = handlerMapping.getServletPath("/oauth/check_token");
 		String signupEndpointPath = handlerMapping.getServletPath("/oauth/signup");
+		String forgotPasswordEndpointPath = handlerMapping.getServletPath("/oauth/forgot");
 		if (!endpoints.getEndpointsConfigurer().isUserDetailsServiceOverride()) {
 			UserDetailsService userDetailsService = http.getSharedObject(UserDetailsService.class);
 			endpoints.getEndpointsConfigurer().userDetailsService(userDetailsService);
@@ -78,6 +79,7 @@ public class AnonymousWebSecurityConfiguration extends WebSecurityConfigurerAdap
 	        	.antMatchers(tokenEndpointPath).fullyAuthenticated()
 	        	.antMatchers(forceEndpointPath).fullyAuthenticated()
 	        	.antMatchers(signupEndpointPath).fullyAuthenticated()
+	        	.antMatchers(forgotPasswordEndpointPath).fullyAuthenticated()
             	.antMatchers(tokenKeyPath).access(configurer.getTokenKeyAccess())
             	.antMatchers(checkTokenPath).access(configurer.getCheckTokenAccess())
         .and()
