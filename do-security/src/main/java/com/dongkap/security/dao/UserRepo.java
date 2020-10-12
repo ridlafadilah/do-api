@@ -9,8 +9,14 @@ import com.dongkap.security.entity.UserEntity;
 
 public interface UserRepo extends JpaRepository<UserEntity, String>, JpaSpecificationExecutor<UserEntity> {
 
-	@Query("SELECT u FROM UserEntity u JOIN FETCH u.roles r JOIN FETCH u.contactUser p JOIN FETCH u.settings s WHERE LOWER(u.username) = :username OR LOWER(u.email) = :username")
-	UserEntity loadByUsername(@Param("username") String username);
+	@Query("SELECT u FROM UserEntity u JOIN FETCH u.roles r JOIN FETCH u.contactUser p JOIN FETCH u.settings s WHERE LOWER(u.username) = :user OR LOWER(u.email) = :user")
+	UserEntity loadByUsername(@Param("user") String user);
+
+	@Query("SELECT u FROM UserEntity u WHERE LOWER(u.username) = :user OR LOWER(u.email) = :user")
+	UserEntity loadByUser(@Param("user") String user);
+
+	@Query("SELECT u FROM UserEntity u WHERE LOWER(u.username) = :username OR LOWER(u.email) = :email")
+	UserEntity loadByUsernameOrEmail(@Param("username") String username, @Param("email") String email);
 
 	UserEntity findByUsername(String username);
 

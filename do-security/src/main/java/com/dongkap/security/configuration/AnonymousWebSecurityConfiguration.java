@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -29,7 +30,7 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
 
 @Configuration
-@Order(99)
+@Order(Ordered.HIGHEST_PRECEDENCE)
 @Import({ ClientDetailsServiceConfiguration.class, AuthorizationServerEndpointsConfiguration.class })
 public class AnonymousWebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
@@ -68,6 +69,7 @@ public class AnonymousWebSecurityConfiguration extends WebSecurityConfigurerAdap
 		String checkTokenPath = handlerMapping.getServletPath("/oauth/check_token");
 		String signupEndpointPath = handlerMapping.getServletPath("/oauth/signup");
 		String forgotPasswordEndpointPath = handlerMapping.getServletPath("/oauth/forgot");
+		String checkUserPath = handlerMapping.getServletPath("/oauth/check-user");
 		if (!endpoints.getEndpointsConfigurer().isUserDetailsServiceOverride()) {
 			UserDetailsService userDetailsService = http.getSharedObject(UserDetailsService.class);
 			endpoints.getEndpointsConfigurer().userDetailsService(userDetailsService);
@@ -80,11 +82,15 @@ public class AnonymousWebSecurityConfiguration extends WebSecurityConfigurerAdap
 	        	.antMatchers(forceEndpointPath).fullyAuthenticated()
 	        	.antMatchers(signupEndpointPath).fullyAuthenticated()
 	        	.antMatchers(forgotPasswordEndpointPath).fullyAuthenticated()
+	        	.antMatchers(checkUserPath).fullyAuthenticated()
             	.antMatchers(tokenKeyPath).access(configurer.getTokenKeyAccess())
             	.antMatchers(checkTokenPath).access(configurer.getCheckTokenAccess())
         .and()
         	.requestMatchers()
-            	.antMatchers(tokenEndpointPath, forceEndpointPath, signupEndpointPath, tokenKeyPath, checkTokenPath)
+            	.antMatchers(
+            			tokenEndpointPath, forceEndpointPath,
+            			signupEndpointPath, forgotPasswordEndpointPath,
+            			checkUserPath, tokenKeyPath, checkTokenPath)
         .and()
         	.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER)
         .and()

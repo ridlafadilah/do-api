@@ -74,7 +74,7 @@ public class ContactUserEntity extends BaseAuditEntity {
 	@Column(name = "description", nullable = true)
 	private String description;
 
-	@OneToOne(targetEntity = UserEntity.class, fetch = FetchType.LAZY)
+	@OneToOne(targetEntity = UserEntity.class, fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "user_uuid", nullable = false, updatable = false)
 	private UserEntity user;
 	

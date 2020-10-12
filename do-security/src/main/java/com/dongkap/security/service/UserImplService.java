@@ -23,8 +23,10 @@ import com.dongkap.feign.dto.common.CommonResponseDto;
 import com.dongkap.feign.dto.common.FilterDto;
 import com.dongkap.feign.dto.security.ProfileDto;
 import com.dongkap.feign.dto.security.SignUpDto;
+import com.dongkap.security.dao.ContactUserRepo;
 import com.dongkap.security.dao.UserRepo;
 import com.dongkap.security.dao.specification.UserSpecification;
+import com.dongkap.security.entity.ContactUserEntity;
 import com.dongkap.security.entity.UserEntity;
 
 @Service("userService")
@@ -34,6 +36,9 @@ public class UserImplService extends CommonService implements UserDetailsService
 
 	@Autowired
 	private UserRepo userRepo;
+	
+	@Autowired
+	private ContactUserRepo contactUserRepo;
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -83,21 +88,29 @@ public class UserImplService extends CommonService implements UserDetailsService
 
 	@Transactional(isolation = Isolation.READ_UNCOMMITTED, rollbackFor = SystemErrorException.class)
 	public ApiBaseResponse doSignUp(SignUpDto dto, String locale) throws Exception {
-		UserEntity user = userRepo.loadByUsername(dto.getEmail().toLowerCase());
+		UserEntity user = this.userRepo.loadByUsernameOrEmail(dto.getUsername().toLowerCase(), dto.getEmail().toLowerCase());
 		if(user == null) {
 			user = new UserEntity();
-			user.setUsername(dto.getEmail());
+			user.setUsername(dto.getUsername());
 			user.setEmail(dto.getEmail());
 			String password = AESEncrypt.decrypt(this.secretKey, dto.getPassword());
-			if (password.matches(PatternGlobal.PASSWORD_MEDIUM.getRegex())) {
-				user.setPassword(this.passwordEncoder.encode((String)password));
+			String confirmPassword = AESEncrypt.decrypt(this.secretKey, dto.getConfirmPassword());
+			if (password.equals(confirmPassword)) {
+				if (password.matches(PatternGlobal.PASSWORD_MEDIUM.getRegex())) {
+					user.setPassword(this.passwordEncoder.encode((String)password));
+				} else {
+					throw new SystemErrorException(ErrorCode.ERR_SCR0005);
+				}
 			} else {
-				throw new SystemErrorException(ErrorCode.ERR_SCR0005);
+				throw new SystemErrorException(ErrorCode.ERR_SCR0011);
 			}
-			user = userRepo.save(user);
+			ContactUserEntity contactUser = new ContactUserEntity();
+			contactUser.setName(dto.getFullname());
+			contactUser.setUser(user);
+			contactUser = this.contactUserRepo.saveAndFlush(contactUser);
 			return null;
 		} else
-			throw new SystemErrorException(ErrorCode.ERR_SCR0001);
+			throw new SystemErrorException(ErrorCode.ERR_SCR0010);
 	}
 
 }
