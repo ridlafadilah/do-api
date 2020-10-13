@@ -23,22 +23,26 @@ import com.dongkap.feign.dto.common.CommonResponseDto;
 import com.dongkap.feign.dto.common.FilterDto;
 import com.dongkap.feign.dto.security.ProfileDto;
 import com.dongkap.feign.dto.security.SignUpDto;
-import com.dongkap.security.dao.ContactUserRepo;
+import com.dongkap.security.dao.RoleRepo;
 import com.dongkap.security.dao.UserRepo;
 import com.dongkap.security.dao.specification.UserSpecification;
 import com.dongkap.security.entity.ContactUserEntity;
+import com.dongkap.security.entity.RoleEntity;
+import com.dongkap.security.entity.SettingsEntity;
 import com.dongkap.security.entity.UserEntity;
 
 @Service("userService")
 public class UserImplService extends CommonService implements UserDetailsService {
 
 	protected Logger LOGGER = LoggerFactory.getLogger(this.getClass());
+	
+	private static final String ROLE_END = "ROLE_END";
 
 	@Autowired
 	private UserRepo userRepo;
 	
 	@Autowired
-	private ContactUserRepo contactUserRepo;
+	private RoleRepo roleRepo;
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -95,19 +99,28 @@ public class UserImplService extends CommonService implements UserDetailsService
 			user.setEmail(dto.getEmail());
 			String password = AESEncrypt.decrypt(this.secretKey, dto.getPassword());
 			String confirmPassword = AESEncrypt.decrypt(this.secretKey, dto.getConfirmPassword());
-			if (password.equals(confirmPassword)) {
-				if (password.matches(PatternGlobal.PASSWORD_MEDIUM.getRegex())) {
+			System.err.println(password);
+			System.err.println(confirmPassword);
+			if (password.matches(PatternGlobal.PASSWORD_MEDIUM.getRegex())) {
+				if (password.equals(confirmPassword)) {
 					user.setPassword(this.passwordEncoder.encode((String)password));
 				} else {
-					throw new SystemErrorException(ErrorCode.ERR_SCR0005);
+					throw new SystemErrorException(ErrorCode.ERR_SCR0011);
 				}
 			} else {
-				throw new SystemErrorException(ErrorCode.ERR_SCR0011);
+				throw new SystemErrorException(ErrorCode.ERR_SCR0005);
 			}
+			RoleEntity role = this.roleRepo.findByAuthority(ROLE_END);
+			user.getRoles().add(role);
+			user.setAuthorityDefault(ROLE_END);
 			ContactUserEntity contactUser = new ContactUserEntity();
 			contactUser.setName(dto.getFullname());
 			contactUser.setUser(user);
-			contactUser = this.contactUserRepo.saveAndFlush(contactUser);
+			user.setContactUser(contactUser);
+			SettingsEntity settings = new SettingsEntity();
+			settings.setUser(user);
+			user.setSettings(settings);
+			user = this.userRepo.saveAndFlush(user);
 			return null;
 		} else
 			throw new SystemErrorException(ErrorCode.ERR_SCR0010);

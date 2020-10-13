@@ -24,7 +24,7 @@ public class SignUpController extends BaseControllerException {
 	@Autowired
 	private UserImplService userService;
 
-	@ResponseSuccess(SuccessCode.OK_DEFAULT)
+	@ResponseSuccess(SuccessCode.OK_REGISTERED)
 	@RequestMapping(value = "/oauth/signup", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ApiBaseResponse> doSignUp(@RequestHeader(name = HttpHeaders.ACCEPT_LANGUAGE, required = false) String locale,
 			@RequestBody(required = true) SignUpDto p_dto) throws Exception {
