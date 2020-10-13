@@ -99,8 +99,6 @@ public class UserImplService extends CommonService implements UserDetailsService
 			user.setEmail(dto.getEmail());
 			String password = AESEncrypt.decrypt(this.secretKey, dto.getPassword());
 			String confirmPassword = AESEncrypt.decrypt(this.secretKey, dto.getConfirmPassword());
-			System.err.println(password);
-			System.err.println(confirmPassword);
 			if (password.matches(PatternGlobal.PASSWORD_MEDIUM.getRegex())) {
 				if (password.equals(confirmPassword)) {
 					user.setPassword(this.passwordEncoder.encode((String)password));
