@@ -5,6 +5,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,7 +27,8 @@ public class SignUpController extends BaseControllerException {
 
 	@ResponseSuccess(SuccessCode.OK_REGISTERED)
 	@RequestMapping(value = "/oauth/signup", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ApiBaseResponse> doSignUp(@RequestHeader(name = HttpHeaders.ACCEPT_LANGUAGE, required = false) String locale,
+	public ResponseEntity<ApiBaseResponse> doSignUp(Authentication authentication,
+			@RequestHeader(name = HttpHeaders.ACCEPT_LANGUAGE, required = false) String locale,
 			@RequestBody(required = true) SignUpDto p_dto) throws Exception {
 		return new ResponseEntity<ApiBaseResponse>(userService.doSignUp(p_dto, locale), HttpStatus.OK);
 	}

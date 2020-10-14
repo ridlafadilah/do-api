@@ -18,6 +18,9 @@ public interface UserRepo extends JpaRepository<UserEntity, String>, JpaSpecific
 	@Query("SELECT u FROM UserEntity u WHERE LOWER(u.username) = :username OR LOWER(u.email) = :email")
 	UserEntity loadByUsernameOrEmail(@Param("username") String username, @Param("email") String email);
 
+	@Query("SELECT u FROM UserEntity u WHERE u.id = :id AND u.verificationCode = :verificationCode")
+	UserEntity loadByIdAndVerificationCode(@Param("id") String id, @Param("verificationCode") String verificationCode);
+
 	UserEntity findByUsername(String username);
 
 }

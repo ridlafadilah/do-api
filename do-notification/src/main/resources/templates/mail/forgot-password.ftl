@@ -4,7 +4,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>RIP</title>
+    <title>Dongkap</title>
   </head>
 
   <body yahoo="" style="background: #f2f2f2; color: #222222; font-family: sans-serif; margin: 0; min-width: 100% !important; padding: 0" bgcolor="#e8e8e8">
@@ -13,7 +13,7 @@
         margin: 0;
         padding: 0;
         min-width: 100% !important;
-        font-family: sans-serif;
+        font-family: Open Sans, sans-serif;
         color: #222222;
         background: #f2f2f2;
       }
@@ -66,26 +66,31 @@
           <table width="100%" border="0" cellspacing="0" cellpadding="0">
             <tr>
               <td class="textcontent" style="font-size: 18px; line-height: 1.5; padding: 10px 0 10px; text-align: left" align="left">
-                <b>Dear ${fullname},</b>
+                <b>Hi ${fullname},</b>
             </tr>
             <tr>
               <td class="textcontent" style="font-size: 16px; line-height: 1.5; padding: 10px 0 10px; text-align: left" align="left">
-                <b>We received a request to reset the password for this account.</b>
+                <b>We received requested a password reset for your account.</b>
             </tr>
             <tr>
               <td class="textcontent" style="font-size: 16px; line-height: 1.5; padding: 10px 0 10px; text-align: left" align="left">
-				Please follow the link to reset password: <br>${linkForgotPassword}
+				Please follow the link to reset password : <br><a href="${linkForgotPassword}">${linkForgotPassword}</a>
+              </td>
+            </tr>
+            <tr>
+              <td class="textcontent" style="font-size: 16px; line-height: 1.5; padding: 10px 0 10px; text-align: left" align="left">
+                If you don't wish to reset your password, disregard this email and no action will be taken.
               </td>
             </tr>
           </table>
         </td>
       </tr>
       <tr>
-        <td class="footer" bgcolor="#333" style="padding: 20px 30px 15px">
+        <td class="footer" bgcolor="#21a7ff" style="padding: 20px 30px 15px">
           <table width="100%" border="0" cellspacing="0" cellpadding="0">
             <tr>
               <td align="center" class="footercopy" style="color: #fff; font-family: Arial,sans-serif; font-size: 13px; font-weight: 300">
-                RIP © 2019
+                © 2020 Dongkap
               </td>
             </tr>
           </table>
