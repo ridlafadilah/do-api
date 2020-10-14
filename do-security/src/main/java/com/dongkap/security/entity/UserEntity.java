@@ -1,5 +1,6 @@
 package com.dongkap.security.entity;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -73,6 +74,9 @@ public class UserEntity extends BaseAuditEntity implements UserDetails {
 
 	@Column(name = "verification_code", nullable = true)
 	private String verificationCode;
+
+	@Column(name = "verification_expired", nullable = true)
+	private Date verificationExpired;
 
 	@Column(name = "raw", nullable = true)
 	private String raw;

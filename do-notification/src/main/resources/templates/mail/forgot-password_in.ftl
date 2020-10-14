@@ -66,20 +66,20 @@
           <table width="100%" border="0" cellspacing="0" cellpadding="0">
             <tr>
               <td class="textcontent" style="font-size: 18px; line-height: 1.5; padding: 10px 0 10px; text-align: left" align="left">
-                <b>Hi ${name},</b>
+                <b>Hai ${name},</b>
             </tr>
             <tr>
               <td class="textcontent" style="font-size: 16px; line-height: 1.5; padding: 10px 0 10px; text-align: left" align="left">
-                <b>We received requested a password reset for your account.</b>
+                <b>Kami menerima permintaan pengaturan ulang kata sandi untuk akun Anda.</b>
             </tr>
             <tr>
               <td class="textcontent" style="font-size: 16px; line-height: 1.5; padding: 10px 0 10px; text-align: left" align="left">
-				Please follow the link to reset password : <br><a href="${urlForgotPassword}">${urlForgotPassword}</a>
+				Silakan ikuti tautan untuk mengatur ulang kata sandi : <br><a href="${urlForgotPassword}">${urlForgotPassword}</a>
               </td>
             </tr>
             <tr>
               <td class="textcontent" style="font-size: 16px; line-height: 1.5; padding: 10px 0 10px; text-align: left" align="left">
-                If you don't wish to reset your password, disregard this email and no action will be taken.
+                Jika Anda tidak ingin menyetel ulang sandi, abaikan email ini dan tidak ada tindakan yang akan diambil.
               </td>
             </tr>
           </table>

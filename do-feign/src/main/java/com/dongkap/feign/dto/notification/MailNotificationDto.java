@@ -19,8 +19,8 @@ public class MailNotificationDto implements Serializable {
 	private String from;
     private String to;
     private String subject;
-    private String content;
-    private String fileTemplate;
-    private Map<String, Object> bodyTemplate;
+    private String contentString;
+    private String fileNameTemplate;
+    private Map<String, Object> contentTemplate;
 
 }

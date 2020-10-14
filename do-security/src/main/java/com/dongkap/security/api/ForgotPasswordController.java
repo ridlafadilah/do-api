@@ -1,7 +1,5 @@
 package com.dongkap.security.api;
 
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -19,6 +17,7 @@ import com.dongkap.common.exceptions.BaseControllerException;
 import com.dongkap.common.http.ApiBaseResponse;
 import com.dongkap.common.utils.SuccessCode;
 import com.dongkap.feign.dto.security.ForgotPasswordDto;
+import com.dongkap.feign.dto.security.RequestForgotPasswordDto;
 import com.dongkap.security.service.ForgotPasswordImplService;
 
 @RestController
@@ -31,7 +30,7 @@ public class ForgotPasswordController extends BaseControllerException {
 	@RequestMapping(value = "/oauth/request-forgot-password", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ApiBaseResponse> requestForgotPassword(Authentication authentication,
 			@RequestHeader(name = HttpHeaders.ACCEPT_LANGUAGE, required = false) String locale,
-			@RequestBody(required = true) Map<String, String> p_dto) throws Exception {
+			@RequestBody(required = true) RequestForgotPasswordDto p_dto) throws Exception {
 		return new ResponseEntity<ApiBaseResponse>(forgotPassword.requestForgotPassword(p_dto, locale), HttpStatus.OK);
 	}
 

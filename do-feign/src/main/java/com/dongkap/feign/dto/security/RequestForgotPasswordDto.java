@@ -1,5 +1,7 @@
 package com.dongkap.feign.dto.security;
 
+import java.io.Serializable;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -11,15 +13,13 @@ import lombok.ToString;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 @ToString
-public class ForgotPasswordDto extends RequestForgotPasswordDto {
+public class RequestForgotPasswordDto implements Serializable {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -8133839452021875038L;
-	private String verificationId;
-	private String verificationCode;
-	private String newPassword;
-	private String confirmPassword;
+	private static final long serialVersionUID = 5796428849651043391L;
+	private String email;
+	private String urlForgotPassword;
 
 }

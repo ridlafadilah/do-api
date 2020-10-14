@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dongkap.common.exceptions.BaseControllerException;
 import com.dongkap.feign.dto.notification.MailNotificationDto;
-import com.dongkap.notification.service.MailSenderService;
+import com.dongkap.notification.service.MailSenderImplService;
 import com.dongkap.notification.service.TemplateMailService;
 
 @RequestMapping("/api/notification")
@@ -23,17 +23,17 @@ import com.dongkap.notification.service.TemplateMailService;
 public class MailSenderCtrl extends BaseControllerException {
 
     @Autowired
-    private MailSenderService service;
+    private MailSenderImplService service;
 
     @Autowired
     private TemplateMailService templateService;
 
     @RequestMapping(value = "/trx/post/mail/to/v.1", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> sendMail(@RequestBody MailNotificationDto mail) throws Exception {
-    	if(mail.getFileTemplate() == null)        
-    		service.sendMessageWithText(mail.getFrom(), mail.getTo(), mail.getSubject(), mail.getContent());
+    	if(mail.getFileNameTemplate() == null)        
+    		service.sendMessageWithText(mail.getFrom(), mail.getTo(), mail.getSubject(), mail.getContentString());
     	else
-    		service.sendMessageWithText(mail.getFrom(), mail.getTo(), mail.getSubject(), templateService.getTemplate(mail.getBodyTemplate(), mail.getFileTemplate()));
+    		service.sendMessageWithText(mail.getFrom(), mail.getTo(), mail.getSubject(), templateService.getTemplate(mail.getContentTemplate(), mail.getFileNameTemplate(), null));
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("info", HttpStatus.OK.value());
 		data.put("info_description", "Success");
@@ -42,12 +42,12 @@ public class MailSenderCtrl extends BaseControllerException {
 
     @RequestMapping(value = "/trx/post/mail/broadcast/v.1", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> broadcast(@RequestBody List<MailNotificationDto> mails) throws Exception {
-    	mails.forEach(mail->{
-        	if(mail.getFileTemplate() == null)        
-        		service.sendMessageWithText(mail.getFrom(), mail.getTo(), mail.getSubject(), mail.getContent());
+    	for(MailNotificationDto mail: mails) {
+        	if(mail.getFileNameTemplate() == null)        
+        		service.sendMessageWithText(mail.getFrom(), mail.getTo(), mail.getSubject(), mail.getContentString());
         	else
-        		service.sendMessageWithText(mail.getFrom(), mail.getTo(), mail.getSubject(), templateService.getTemplate(mail.getBodyTemplate(), mail.getFileTemplate()));
-    	});
+        		service.sendMessageWithText(mail.getFrom(), mail.getTo(), mail.getSubject(), templateService.getTemplate(mail.getContentTemplate(), mail.getFileNameTemplate(), null));	
+    	}
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("info", HttpStatus.OK.value());
 		data.put("info_description", "Success");

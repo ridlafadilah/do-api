@@ -143,6 +143,7 @@ CREATE TABLE security.sec_user (
 	credentials_non_expired boolean DEFAULT true NOT NULL,
 	email varchar(150) NOT NULL,
 	verification_code varchar(100),
+	verification_expired timestamp,
 	raw text,
 	authority_default varchar(100),
 	"version" int DEFAULT 0 NOT NULL,
