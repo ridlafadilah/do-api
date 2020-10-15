@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -29,8 +28,10 @@ import org.springframework.security.oauth2.provider.endpoint.FrameworkEndpointHa
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
 
+import com.dongkap.common.utils.AnonymousPrecedenceOrder;
+
 @Configuration
-@Order(Ordered.HIGHEST_PRECEDENCE)
+@Order(AnonymousPrecedenceOrder.SECURITY)
 @Import({ ClientDetailsServiceConfiguration.class, AuthorizationServerEndpointsConfiguration.class })
 public class AnonymousWebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 

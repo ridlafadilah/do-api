@@ -1,5 +1,7 @@
 package com.dongkap.security.service;
 
+import java.net.URI;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import com.dongkap.common.exceptions.SystemErrorException;
 import com.dongkap.common.http.ApiBaseResponse;
@@ -21,6 +24,7 @@ import com.dongkap.common.service.CommonService;
 import com.dongkap.common.utils.ErrorCode;
 import com.dongkap.feign.dto.common.CommonResponseDto;
 import com.dongkap.feign.dto.common.FilterDto;
+import com.dongkap.feign.dto.google.GoogleResponse;
 import com.dongkap.feign.dto.security.ProfileDto;
 import com.dongkap.feign.dto.security.SignUpDto;
 import com.dongkap.security.dao.RoleRepo;
@@ -46,9 +50,20 @@ public class UserImplService extends CommonService implements UserDetailsService
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private RestTemplate restTemplate;
 	
 	@Value("${do.signature.aes.secret-key}")
 	private String secretKey;
+	
+	@Value("${do.recaptcha.secret-key}")
+	private String recaptchaSecretKey;
+	
+	@Value("${do.recaptcha.site-key}")
+	private String recaptchaSiteKey;
+
+    private static final String RECAPTCHA_URL = "https://www.google.com/recaptcha/api/siteverify";
 	
 	@Override
 	public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
@@ -92,36 +107,45 @@ public class UserImplService extends CommonService implements UserDetailsService
 
 	@Transactional(isolation = Isolation.READ_UNCOMMITTED, rollbackFor = SystemErrorException.class)
 	public ApiBaseResponse doSignUp(SignUpDto dto, String locale) throws Exception {
-		UserEntity user = this.userRepo.loadByUsernameOrEmail(dto.getUsername().toLowerCase(), dto.getEmail().toLowerCase());
-		if(user == null) {
-			user = new UserEntity();
-			user.setUsername(dto.getUsername());
-			user.setEmail(dto.getEmail());
-			String password = AESEncrypt.decrypt(this.secretKey, dto.getPassword());
-			String confirmPassword = AESEncrypt.decrypt(this.secretKey, dto.getConfirmPassword());
-			if (password.matches(PatternGlobal.PASSWORD_MEDIUM.getRegex())) {
-				if (password.equals(confirmPassword)) {
-					user.setPassword(this.passwordEncoder.encode((String)password));
+		GoogleResponse googleResponse = this.recaptchaValidation(dto.getRecaptcha());
+		if(googleResponse.isSuccess()) {
+			UserEntity user = this.userRepo.loadByUsernameOrEmail(dto.getUsername().toLowerCase(), dto.getEmail().toLowerCase());
+			if(user == null) {
+				user = new UserEntity();
+				user.setUsername(dto.getUsername());
+				user.setEmail(dto.getEmail());
+				String password = AESEncrypt.decrypt(this.secretKey, dto.getPassword());
+				String confirmPassword = AESEncrypt.decrypt(this.secretKey, dto.getConfirmPassword());
+				if (password.matches(PatternGlobal.PASSWORD_MEDIUM.getRegex())) {
+					if (password.equals(confirmPassword)) {
+						user.setPassword(this.passwordEncoder.encode((String)password));
+					} else {
+						throw new SystemErrorException(ErrorCode.ERR_SCR0011);
+					}
 				} else {
-					throw new SystemErrorException(ErrorCode.ERR_SCR0011);
+					throw new SystemErrorException(ErrorCode.ERR_SCR0005);
 				}
-			} else {
-				throw new SystemErrorException(ErrorCode.ERR_SCR0005);
-			}
-			RoleEntity role = this.roleRepo.findByAuthority(ROLE_END);
-			user.getRoles().add(role);
-			user.setAuthorityDefault(ROLE_END);
-			ContactUserEntity contactUser = new ContactUserEntity();
-			contactUser.setName(dto.getFullname());
-			contactUser.setUser(user);
-			user.setContactUser(contactUser);
-			SettingsEntity settings = new SettingsEntity();
-			settings.setUser(user);
-			user.setSettings(settings);
-			user = this.userRepo.saveAndFlush(user);
-			return null;
+				RoleEntity role = this.roleRepo.findByAuthority(ROLE_END);
+				user.getRoles().add(role);
+				user.setAuthorityDefault(ROLE_END);
+				ContactUserEntity contactUser = new ContactUserEntity();
+				contactUser.setName(dto.getFullname());
+				contactUser.setUser(user);
+				user.setContactUser(contactUser);
+				SettingsEntity settings = new SettingsEntity();
+				settings.setUser(user);
+				user.setSettings(settings);
+				user = this.userRepo.saveAndFlush(user);
+				return null;
+			} else
+				throw new SystemErrorException(ErrorCode.ERR_SCR0010);
 		} else
-			throw new SystemErrorException(ErrorCode.ERR_SCR0010);
+			throw new SystemErrorException(ErrorCode.ERR_SCR0013);
+	}
+	
+	private GoogleResponse recaptchaValidation(String recaptcha) throws Exception {
+		URI verifyUri = URI.create(String.format(RECAPTCHA_URL + "?secret=%s&response=%s", this.recaptchaSecretKey, recaptcha));
+		return this.restTemplate.getForObject(verifyUri, GoogleResponse.class);
 	}
 
 }

@@ -12,6 +12,7 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
 
+import com.dongkap.common.utils.PrecedenceOrder;
 import com.dongkap.file.configuration.ResourceServerFileAdapter;
 import com.dongkap.general.configuration.ResourceServerGeneralAdapter;
 import com.dongkap.master.configuration.ResourceServerMasterAdapter;
@@ -39,7 +40,7 @@ public class ResourceServerListConfiguration {
 			}
 		};
 		resource.setConfigurers(Arrays.<ResourceServerConfigurer> asList(new ResourceServerSecurityAdapter(tokenStore, accessDeniedHandler, authenticationEntryPoint)));
-		resource.setOrder(-13);
+		resource.setOrder(PrecedenceOrder.SECURITY);
 		return resource;
 	}
 
@@ -51,7 +52,7 @@ public class ResourceServerListConfiguration {
 			}
 		};
 		resource.setConfigurers(Arrays.<ResourceServerConfigurer> asList(new ResourceServerProfileAdapter(tokenStore, accessDeniedHandler, authenticationEntryPoint)));
-		resource.setOrder(-14);
+		resource.setOrder(PrecedenceOrder.PROFILE);
 		return resource;
 	}
 
@@ -63,7 +64,7 @@ public class ResourceServerListConfiguration {
 			}
 		};
 		resource.setConfigurers(Arrays.<ResourceServerConfigurer> asList(new ResourceServerMasterAdapter(tokenStore, accessDeniedHandler, authenticationEntryPoint)));
-		resource.setOrder(-15);
+		resource.setOrder(PrecedenceOrder.MASTER);
 		return resource;
 	}
 
@@ -75,7 +76,7 @@ public class ResourceServerListConfiguration {
 			}
 		};
 		resource.setConfigurers(Arrays.<ResourceServerConfigurer> asList(new ResourceServerNotificationAdapter(tokenStore, accessDeniedHandler, authenticationEntryPoint)));
-		resource.setOrder(-17);
+		resource.setOrder(PrecedenceOrder.NOTIFICATION);
 		return resource;
 	}
 
@@ -87,7 +88,7 @@ public class ResourceServerListConfiguration {
 			}
 		};
 		resource.setConfigurers(Arrays.<ResourceServerConfigurer> asList(new ResourceServerGeneralAdapter(tokenStore, accessDeniedHandler, authenticationEntryPoint)));
-		resource.setOrder(-18);
+		resource.setOrder(PrecedenceOrder.GENERAL);
 		return resource;
 	}
 
@@ -99,7 +100,7 @@ public class ResourceServerListConfiguration {
 			}
 		};
 		resource.setConfigurers(Arrays.<ResourceServerConfigurer> asList(new ResourceServerFileAdapter(tokenStore, accessDeniedHandler, authenticationEntryPoint)));
-		resource.setOrder(-19);
+		resource.setOrder(PrecedenceOrder.FILE);
 		return resource;
 	}
 	
