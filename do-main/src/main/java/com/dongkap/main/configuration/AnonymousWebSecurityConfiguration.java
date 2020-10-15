@@ -1,4 +1,4 @@
-package com.dongkap.security.configuration;
+package com.dongkap.main.configuration;
 
 import java.util.Collections;
 import java.util.List;
@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -28,12 +30,15 @@ import org.springframework.security.oauth2.provider.endpoint.FrameworkEndpointHa
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
 
-import com.dongkap.common.utils.AnonymousPrecedenceOrder;
+import com.dongkap.common.utils.ResourceCode;
 
 @Configuration
-@Order(AnonymousPrecedenceOrder.SECURITY)
+@Order(Ordered.HIGHEST_PRECEDENCE)
 @Import({ ClientDetailsServiceConfiguration.class, AuthorizationServerEndpointsConfiguration.class })
 public class AnonymousWebSecurityConfiguration extends WebSecurityConfigurerAdapter {
+	
+	private static final String OPENAPI_PATH_MASTER_VIEW = "/oa/"+ResourceCode.MASTER.getResourceId()+"/vw/**";
+	private final static String OPENAPI_PATH_SECURITY_VIEW = "/oa/"+ResourceCode.SECURITY.getResourceId()+"/vw/**";
 
 	@Autowired
 	private AuthorizationServerEndpointsConfiguration endpoints;
@@ -72,6 +77,7 @@ public class AnonymousWebSecurityConfiguration extends WebSecurityConfigurerAdap
 		String forgotPasswordEndpointPath = handlerMapping.getServletPath("/oauth/forgot-password");
 		String requestForgotPasswordEndpointPath = handlerMapping.getServletPath("/oauth/request-forgot-password");
 		String checkUserPath = handlerMapping.getServletPath("/oauth/check-user");
+
 		if (!endpoints.getEndpointsConfigurer().isUserDetailsServiceOverride()) {
 			UserDetailsService userDetailsService = http.getSharedObject(UserDetailsService.class);
 			endpoints.getEndpointsConfigurer().userDetailsService(userDetailsService);
@@ -81,19 +87,25 @@ public class AnonymousWebSecurityConfiguration extends WebSecurityConfigurerAdap
 			.exceptionHandling().accessDeniedHandler(accessDeniedHandler).and()
         	.authorizeRequests()
 	        	.antMatchers(tokenEndpointPath).fullyAuthenticated()
-	        	.antMatchers(forceEndpointPath).fullyAuthenticated()
-	        	.antMatchers(signupEndpointPath).fullyAuthenticated()
-	        	.antMatchers(forgotPasswordEndpointPath).fullyAuthenticated()
-	        	.antMatchers(requestForgotPasswordEndpointPath).fullyAuthenticated()
-	        	.antMatchers(checkUserPath).fullyAuthenticated()
             	.antMatchers(tokenKeyPath).access(configurer.getTokenKeyAccess())
             	.antMatchers(checkTokenPath).access(configurer.getCheckTokenAccess())
+
+	        	.antMatchers(forceEndpointPath).authenticated()
+	        	.antMatchers(signupEndpointPath).authenticated()
+	        	.antMatchers(forgotPasswordEndpointPath).authenticated()
+	        	.antMatchers(requestForgotPasswordEndpointPath).authenticated()
+	        	.antMatchers(checkUserPath).authenticated()
+
+	        	.antMatchers(HttpMethod.POST, OPENAPI_PATH_MASTER_VIEW).authenticated()
+	        	.antMatchers(HttpMethod.POST, OPENAPI_PATH_SECURITY_VIEW).authenticated()
         .and()
         	.requestMatchers()
             	.antMatchers(
-            			tokenEndpointPath, forceEndpointPath,
-            			signupEndpointPath, forgotPasswordEndpointPath, requestForgotPasswordEndpointPath,
-            			checkUserPath, tokenKeyPath, checkTokenPath)
+            			tokenEndpointPath, tokenKeyPath, checkTokenPath,
+            			forceEndpointPath, signupEndpointPath, forgotPasswordEndpointPath, requestForgotPasswordEndpointPath, checkUserPath,
+
+            			OPENAPI_PATH_MASTER_VIEW,
+            			OPENAPI_PATH_SECURITY_VIEW)
         .and()
         	.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER)
         .and()
