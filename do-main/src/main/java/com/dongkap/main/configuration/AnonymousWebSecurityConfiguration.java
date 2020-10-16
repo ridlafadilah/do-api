@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -96,8 +95,8 @@ public class AnonymousWebSecurityConfiguration extends WebSecurityConfigurerAdap
 	        	.antMatchers(requestForgotPasswordEndpointPath).authenticated()
 	        	.antMatchers(checkUserPath).authenticated()
 
-	        	.antMatchers(HttpMethod.POST, OPENAPI_PATH_MASTER_VIEW).authenticated()
-	        	.antMatchers(HttpMethod.POST, OPENAPI_PATH_SECURITY_VIEW).authenticated()
+	        	.antMatchers(OPENAPI_PATH_MASTER_VIEW).authenticated()
+	        	.antMatchers(OPENAPI_PATH_SECURITY_VIEW).authenticated()
         .and()
         	.requestMatchers()
             	.antMatchers(
