@@ -91,8 +91,8 @@ public class GrantOAuth2UserImplService extends DefaultOAuth2UserService {
 		SettingsEntity settingsEntity = new SettingsEntity();
 		settingsEntity.setUser(userEntity);
 		userEntity.setSettings(settingsEntity);
-        // return this.userRepo.saveAndFlush(userEntity);
-		return userEntity;
+        return this.userRepo.saveAndFlush(userEntity);
+		// return userEntity;
     }
 
     private UserEntity doUpdateUser(UserEntity userEntity, OAuth2UserInfoDto oAuth2UserInfo) {
