@@ -1,5 +1,7 @@
 package com.dongkap.security.dao;
 
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -22,5 +24,7 @@ public interface UserRepo extends JpaRepository<UserEntity, String>, JpaSpecific
 	UserEntity loadByIdAndVerificationCode(@Param("id") String id, @Param("verificationCode") String verificationCode);
 
 	UserEntity findByUsername(String username);
+
+	Optional<UserEntity> findByEmail(String email);
 
 }

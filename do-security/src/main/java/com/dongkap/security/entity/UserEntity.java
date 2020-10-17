@@ -1,8 +1,10 @@
 package com.dongkap.security.entity;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -21,6 +23,7 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import com.dongkap.common.entity.BaseAuditEntity;
 import com.dongkap.common.utils.SchemaDatabase;
@@ -38,7 +41,7 @@ import lombok.ToString;
 @ToString(exclude={"roles", "contactUser", "settings"})
 @Entity
 @Table(name = "sec_user", schema = SchemaDatabase.SECURITY)
-public class UserEntity extends BaseAuditEntity implements UserDetails {
+public class UserEntity extends BaseAuditEntity implements UserDetails, OAuth2User {
 
 	/**
 	 * 
@@ -72,6 +75,9 @@ public class UserEntity extends BaseAuditEntity implements UserDetails {
 	@Column(name = "email", nullable = true, unique = true)
 	private String email;
 
+	@Column(name = "provider", nullable = false)
+	private String provider = "local";
+
 	@Column(name = "verification_code", nullable = true)
 	private String verificationCode;
 
@@ -100,6 +106,20 @@ public class UserEntity extends BaseAuditEntity implements UserDetails {
 		authorities.addAll(roles);
 		return authorities;
 	}
+
+	@Override
+	@Transient
+	public String getName() {
+		if(this.contactUser != null)
+			return this.contactUser.getName();
+		return null;
+	}
+
+    @Override
+	@Transient
+    public Map<String, Object> getAttributes() {
+        return new HashMap<String, Object>();
+    }
 	
 	@OneToOne(mappedBy = "user", targetEntity = ContactUserEntity.class, fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	private ContactUserEntity contactUser;

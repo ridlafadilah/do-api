@@ -30,11 +30,17 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
 
 import com.dongkap.common.utils.ResourceCode;
+import com.dongkap.security.configuration.HttpCookieOAuth2AuthorizationRequestRepository;
+import com.dongkap.security.configuration.OAuth2AuthenticationFailureHandler;
+import com.dongkap.security.configuration.OAuth2AuthenticationSuccessHandler;
+import com.dongkap.security.service.GrantOAuth2UserImplService;
 
 @Configuration
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @Import({ ClientDetailsServiceConfiguration.class, AuthorizationServerEndpointsConfiguration.class })
 public class AnonymousWebSecurityConfiguration extends WebSecurityConfigurerAdapter {
+
+	private final static String OAUTH2_PATH = "/oauth2/**";
 	
 	private static final String OPENAPI_PATH_MASTER_VIEW = "/oa/"+ResourceCode.MASTER.getResourceId()+"/vw/**";
 	private final static String OPENAPI_PATH_SECURITY_VIEW = "/oa/"+ResourceCode.SECURITY.getResourceId()+"/vw/**";
@@ -53,6 +59,15 @@ public class AnonymousWebSecurityConfiguration extends WebSecurityConfigurerAdap
 	
     @Autowired
     private AuthenticationEntryPoint authenticationEntryPoint;
+
+    @Autowired
+    private OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
+
+    @Autowired
+    private OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
+
+    @Autowired
+    private GrantOAuth2UserImplService grantOAuth2UserService;
 	
 	@Autowired
 	public void configure(ClientDetailsServiceConfigurer clientDetails) throws Exception {
@@ -83,8 +98,11 @@ public class AnonymousWebSecurityConfiguration extends WebSecurityConfigurerAdap
 		}
 		// @formatter:off
 		http
+	        .csrf()
+		    	.disable()
 			.exceptionHandling().accessDeniedHandler(accessDeniedHandler).and()
         	.authorizeRequests()
+            	.antMatchers(OAUTH2_PATH).permitAll()
 	        	.antMatchers(tokenEndpointPath).fullyAuthenticated()
             	.antMatchers(tokenKeyPath).access(configurer.getTokenKeyAccess())
             	.antMatchers(checkTokenPath).access(configurer.getCheckTokenAccess())
@@ -101,14 +119,29 @@ public class AnonymousWebSecurityConfiguration extends WebSecurityConfigurerAdap
         	.requestMatchers()
             	.antMatchers(
             			tokenEndpointPath, tokenKeyPath, checkTokenPath,
-            			forceEndpointPath, signupEndpointPath, forgotPasswordEndpointPath, requestForgotPasswordEndpointPath, checkUserPath,
+            			forceEndpointPath, signupEndpointPath, 
+            			forgotPasswordEndpointPath, requestForgotPasswordEndpointPath,
+            			checkUserPath,
+            			OAUTH2_PATH,
 
             			OPENAPI_PATH_MASTER_VIEW,
             			OPENAPI_PATH_SECURITY_VIEW)
         .and()
         	.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER)
         .and()
-        	.oauth2Login();
+        	.oauth2Login()
+	            .authorizationEndpoint()
+		            .baseUri("/oauth2/authorize")
+		            .authorizationRequestRepository(cookieAuthorizationRequestRepository())
+		            .and()
+		        .redirectionEndpoint()
+		            .baseUri("/oauth2/callback/*")
+		            .and()
+		        .userInfoEndpoint()
+		            .userService(grantOAuth2UserService)
+		            .and()
+            	.successHandler(oAuth2AuthenticationSuccessHandler)
+                .failureHandler(oAuth2AuthenticationFailureHandler);
 		// @formatter:on
 		http.setSharedObject(ClientDetailsService.class, clientDetailsService);
     }
@@ -121,6 +154,11 @@ public class AnonymousWebSecurityConfiguration extends WebSecurityConfigurerAdap
 	}
 
     @Bean
+    public HttpCookieOAuth2AuthorizationRequestRepository cookieAuthorizationRequestRepository() {
+        return new HttpCookieOAuth2AuthorizationRequestRepository();
+    }
+
+    // @Bean
     public AuthorizationRequestRepository<OAuth2AuthorizationRequest> authorizationRequestRepository() {
         return new HttpSessionOAuth2AuthorizationRequestRepository();
     }

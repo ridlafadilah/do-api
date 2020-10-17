@@ -61,9 +61,9 @@ spring:
         registration:
           google:
             client-name: Google
-            clientId: 78147135611-bqt2hupv53ntg1hfg10q1peo6eo325k9.apps.googleusercontent.com
-            clientSecret: EDglz7KC79T340at8jhZiTqd
-#            redirectUri: "{baseUrl}/oauth2/callback/{registrationId}"
+            clientId: 78147135611-2igh602cbji1q8sm555q1sramlgfadgr.apps.googleusercontent.com
+            clientSecret: hqlgSJxyiWeGwGsClWPtG2fl
+            redirectUri: "{baseUrl}/oauth2/callback/{registrationId}"
             scope:
               email
               profile
@@ -71,7 +71,7 @@ spring:
             client-name: Facebook
             clientId: 121189305185277
             clientSecret: 42ffe5aa7379e8326387e0fe16f34132
-#            redirectUri: "{baseUrl}/oauth2/callback/{registrationId}"
+            redirectUri: "{baseUrl}/oauth2/callback/{registrationId}"
             scope:
               email
               public_profile
@@ -79,7 +79,7 @@ spring:
             client-name: Github
             clientId: d3e47fc2ddd966fa4352
             clientSecret: 3bc0f6b8332f93076354c2a5bada2f5a05aea60d
-#            redirectUri: "{baseUrl}/oauth2/callback/{registrationId}"
+            redirectUri: "{baseUrl}/oauth2/callback/{registrationId}"
             scope:
               user:email
               read:user
@@ -176,3 +176,12 @@ security:
       jwt:
         key-value: CfZKBe7IZHxBCgH9Dz49
       prefer-token-info: true
+
+dongkap:
+  oauth2:
+    # After successfully authenticating with the OAuth2 Provider,
+    # we'll be generating an auth token for the user and sending the token to the
+    # redirectUri mentioned by the client in the /oauth2/authorize request.
+    # We're not using cookies because they won't work well in mobile clients.
+    authorizedRedirectUris:
+      - http://localhost:4242/auth

@@ -13,12 +13,14 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import com.dongkap.security.configuration.ApplicationProperties;
+
 @SpringBootApplication(scanBasePackages={"com.dongkap"})
 @EnableAsync
 @EnableTransactionManagement
 @EnableAutoConfiguration
 @EnableResourceServer
-@EnableConfigurationProperties
+@EnableConfigurationProperties(ApplicationProperties.class)
 @EnableFeignClients(basePackages = {"com.dongkap.feign"})
 @EnableJpaRepositories(basePackages = { "com.dongkap.*.dao", "com.dongkap.*.service" })
 public class Application extends SpringBootServletInitializer {

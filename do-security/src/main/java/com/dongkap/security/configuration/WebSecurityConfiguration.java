@@ -15,7 +15,11 @@ import com.dongkap.security.service.UserImplService;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(
+        securedEnabled = true,
+        jsr250Enabled = true,
+        prePostEnabled = true
+)
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
