@@ -8,10 +8,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dongkap.common.exceptions.BaseControllerException;
@@ -20,7 +22,7 @@ import com.dongkap.common.utils.ErrorCode;
 import com.dongkap.security.service.CheckAccountImplService;
 
 @RestController
-public class OauthController extends BaseControllerException {
+public class OAuthController extends BaseControllerException {
 
 	@Autowired	
 	private CheckAccountImplService checkAccountService;
@@ -36,4 +38,12 @@ public class OauthController extends BaseControllerException {
 			return new ResponseEntity<ApiBaseResponse>(response, HttpStatus.OK);	
 		}
 	}
+
+	@RequestMapping(value = "/oauth/extract-token", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<OAuth2AccessToken> extractAccessToken(Authentication authentication,
+			@RequestParam("access_token") String accessToken,
+			@RequestHeader(name = HttpHeaders.ACCEPT_LANGUAGE, required = false) String locale) throws Exception {
+		return new ResponseEntity<OAuth2AccessToken>(this.checkAccountService.extractAccessToken(accessToken), HttpStatus.OK);
+	}
+
 }

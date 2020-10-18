@@ -87,6 +87,7 @@ public class AnonymousWebSecurityConfiguration extends WebSecurityConfigurerAdap
 		String forceEndpointPath = handlerMapping.getServletPath("/oauth/force");
 		String tokenKeyPath = handlerMapping.getServletPath("/oauth/token_key");
 		String checkTokenPath = handlerMapping.getServletPath("/oauth/check_token");
+		String extractTokenPath = handlerMapping.getServletPath("/oauth/extract-token");		
 		String signupEndpointPath = handlerMapping.getServletPath("/oauth/signup");
 		String forgotPasswordEndpointPath = handlerMapping.getServletPath("/oauth/forgot-password");
 		String requestForgotPasswordEndpointPath = handlerMapping.getServletPath("/oauth/request-forgot-password");
@@ -106,6 +107,7 @@ public class AnonymousWebSecurityConfiguration extends WebSecurityConfigurerAdap
 	        	.antMatchers(tokenEndpointPath).fullyAuthenticated()
             	.antMatchers(tokenKeyPath).access(configurer.getTokenKeyAccess())
             	.antMatchers(checkTokenPath).access(configurer.getCheckTokenAccess())
+            	.antMatchers(extractTokenPath).access(configurer.getCheckTokenAccess())
 
 	        	.antMatchers(forceEndpointPath).authenticated()
 	        	.antMatchers(signupEndpointPath).authenticated()
@@ -118,7 +120,8 @@ public class AnonymousWebSecurityConfiguration extends WebSecurityConfigurerAdap
         .and()
         	.requestMatchers()
             	.antMatchers(
-            			tokenEndpointPath, tokenKeyPath, checkTokenPath,
+            			tokenEndpointPath, tokenKeyPath,
+            			checkTokenPath, extractTokenPath,
             			forceEndpointPath, signupEndpointPath, 
             			forgotPasswordEndpointPath, requestForgotPasswordEndpointPath,
             			checkUserPath,

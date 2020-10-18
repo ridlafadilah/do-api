@@ -39,6 +39,7 @@ public class JwtTokenConfiguration {
 					}
 					accessToken.getAdditionalInformation().put("server_date", DateUtil.DATE.format(new Date()));
 					accessToken.getAdditionalInformation().put("authority", temp.get("authority"));
+					accessToken.getAdditionalInformation().put("provider", temp.get("provider"));
 					accessToken.getAdditionalInformation().put("xrkey", publicKey);
 					OAuth2AccessToken newAccessToken = super.enhance(accessToken, authentication);
 					newAccessToken.getAdditionalInformation().putAll(temp);

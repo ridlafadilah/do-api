@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -106,12 +105,17 @@ public class OAuth2ServerConfiguration extends AuthorizationServerConfigurerAdap
     }
     
     @Bean
-    @Primary
     public DefaultTokenServices tokenServices() {
+	    TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
+	    tokenEnhancerChain.setTokenEnhancers(Arrays.asList(tokenEnhancer(), jwtAccessTokenConverter));
+
         DefaultTokenServices defaultTokenServices = new DefaultTokenServices();
-        defaultTokenServices.setTokenStore(tokenStore());
         defaultTokenServices.setSupportRefreshToken(true);
-        defaultTokenServices.setTokenEnhancer(tokenEnhancer());
+        defaultTokenServices.setReuseRefreshToken(false);
+        defaultTokenServices.setAuthenticationManager(authenticationManager);
+        defaultTokenServices.setTokenStore(tokenStore());
+        defaultTokenServices.setClientDetailsService(jdbcClientDetailService());
+        defaultTokenServices.setTokenEnhancer(tokenEnhancerChain);
         return defaultTokenServices;
     }
 

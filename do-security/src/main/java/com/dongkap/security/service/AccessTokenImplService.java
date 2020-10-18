@@ -21,8 +21,6 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.OAuth2Request;
 import org.springframework.security.oauth2.provider.client.BaseClientDetails;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
-import org.springframework.security.oauth2.provider.token.TokenEnhancer;
-import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -48,12 +46,6 @@ public class AccessTokenImplService {
 
     @Autowired
     private DefaultTokenServices tokenServices;
-    
-    @Autowired
-    private TokenEnhancer tokenEnhancer;
-
-    @Autowired
-    private JwtAccessTokenConverter jwtAccessTokenConverter;
 
     @Autowired
 	private JdbcTemplate jdbcTemplate;
@@ -88,8 +80,6 @@ public class AccessTokenImplService {
                 authorizationRequest, authenticationToken);
         oAuth2Authentication.setAuthenticated(true);
         OAuth2AccessToken accessToken = tokenServices.createAccessToken(oAuth2Authentication);
-        accessToken = tokenEnhancer.enhance(accessToken, oAuth2Authentication);
-        accessToken = jwtAccessTokenConverter.enhance(accessToken, oAuth2Authentication);
 		return accessToken;
 	}
 	

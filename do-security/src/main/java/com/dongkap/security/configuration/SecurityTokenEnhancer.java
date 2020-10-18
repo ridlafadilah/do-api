@@ -50,6 +50,7 @@ public class SecurityTokenEnhancer implements TokenEnhancer {
 			}
 	        additionalInfo.put("image", (user.getContactUser() == null)? null : user.getContactUser().getImage());
 	        additionalInfo.put("authority", user.getAuthorityDefault());
+	        additionalInfo.put("provider", user.getProvider());
 	        additionalInfo.put("email", user.getEmail());
 	        additionalInfo.put("name", (user.getContactUser() == null)? null : user.getContactUser().getName());
 	        additionalInfo.put("locale", (user.getSettings() == null)? "en-US" : user.getSettings().getLocaleCode());

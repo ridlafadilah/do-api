@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.common.OAuth2AccessToken;
+import org.springframework.security.oauth2.common.exceptions.InvalidTokenException;
+import org.springframework.security.oauth2.provider.token.ResourceServerTokenServices;
 import org.springframework.stereotype.Service;
 
 import com.dongkap.common.exceptions.SystemErrorException;
@@ -37,6 +40,9 @@ public class CheckAccountImplService implements CheckAccountService {
 	
 	@Autowired
 	private MessageSource messageSource;
+	
+	@Autowired
+	private ResourceServerTokenServices resourceServerTokenServices;
 
 	public ApiBaseResponse doCheckPassword(Map<String, Object> dto, Authentication authentication, String p_locale) throws Exception {
 		if (dto != null) {
@@ -68,6 +74,17 @@ public class CheckAccountImplService implements CheckAccountService {
 			return response;	
 		} else
 			throw new SystemErrorException(ErrorCode.ERR_SYS0404);
+	}
+
+	public OAuth2AccessToken extractAccessToken(String accessToken) throws Exception {
+		OAuth2AccessToken oAuth2Accesstoken = resourceServerTokenServices.readAccessToken(accessToken);
+		if (oAuth2Accesstoken == null) {
+			throw new InvalidTokenException("Token was not recognised");
+		}
+		if (oAuth2Accesstoken.isExpired()) {
+			throw new InvalidTokenException("Token has expired");
+		}
+		return oAuth2Accesstoken;
 	}
 
 }
