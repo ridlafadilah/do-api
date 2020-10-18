@@ -2,6 +2,7 @@ package com.dongkap.security.configuration;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.Date;
 import java.util.Optional;
 
 import javax.servlet.ServletException;
@@ -13,11 +14,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.dongkap.common.utils.CookieUtils;
+import com.dongkap.common.utils.DateUtil;
 import com.dongkap.security.exception.BadRequestException;
 import com.dongkap.security.service.AccessTokenImplService;
 
@@ -61,9 +64,10 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         String targetUrl = redirectUri.orElse(getDefaultTargetUrl());
         String accessToken = "";
         try {
-			accessToken = this.accessTokenService.grantAuthDefault(authentication).getValue();
+        	OAuth2AccessToken oAuth2AccessToken = this.accessTokenService.grantAuthDefault(authentication);
+        	accessToken = oAuth2AccessToken.getValue();       	
 		} catch (Exception e) {
-			LOGGER.error("[Dongkap] Access Token : ", e);
+			LOGGER.error("[Dongkap] OAuth2 Access Token : ", e);
 		}
 
         return UriComponentsBuilder.fromUriString(targetUrl)

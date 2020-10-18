@@ -61,28 +61,28 @@ spring:
         registration:
           google:
             client-name: Google
-            clientId: 78147135611-2igh602cbji1q8sm555q1sramlgfadgr.apps.googleusercontent.com
-            clientSecret: hqlgSJxyiWeGwGsClWPtG2fl
+            clientId: ${GOOGLE_OAUTH_CLIENT_ID}
+            clientSecret: ${GOOGLE_OAUTH_CLIENT_SECRET}
             redirectUri: "{baseUrl}/oauth2/callback/{registrationId}"
             scope:
               email
               profile
-          facebook:
-            client-name: Facebook
-            clientId: 121189305185277
-            clientSecret: 42ffe5aa7379e8326387e0fe16f34132
-            redirectUri: "{baseUrl}/oauth2/callback/{registrationId}"
-            scope:
-              email
-              public_profile
           github:
             client-name: Github
-            clientId: d3e47fc2ddd966fa4352
-            clientSecret: 3bc0f6b8332f93076354c2a5bada2f5a05aea60d
+            clientId: ${GITHUB_OAUTH_CLIENT_ID}
+            clientSecret: ${GITHUB_OAUTH_CLIENT_SECRET}
             redirectUri: "{baseUrl}/oauth2/callback/{registrationId}"
             scope:
               user:email
               read:user
+          facebook:
+            client-name: Facebook
+            clientId: ${FACEBOOK_OAUTH_CLIENT_ID}
+            clientSecret: ${FACEBOOK_OAUTH_CLIENT_SECRET}
+            redirectUri: "{baseUrl}/oauth2/callback/{registrationId}"
+            scope:
+              email
+              public_profile
         provider:
           facebook:
             authorizationUri: https://www.facebook.com/v3.0/dialog/oauth
@@ -184,4 +184,4 @@ dongkap:
     # redirectUri mentioned by the client in the /oauth2/authorize request.
     # We're not using cookies because they won't work well in mobile clients.
     authorizedRedirectUris:
-      - http://localhost:4242/auth
+      - ${DONGKAP_REDIRECT_URI}

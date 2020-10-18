@@ -78,7 +78,7 @@ public class GrantOAuth2UserImplService extends DefaultOAuth2UserService {
     	UserEntity userEntity = new UserEntity();
         userEntity.setUsername(oAuth2UserInfo.getId());
         userEntity.setPassword("N/A");
-        userEntity.setEmail(oAuth2UserInfo.getName());
+        userEntity.setEmail(oAuth2UserInfo.getEmail());
         userEntity.setProvider(AuthorizationProvider.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId()).toString());
         userEntity.setAuthorityDefault(ROLE_END);
 		RoleEntity role = this.roleRepo.findByAuthority(ROLE_END);
@@ -91,8 +91,8 @@ public class GrantOAuth2UserImplService extends DefaultOAuth2UserService {
 		SettingsEntity settingsEntity = new SettingsEntity();
 		settingsEntity.setUser(userEntity);
 		userEntity.setSettings(settingsEntity);
-        return this.userRepo.saveAndFlush(userEntity);
-		// return userEntity;
+        // return this.userRepo.saveAndFlush(userEntity);
+		return userEntity;
     }
 
     private UserEntity doUpdateUser(UserEntity userEntity, OAuth2UserInfoDto oAuth2UserInfo) {
