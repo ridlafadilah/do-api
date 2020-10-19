@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -16,9 +17,11 @@ import org.springframework.util.StringUtils;
 
 import com.dongkap.common.utils.AuthorizationProvider;
 import com.dongkap.feign.dto.security.social.OAuth2UserInfoDto;
+import com.dongkap.security.dao.CorporateRepo;
 import com.dongkap.security.dao.RoleRepo;
 import com.dongkap.security.dao.UserRepo;
 import com.dongkap.security.entity.ContactUserEntity;
+import com.dongkap.security.entity.CorporateEntity;
 import com.dongkap.security.entity.RoleEntity;
 import com.dongkap.security.entity.SettingsEntity;
 import com.dongkap.security.entity.UserEntity;
@@ -36,6 +39,12 @@ public class GrantOAuth2UserImplService extends DefaultOAuth2UserService {
 	
 	@Autowired
 	private RoleRepo roleRepo;
+	
+	@Autowired
+	private CorporateRepo corporateRepo;
+	
+	@Value("${do.corporate-id.default}")
+	private String corporateId;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest oAuth2UserRequest) throws OAuth2AuthenticationException {
@@ -49,7 +58,6 @@ public class GrantOAuth2UserImplService extends DefaultOAuth2UserService {
         }
     }
 
-    @SuppressWarnings("unlikely-arg-type")
 	private OAuth2User doProcessOAuth2User(OAuth2UserRequest oAuth2UserRequest, OAuth2User oAuth2User) {
         OAuth2UserInfoDto oAuth2UserInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(oAuth2UserRequest.getClientRegistration().getRegistrationId(), oAuth2User.getAttributes());
         if(StringUtils.isEmpty(oAuth2UserInfo.getEmail())) {
@@ -60,7 +68,7 @@ public class GrantOAuth2UserImplService extends DefaultOAuth2UserService {
         UserEntity userEntity;
         if(userEntityOptional.isPresent()) {
         	userEntity = userEntityOptional.get();
-            if(!userEntity.getProvider().equals(AuthorizationProvider.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId()))) {
+            if(!userEntity.getProvider().equals(AuthorizationProvider.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId()).toString())) {
                 throw new OAuth2AuthenticationProcessingException("Looks like you're signed up with " +
                 		userEntity.getProvider() + " account. Please use your " + userEntity.getProvider() +
                         " account to login.");
@@ -81,6 +89,8 @@ public class GrantOAuth2UserImplService extends DefaultOAuth2UserService {
         userEntity.setEmail(oAuth2UserInfo.getEmail());
         userEntity.setProvider(AuthorizationProvider.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId()).toString());
         userEntity.setAuthorityDefault(ROLE_END);
+        CorporateEntity corporate = this.corporateRepo.findByCorporateId(this.corporateId);
+        userEntity.getCorporates().add(corporate);
 		RoleEntity role = this.roleRepo.findByAuthority(ROLE_END);
         userEntity.getRoles().add(role);
         ContactUserEntity contactUserEntity = new ContactUserEntity();

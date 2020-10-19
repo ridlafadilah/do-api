@@ -37,8 +37,8 @@ import lombok.ToString;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper=false, exclude={"roles", "contactUser", "settings"})
-@ToString(exclude={"roles", "contactUser", "settings"})
+@EqualsAndHashCode(callSuper=false, exclude={"corporates", "roles", "contactUser", "settings"})
+@ToString(exclude={"corporates", "roles", "contactUser", "settings"})
 @Entity
 @Table(name = "sec_user", schema = SchemaDatabase.SECURITY)
 public class UserEntity extends BaseAuditEntity implements UserDetails, OAuth2User {
@@ -89,6 +89,15 @@ public class UserEntity extends BaseAuditEntity implements UserDetails, OAuth2Us
 
 	@Column(name = "authority_default")
 	private String authorityDefault;
+
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "sec_r_user_corporate",
+		schema = SchemaDatabase.SECURITY,
+		joinColumns = { 
+				@JoinColumn(name = "user_uuid", referencedColumnName = "user_uuid")}, 
+		inverseJoinColumns =
+				@JoinColumn(name = "corporate_uuid", referencedColumnName = "corporate_uuid"))
+	private Set<CorporateEntity> corporates = new HashSet<CorporateEntity>();
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "sec_r_user_role",

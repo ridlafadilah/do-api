@@ -27,10 +27,12 @@ import com.dongkap.feign.dto.common.FilterDto;
 import com.dongkap.feign.dto.google.GoogleResponse;
 import com.dongkap.feign.dto.security.ProfileDto;
 import com.dongkap.feign.dto.security.SignUpDto;
+import com.dongkap.security.dao.CorporateRepo;
 import com.dongkap.security.dao.RoleRepo;
 import com.dongkap.security.dao.UserRepo;
 import com.dongkap.security.dao.specification.UserSpecification;
 import com.dongkap.security.entity.ContactUserEntity;
+import com.dongkap.security.entity.CorporateEntity;
 import com.dongkap.security.entity.RoleEntity;
 import com.dongkap.security.entity.SettingsEntity;
 import com.dongkap.security.entity.UserEntity;
@@ -47,12 +49,18 @@ public class UserImplService extends CommonService implements UserDetailsService
 	
 	@Autowired
 	private RoleRepo roleRepo;
+	
+	@Autowired
+	private CorporateRepo corporateRepo;
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
     @Autowired
     private RestTemplate restTemplate;
+	
+	@Value("${do.corporate-id.default}")
+	private String corporateId;
 	
 	@Value("${do.signature.aes.secret-key}")
 	private String secretKey;
@@ -125,6 +133,8 @@ public class UserImplService extends CommonService implements UserDetailsService
 				} else {
 					throw new SystemErrorException(ErrorCode.ERR_SCR0005);
 				}
+		        CorporateEntity corporate = this.corporateRepo.findByCorporateId(this.corporateId);
+		        user.getCorporates().add(corporate);
 				RoleEntity role = this.roleRepo.findByAuthority(ROLE_END);
 				user.getRoles().add(role);
 				user.setAuthorityDefault(ROLE_END);
