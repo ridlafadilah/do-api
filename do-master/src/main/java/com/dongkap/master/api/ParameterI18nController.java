@@ -44,6 +44,13 @@ public class ParameterI18nController extends BaseControllerException {
 			@RequestBody(required = true) Map<String, Object> filter) throws Exception {
 		return new ResponseEntity<List<ParameterI18nDto>>(this.parameterI18nService.getParameterCode(filter), HttpStatus.OK);
 	}
+
+	@RequestMapping(value = "/vw/post/parameter-i18n/v.1", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ParameterI18nDto> getParameterCode(Authentication authentication,
+			@RequestBody(required = true) Map<String, Object> param,
+			@RequestHeader(name = HttpHeaders.ACCEPT_LANGUAGE, required = false) String locale) throws Exception {
+		return new ResponseEntity<ParameterI18nDto>(this.parameterI18nService.getParameter(param, locale), HttpStatus.OK);
+	}
 	
 	@ResponseSuccess(SuccessCode.OK_SCR009)
 	@RequestMapping(value = "/trx/auth/parameter-i18n/v.1", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
