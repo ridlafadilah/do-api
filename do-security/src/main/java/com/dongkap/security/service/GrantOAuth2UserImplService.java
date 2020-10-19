@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import com.dongkap.common.utils.AuthorizationProvider;
+import com.dongkap.common.utils.ErrorCode;
 import com.dongkap.feign.dto.security.social.OAuth2UserInfoDto;
 import com.dongkap.security.dao.CorporateRepo;
 import com.dongkap.security.dao.RoleRepo;
@@ -69,11 +70,18 @@ public class GrantOAuth2UserImplService extends DefaultOAuth2UserService {
         if(userEntityOptional.isPresent()) {
         	userEntity = userEntityOptional.get();
             if(!userEntity.getProvider().equals(AuthorizationProvider.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId()).toString())) {
-                throw new OAuth2AuthenticationProcessingException("Looks like you're signed up with " +
-                		userEntity.getProvider() + " account. Please use your " + userEntity.getProvider() +
-                        " account to login.");
+                throw new OAuth2AuthenticationProcessingException(ErrorCode.ERR_SYS0401.name());
             }
-            userEntity = doUpdateUser(userEntity, oAuth2UserInfo);
+            if(!userEntity.isEnabled()) {
+            	throw new OAuth2AuthenticationProcessingException(ErrorCode.ERR_SYS0411.name());
+            } else if(!userEntity.isAccountNonExpired()) {
+            	throw new OAuth2AuthenticationProcessingException(ErrorCode.ERR_SYS0412.name());            	
+            } else if(!userEntity.isAccountNonLocked()) {
+            	throw new OAuth2AuthenticationProcessingException(ErrorCode.ERR_SYS0413.name());            	
+            } else if(!userEntity.isCredentialsNonExpired()) {
+            	throw new OAuth2AuthenticationProcessingException(ErrorCode.ERR_SYS0414.name());            	
+            } else
+            	userEntity = doUpdateUser(userEntity, oAuth2UserInfo);
         } else {
         	userEntity = doRegisterUser(oAuth2UserRequest, oAuth2UserInfo);
         }

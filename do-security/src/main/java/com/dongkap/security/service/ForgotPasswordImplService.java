@@ -18,6 +18,7 @@ import com.dongkap.common.exceptions.SystemErrorException;
 import com.dongkap.common.http.ApiBaseResponse;
 import com.dongkap.common.pattern.PatternGlobal;
 import com.dongkap.common.security.AESEncrypt;
+import com.dongkap.common.utils.AuthorizationProvider;
 import com.dongkap.common.utils.ErrorCode;
 import com.dongkap.feign.dto.notification.MailNotificationDto;
 import com.dongkap.feign.dto.security.ForgotPasswordDto;
@@ -52,28 +53,31 @@ public class ForgotPasswordImplService {
 		if(p_dto.getEmail() != null && p_dto.getUrlForgotPassword() != null) {
 			UserEntity userEntity = userRepo.loadByUser(p_dto.getEmail().toLowerCase());
 			if(userEntity != null) {
-				Calendar cal = Calendar.getInstance();
-				cal.setTime(new Date());
-				cal.add(Calendar.DATE, 1);
-				userEntity.setVerificationExpired(cal.getTime());
-				userEntity.setVerificationCode(new RandomString(8).nextString());
-				Locale locale = Locale.getDefault();
-				if(p_locale != null)
-					locale = Locale.forLanguageTag(p_locale);
-				userEntity = this.userRepo.saveAndFlush(userEntity);
-				String template = "forgot-password_"+locale.getLanguage()+".ftl";
-				if(locale == Locale.US)
-					template = "forgot-password.ftl";
-				Map<String, Object> content = new HashMap<String, Object>();
-				content.put("name", userEntity.getContactUser().getName());
-				content.put("urlForgotPassword", p_dto.getUrlForgotPassword()+"/"+userEntity.getId()+"/"+userEntity.getVerificationCode());
-				MailNotificationDto mail = new MailNotificationDto();
-				mail.setTo(userEntity.getEmail());
-				mail.setSubject(messageSource.getMessage("subject.mail.forgot-password", null, locale));
-				mail.setContentTemplate(content);
-				mail.setFileNameTemplate(template);
-				this.mailSenderService.sendMessageWithTemplate(mail, locale);
-				return null;
+				if(userEntity.getProvider().equals(AuthorizationProvider.local.toString())) {
+					Calendar cal = Calendar.getInstance();
+					cal.setTime(new Date());
+					cal.add(Calendar.DATE, 1);
+					userEntity.setVerificationExpired(cal.getTime());
+					userEntity.setVerificationCode(new RandomString(8).nextString());
+					Locale locale = Locale.getDefault();
+					if(p_locale != null)
+						locale = Locale.forLanguageTag(p_locale);
+					userEntity = this.userRepo.saveAndFlush(userEntity);
+					String template = "forgot-password_"+locale.getLanguage()+".ftl";
+					if(locale == Locale.US)
+						template = "forgot-password.ftl";
+					Map<String, Object> content = new HashMap<String, Object>();
+					content.put("name", userEntity.getContactUser().getName());
+					content.put("urlForgotPassword", p_dto.getUrlForgotPassword()+"/"+userEntity.getId()+"/"+userEntity.getVerificationCode());
+					MailNotificationDto mail = new MailNotificationDto();
+					mail.setTo(userEntity.getEmail());
+					mail.setSubject(messageSource.getMessage("subject.mail.forgot-password", null, locale));
+					mail.setContentTemplate(content);
+					mail.setFileNameTemplate(template);
+					this.mailSenderService.sendMessageWithTemplate(mail, locale);
+					return null;					
+				} else
+					throw new SystemErrorException(ErrorCode.ERR_SYS0401);
 			} else
 				throw new SystemErrorException(ErrorCode.ERR_SCR0012);
 		} else

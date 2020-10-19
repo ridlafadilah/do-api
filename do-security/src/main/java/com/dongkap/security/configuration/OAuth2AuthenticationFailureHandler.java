@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.dongkap.common.utils.CookieUtils;
-import com.dongkap.common.utils.ErrorCode;
 
 @Component
 public class OAuth2AuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
@@ -31,7 +30,7 @@ public class OAuth2AuthenticationFailureHandler extends SimpleUrlAuthenticationF
                 .orElse(("/"));
 
         targetUrl = UriComponentsBuilder.fromUriString(targetUrl)
-                .queryParam("error", ErrorCode.ERR_SYS0401.name())
+                .queryParam("error", exception.getMessage())
                 .build().toUriString();
 
         httpCookieOAuth2AuthorizationRequestRepository.removeAuthorizationRequestCookies(request, response);
