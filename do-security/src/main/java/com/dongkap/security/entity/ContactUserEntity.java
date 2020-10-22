@@ -50,17 +50,32 @@ public class ContactUserEntity extends BaseAuditEntity {
 	@Column(name = "country", nullable = true)
 	private String country;
 
+	@Column(name = "country_code", nullable = true)
+	private String countryCode;
+
 	@Column(name = "province", nullable = true)
 	private String province;
+
+	@Column(name = "province_code", nullable = true)
+	private String provinceCode;
 
 	@Column(name = "city", nullable = true)
 	private String city;
 
+	@Column(name = "city_code", nullable = true)
+	private String cityCode;
+
 	@Column(name = "district", nullable = true)
 	private String district;
 
+	@Column(name = "district_code", nullable = true)
+	private String districtCode;
+
 	@Column(name = "sub_district", nullable = true)
 	private String subDistrict;
+
+	@Column(name = "sub_district_code", nullable = true)
+	private String subDistrictCode;
 
 	@Column(name = "zipcode", nullable = true)
 	private String zipcode;

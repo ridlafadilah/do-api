@@ -19,8 +19,8 @@ public class PersonalInfoDto extends ProfileDto {
 	private static final long serialVersionUID = -1742415621743889509L;
 	private String idNumber;
 	private Integer age;
-	private String genderCode;
 	private String gender;
+	private String genderCode;
 	private String placeOfBirth;
 	private String dateOfBirth;
 

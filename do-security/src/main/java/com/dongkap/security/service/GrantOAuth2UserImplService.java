@@ -113,8 +113,10 @@ public class GrantOAuth2UserImplService extends DefaultOAuth2UserService {
     }
 
     private UserEntity doUpdateUser(UserEntity userEntity, OAuth2UserInfoDto oAuth2UserInfo) {
-    	userEntity.getContactUser().setName(oAuth2UserInfo.getName());
-    	userEntity.getContactUser().setImage(oAuth2UserInfo.getImageUrl());
+    	if(userEntity.getContactUser().getName() == null)
+    		userEntity.getContactUser().setName(oAuth2UserInfo.getName());
+    	if(userEntity.getContactUser().getImage() == null)
+    		userEntity.getContactUser().setImage(oAuth2UserInfo.getImageUrl());
         return this.userRepo.saveAndFlush(userEntity);
     }
 
