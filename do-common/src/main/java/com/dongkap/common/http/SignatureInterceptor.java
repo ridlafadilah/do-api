@@ -92,8 +92,6 @@ public class SignatureInterceptor implements Filter {
     				throw new SystemErrorException(ErrorCode.ERR_XDOKEY);
             	try {
             		datenow = DateUtil.formatDate(new Date(new Long(request.getHeader(this.paramTimestamp)) * 1000), DateUtil.DEFAULT_FORMAT_DATE);
-            		if(!datenow.equals(DateUtil.DATE.format(new Date())))
-        				throw new SystemErrorException(ErrorCode.ERR_XDOTIMESTAMP);
     			} catch (Exception e) {
     				throw new SystemErrorException(ErrorCode.ERR_XDOTIMESTAMP);
     			}
