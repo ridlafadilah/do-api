@@ -15,7 +15,7 @@ Dongkap | Web Service Application
 [![Java11](https://img.shields.io/badge/java-11-blue)](https://img.shields.io/badge/java-11-blue)
 ![Build and Test](https://github.com/ridlafadilah/do-ngx)
 
-# Java 11 examples
+# Java 11 feature
 This brach contains dongkap java 11 language features, 
 but also new JDK 11 possibilities. 
 
