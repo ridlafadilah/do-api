@@ -11,8 +11,10 @@
 	<properties>
 		<!-- LIBRARY VERSION PROPERTIES -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<activemq.version>5.9.1</activemq.version>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<java.version>11</java.version>
+		<maven.compiler.release>11</maven.compiler.release>
+		<spring-cloud.version>Hoxton.SR6</spring-cloud.version>		<activemq.version>5.9.1</activemq.version>
 		<apache.cxf.version>2.7.7</apache.cxf.version>
 		<bcpg-jdk15on.version>1.47</bcpg-jdk15on.version>
 		<bcpg-jdk16.version>1.46</bcpg-jdk16.version>
@@ -27,7 +29,7 @@
 		<hibernate.version>5.0.12.Final</hibernate.version>
 		<jasperreports.version>6.3.1</jasperreports.version>
 		<java.jms.version>1.1</java.jms.version>
-		<java.version>1.8</java.version>
+		<java.version>11</java.version>
 		<javax.mail.version>1.4.7</javax.mail.version>
 		<jersey.version>1.19.1</jersey.version>
 		<jgroups.version>3.6.4.Final</jgroups.version>
@@ -38,15 +40,13 @@
 		<poi.version>3.13</poi.version>
 		<quartz.version>[2.3.2,)</quartz.version>
 		<scala-library.version>2.10.4</scala-library.version>
-		<spring-boot-maven.version>2.2.5.RELEASE</spring-boot-maven.version>
-		<spring-boot.version>2.2.5.RELEASE</spring-boot.version>
-		<spring-cloud.version>Greenwich.RELEASE</spring-cloud.version>
-		<spring.cloud.version>2.2.5.RELEASE</spring.cloud.version>
-		<spring.cloud.version>2.2.5.RELEASE</spring.cloud.version>
+		<spring-boot-maven.version>2.1.2.RELEASE</spring-boot-maven.version>
+		<spring-boot.version>2.3.1.RELEASE</spring-boot.version>
+		<spring.cloud.version>2.3.1.RELEASE</spring.cloud.version>
 		<spring.cloud.feign.version>1.4.6.RELEASE</spring.cloud.feign.version>
-		<spring.cloud.zipkin.version>2.2.5.RELEASE</spring.cloud.zipkin.version>
-		<spring.cloud.kafka.version>2.2.5.RELEASE</spring.cloud.kafka.version>
-		<spring.cloud.starter.config.version>2.2.5.RELEASE</spring.cloud.starter.config.version>
+		<spring.cloud.zipkin.version>2.1.2.RELEASE</spring.cloud.zipkin.version>
+		<spring.cloud.kafka.version>2.1.2.RELEASE</spring.cloud.kafka.version>
+		<spring.cloud.starter.config.version>2.1.0.RELEASE</spring.cloud.starter.config.version>
 		<spring.cloud.starter.eureka.version>1.4.6.RELEASE</spring.cloud.starter.eureka.version>
 		<spring.cloud.starter.zuul.version>1.4.6.RELEASE</spring.cloud.starter.zuul.version>
 		<spring-session.version>1.3.5.RELEASE</spring-session.version>
