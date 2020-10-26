@@ -32,24 +32,6 @@ Most examples are build by top-level gradle project.
 ```
 mvn clean install
 ```
-
-* [akka clustering demo](akka-cluster-sshsessions)
-* [apache avro demo](avro-demo)
-* [blockchain demo](block-chain)
-* [dependency injection examples](di-examples)
-* [futures demo](futures-demo)
-* [grpc demo](grpc-demo)
-* [hazelcast cluster demo](hazelcast-cluster)
-* [image processing demo](imageprocessing-demo)
-* [jetty server demo](jetty-servlet4-http2)
-* [kafka example](kafka-example)
-* [RxJava demo](rxjava-demo)
-* [simple JNI demo](simple-jni-demo)
-* [JPMS demo](simple-module-example)
-* [ssh server demo](ssh-server-demo)
-* [JCE demo](jce-demo)
-* [com.fasterxml.jackson](jackson-fasterxml-demo)
-* [weird java stuff](java-is-weird)
 * __Databases__
   * [hibernate demo](hibernate-demo)
   * [JDBC demo](jdbc-demo)
