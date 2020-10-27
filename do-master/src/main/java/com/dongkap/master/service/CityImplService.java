@@ -26,8 +26,8 @@ public class CityImplService extends CommonService {
 
 	public SelectResponseDto getSelectCity(FilterDto filter) throws Exception {
 		Page<CityEntity> city = cityRepo.findAll(CitySpecification.getSelect(filter.getKeyword()), page(filter.getOrder(), filter.getOffset(), filter.getLimit()));
-		SelectResponseDto response = new SelectResponseDto();
-		response.setTotalFiltered(new Long(city.getContent().size()));
+		final SelectResponseDto response = new SelectResponseDto();
+		response.setTotalFiltered(Long.valueOf(city.getContent().size()));
 		response.setTotalRecord(cityRepo.count(CitySpecification.getSelect(filter.getKeyword())));
 		city.getContent().forEach(value -> {
 			response.getData().add(new SelectDto(value.getCityName(), value.getCityCode(), !value.isActive(), null));
@@ -37,8 +37,8 @@ public class CityImplService extends CommonService {
 
 	public CommonResponseDto<CityDto> getDatatableCity(FilterDto filter) throws Exception {
 		Page<CityEntity> city = cityRepo.findAll(CitySpecification.getDatatable(filter.getKeyword()), page(filter.getOrder(), filter.getOffset(), filter.getLimit()));
-		CommonResponseDto<CityDto> response = new CommonResponseDto<CityDto>();
-		response.setTotalFiltered(new Long(city.getContent().size()));
+		final CommonResponseDto<CityDto> response = new CommonResponseDto<CityDto>();
+		response.setTotalFiltered(Long.valueOf(city.getContent().size()));
 		response.setTotalRecord(cityRepo.count(CitySpecification.getDatatable(filter.getKeyword())));
 		city.getContent().forEach(value -> {
 			CityDto temp = new CityDto();

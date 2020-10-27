@@ -18,7 +18,7 @@ public class DistrictSpecification {
 	
 	private static final String IS_ACTIVE = "active";
 
-	public static Specification<DistrictEntity> getSelect(Map<String, Object> keyword) {
+	public static Specification<DistrictEntity> getSelect(final Map<String, Object> keyword) {
 		return new Specification<DistrictEntity>() {
 
 			/**

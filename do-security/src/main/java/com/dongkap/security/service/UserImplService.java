@@ -82,8 +82,8 @@ public class UserImplService extends CommonService implements UserDetailsService
 
 	public CommonResponseDto<ProfileDto> getDatatableUser(FilterDto filter) throws Exception {
 		Page<UserEntity> user = userRepo.findAll(UserSpecification.getDatatable(filter.getKeyword()), page(filter.getOrder(), filter.getOffset(), filter.getLimit()));
-		CommonResponseDto<ProfileDto> response = new CommonResponseDto<ProfileDto>();
-		response.setTotalFiltered(new Long(user.getContent().size()));
+		final CommonResponseDto<ProfileDto> response = new CommonResponseDto<ProfileDto>();
+		response.setTotalFiltered(Long.valueOf(user.getContent().size()));
 		response.setTotalRecord(userRepo.count(UserSpecification.getDatatable(filter.getKeyword())));
 		user.getContent().forEach(value -> {
 			ProfileDto temp = new ProfileDto();

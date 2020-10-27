@@ -103,7 +103,7 @@ public class FileUtils {
 
 	public void zip(List<File> files, String zipLocation) throws IOException {
 		FileOutputStream fos = new FileOutputStream(zipLocation);
-		ZipOutputStream zipOut = new ZipOutputStream(fos);
+		final ZipOutputStream zipOut = new ZipOutputStream(fos);
 		files.forEach(file->{
 			FileInputStream fis;
 			try {

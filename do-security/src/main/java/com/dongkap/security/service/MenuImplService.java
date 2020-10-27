@@ -56,7 +56,7 @@ public class MenuImplService {
 					throw new SystemErrorException(ErrorCode.ERR_SYS0404);					
 				menu.setModifiedBy(user.getUsername());
 				menu.setModifiedDate(new Date());
-				for(String key: p_dto.getI18n().keySet()) {
+				for(final String key: p_dto.getI18n().keySet()) {
 					menuI18n = menu.getMenuI18n().stream().filter(i18n -> key.equals(i18n.getLocale())).findFirst().orElse(null);
 					if(menuI18n != null) {
 						menuI18n.setTitle(p_dto.getI18n().get(key));
@@ -178,11 +178,11 @@ public class MenuImplService {
 	
 	public SelectResponseDto getSelectRootMainMenus(String type, String locale) throws Exception {
 		List<MenuEntity> menus = menuRepo.loadRootMenuByTypeLevelI18n(type, locale, 0, false);
-		SelectResponseDto response = new SelectResponseDto();
-		response.setTotalFiltered(new Long(menus.size()));
-		response.setTotalRecord(new Long(menus.size()));
+		final SelectResponseDto response = new SelectResponseDto();
+		response.setTotalFiltered(Long.valueOf(menus.size()));
+		response.setTotalRecord(Long.valueOf(menus.size()));
 		menus.forEach(value -> {
-			SelectDto data = new SelectDto();
+			final SelectDto data = new SelectDto();
 			value.getMenuI18n().forEach(i18n->{
 				data.setLabel(i18n.getTitle());
 				data.setValue(value.getId());
@@ -207,8 +207,8 @@ public class MenuImplService {
 	}
 	
 	private Map<String, List<MenuDto>> filterMenu(List<MenuDto> menus) {
-		List<MenuDto> mainMenus = new ArrayList<MenuDto>();
-		List<MenuDto> extraMenus = new ArrayList<MenuDto>();
+		final List<MenuDto> mainMenus = new ArrayList<MenuDto>();
+		final List<MenuDto> extraMenus = new ArrayList<MenuDto>();
 		menus.forEach(menuDto -> {
 			if(menuDto.getType().equals("main")) {
 				mainMenus.add(menuDto);
@@ -225,7 +225,7 @@ public class MenuImplService {
 	}
 	
 	private List<MenuDto> buildMenu(List<MenuEntity> menus) {
-		List<MenuDto> menuDtos = new ArrayList<MenuDto>();
+		final List<MenuDto> menuDtos = new ArrayList<MenuDto>();
 		menus.forEach(menu->{
 			if(menu.getLevel() == 0) {
 				menuDtos.add(menu.getObject());
@@ -234,8 +234,8 @@ public class MenuImplService {
 		return menuDtos;
 	}
 	
-	private List<TreeDto<MenuItemDto>> buildTreeMenu(List<MenuEntity> menus, String locale) {
-		List<TreeDto<MenuItemDto>> treeMenuDtos = new ArrayList<TreeDto<MenuItemDto>>();
+	private List<TreeDto<MenuItemDto>> buildTreeMenu(List<MenuEntity> menus, final String locale) {
+		final List<TreeDto<MenuItemDto>> treeMenuDtos = new ArrayList<TreeDto<MenuItemDto>>();
 		menus.forEach(menu->{
 			if(menu.getLevel() == 0) {
 				treeMenuDtos.add(this.getTreeObject(menu, locale));
@@ -244,8 +244,8 @@ public class MenuImplService {
 		return treeMenuDtos;
 	}
 	
-	private List<TreeDto<MenuItemDto>> buildTreeFunctionMenu(List<MenuEntity> menus, Set<MenuEntity> functions, String locale) {
-		List<TreeDto<MenuItemDto>> treeMenuDtos = new ArrayList<TreeDto<MenuItemDto>>();
+	private List<TreeDto<MenuItemDto>> buildTreeFunctionMenu(List<MenuEntity> menus, final Set<MenuEntity> functions, final String locale) {
+		final List<TreeDto<MenuItemDto>> treeMenuDtos = new ArrayList<TreeDto<MenuItemDto>>();
 		
 		menus.forEach(menu->{
 			if(menu.getLevel() == 0) {
@@ -255,22 +255,22 @@ public class MenuImplService {
 		return treeMenuDtos;
 	}
 
-	private List<TreeDto<MenuItemDto>> getTreeChildren(MenuEntity menu, String locale) {
+	private List<TreeDto<MenuItemDto>> getTreeChildren(MenuEntity menu, final String locale) {
 		if(menu.getChildsMenu().size() <= 0 || menu.getLeaf())
 			return null;
-		List<TreeDto<MenuItemDto>> treeMenuDtos = new ArrayList<TreeDto<MenuItemDto>>();
+		final List<TreeDto<MenuItemDto>> treeMenuDtos = new ArrayList<TreeDto<MenuItemDto>>();
 		menu.getChildsMenu().forEach(data->{
 			treeMenuDtos.add(this.getTreeObject(data, locale));
 		});
 		return treeMenuDtos;
 	}
 	
-	private TreeDto<MenuItemDto> getTreeObject(MenuEntity menu, String locale) {
-		TreeDto<MenuItemDto> treeMenuDto = new TreeDto<MenuItemDto>();
+	private TreeDto<MenuItemDto> getTreeObject(MenuEntity menu, final String locale) {
+		final TreeDto<MenuItemDto> treeMenuDto = new TreeDto<MenuItemDto>();
 		treeMenuDto.setId(menu.getId());
-		Map<String, String> menuI18n = new HashMap<String, String>();
-		Map<String, String> parentMenu = new HashMap<String, String>();
-		MenuItemDto menuItemDto = new MenuItemDto();
+		final Map<String, String> menuI18n = new HashMap<String, String>();
+		final Map<String, String> parentMenu = new HashMap<String, String>();
+		final MenuItemDto menuItemDto = new MenuItemDto();
 		menuItemDto.setCode(menu.getCode());
 		menuItemDto.setIcon(menu.getIcon());
 		menuItemDto.setLink(menu.getUrl());
@@ -304,22 +304,22 @@ public class MenuImplService {
 		return treeMenuDto;
 	}
 
-	private List<TreeDto<MenuItemDto>> getTreeChildrenFunction(MenuEntity menu, Set<MenuEntity> functions, String locale) {
+	private List<TreeDto<MenuItemDto>> getTreeChildrenFunction(MenuEntity menu, final Set<MenuEntity> functions, final String locale) {
 		if(menu.getChildsMenu().size() <= 0 || menu.getLeaf())
 			return null;
-		List<TreeDto<MenuItemDto>> treeMenuDtos = new ArrayList<TreeDto<MenuItemDto>>();
+		final List<TreeDto<MenuItemDto>> treeMenuDtos = new ArrayList<TreeDto<MenuItemDto>>();
 		menu.getChildsMenu().forEach(data->{
 			treeMenuDtos.add(this.getTreeObjectFunction(data, functions, locale));
 		});
 		return treeMenuDtos;
 	}
 	
-	private TreeDto<MenuItemDto> getTreeObjectFunction(MenuEntity menu, Set<MenuEntity> functions, String locale) {
-		TreeDto<MenuItemDto> treeMenuDto = new TreeDto<MenuItemDto>();
+	private TreeDto<MenuItemDto> getTreeObjectFunction(final MenuEntity menu, Set<MenuEntity> functions, final String locale) {
+		final TreeDto<MenuItemDto> treeMenuDto = new TreeDto<MenuItemDto>();
 		treeMenuDto.setId(menu.getId());
-		Map<String, String> menuI18n = new HashMap<String, String>();
-		Map<String, String> parentMenu = new HashMap<String, String>();
-		MenuItemDto menuItemDto = new MenuItemDto();
+		final Map<String, String> menuI18n = new HashMap<String, String>();
+		final Map<String, String> parentMenu = new HashMap<String, String>();
+		final MenuItemDto menuItemDto = new MenuItemDto();
 		menuItemDto.setId(menu.getId());
 		menuItemDto.setCode(menu.getCode());
 		menuItemDto.setIcon(menu.getIcon());
@@ -348,7 +348,7 @@ public class MenuImplService {
 			menuItemDto.setParentMenu(parentMenu);
 		}
 		menuItemDto.setI18n(menuI18n);
-		MenuEntity function = functions.stream().filter(funct -> menu.getId().equals(funct.getId())).findFirst().orElse(new MenuEntity());
+		final MenuEntity function = functions.stream().filter(funct -> menu.getId().equals(funct.getId())).findFirst().orElse(new MenuEntity());
 		function.getFunction().forEach(funct->{
 			if(menu.getId().equals(function.getId()) && funct.getAccess() != null) {
 				treeMenuDto.setSelected(true);

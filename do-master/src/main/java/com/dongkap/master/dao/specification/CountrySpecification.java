@@ -18,7 +18,7 @@ public class CountrySpecification {
 	
 	private static final String IS_ACTIVE = "active";
 
-	public static Specification<CountryEntity> getSelect(Map<String, Object> keyword) {
+	public static Specification<CountryEntity> getSelect(final Map<String, Object> keyword) {
 		return new Specification<CountryEntity>() {
 
 			/**

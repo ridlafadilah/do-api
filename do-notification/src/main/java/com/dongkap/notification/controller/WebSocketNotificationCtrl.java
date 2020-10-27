@@ -25,7 +25,7 @@ public class WebSocketNotificationCtrl extends BaseControllerException {
     @RequestMapping(value = "/trx/post/broadcast/v.1", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> sendBroadcast(@RequestBody String notification) throws Exception {
 		service.broadcast(notification);
-		return new ResponseEntity<>("ok", HttpStatus.OK);
+		return new ResponseEntity<String>("ok", HttpStatus.OK);
     }
 
 }

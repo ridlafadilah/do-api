@@ -33,7 +33,7 @@ public class ResourceServerHandlerConfiguration {
 	            OAuth2Exception oAuth2Exception = responseEntity.getBody();
 	            HttpHeaders headers = new HttpHeaders();
 	            headers.setAll(responseEntity.getHeaders().toSingleValueMap());
-				return new ResponseEntity<>(new CustomOauthException(oAuth2Exception.getMessage(), oAuth2Exception.getOAuth2ErrorCode()),
+				return new ResponseEntity<OAuth2Exception>(new CustomOauthException(oAuth2Exception.getMessage(), oAuth2Exception.getOAuth2ErrorCode()),
 	            		headers,
 	            		responseEntity.getStatusCode());
 	        }

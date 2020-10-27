@@ -20,7 +20,7 @@ public class FeignSignatureInterceptor {
 	private String publicKey;
 	
 	public String getTimestamp() {
-		return new Integer(new Double(Math.floor(new Date().getTime()/1000)).intValue()).toString();
+		return Integer.valueOf(Double.valueOf(Math.floor(new Date().getTime()/1000)).intValue()).toString();
 	}
 	
 	public String getPublicKey() {

@@ -16,7 +16,7 @@ import com.dongkap.master.entity.ParameterGroupEntity;
 
 public class ParameterGroupSpecification {
 
-	public static Specification<ParameterGroupEntity> getDatatable(Map<String, Object> keyword) {
+	public static Specification<ParameterGroupEntity> getDatatable(final Map<String, Object> keyword) {
 		return new Specification<ParameterGroupEntity>() {
 
 			/**

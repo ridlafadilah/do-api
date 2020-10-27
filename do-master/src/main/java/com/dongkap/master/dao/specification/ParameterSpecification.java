@@ -18,7 +18,7 @@ public class ParameterSpecification {
 	
 	private static final String IS_ACTIVE = "active";
 
-	public static Specification<ParameterEntity> getSelect(Map<String, Object> keyword) {
+	public static Specification<ParameterEntity> getSelect(final Map<String, Object> keyword) {
 		return new Specification<ParameterEntity>() {
 
 			/**
@@ -56,7 +56,7 @@ public class ParameterSpecification {
 		};
 	}
 
-	public static Specification<ParameterEntity> getDatatable(Map<String, Object> keyword) {
+	public static Specification<ParameterEntity> getDatatable(final Map<String, Object> keyword) {
 		return new Specification<ParameterEntity>() {
 
 			/**

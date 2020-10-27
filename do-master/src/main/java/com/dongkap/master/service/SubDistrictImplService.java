@@ -24,8 +24,8 @@ public class SubDistrictImplService extends CommonService {
 
 	public SelectResponseDto getSelectSubDistrict(FilterDto filter) throws Exception {
 		Page<SubDistrictEntity> subDistrict = subDistrictRepo.findAll(SubDistrictSpecification.getSelect(filter.getKeyword()), page(filter.getOrder(), filter.getOffset(), filter.getLimit()));
-		SelectResponseDto response = new SelectResponseDto();
-		response.setTotalFiltered(new Long(subDistrict.getContent().size()));
+		final SelectResponseDto response = new SelectResponseDto();
+		response.setTotalFiltered(Long.valueOf(subDistrict.getContent().size()));
 		response.setTotalRecord(subDistrictRepo.count(SubDistrictSpecification.getSelect(filter.getKeyword())));
 		subDistrict.getContent().forEach(value -> {
 			response.getData().add(new SelectDto(value.getSubDistrictName(), value.getSubDistrictCode(), !value.isActive(), null));

@@ -53,7 +53,7 @@ public class ParameterI18nImplService extends CommonService implements Parameter
 
 	public List<ParameterI18nDto> getParameterCode(Map<String, Object> filter) throws Exception {
 		List<ParameterI18nEntity> param = parameterI18nRepo.findByParameter_ParameterCode(filter.get("parameterCode").toString());
-		List<ParameterI18nDto> response = new ArrayList<ParameterI18nDto>();
+		final List<ParameterI18nDto> response = new ArrayList<ParameterI18nDto>();
 		param.forEach(value -> {
 			ParameterI18nDto temp = new ParameterI18nDto();
 			temp.setParameterCode(value.getParameter().getParameterCode());
@@ -153,8 +153,8 @@ public class ParameterI18nImplService extends CommonService implements Parameter
     	}
     	filter.getKeyword().put("localeCode", locale);
 		Page<ParameterI18nEntity> parameter = parameterI18nRepo.findAll(ParameterI18nSpecification.getSelect(filter.getKeyword()), page(filter.getOrder(), filter.getOffset(), filter.getLimit()));
-		SelectResponseDto response = new SelectResponseDto();
-		response.setTotalFiltered(new Long(parameter.getContent().size()));
+		final SelectResponseDto response = new SelectResponseDto();
+		response.setTotalFiltered(Long.valueOf(parameter.getContent().size()));
 		response.setTotalRecord(parameterI18nRepo.count(ParameterI18nSpecification.getSelect(filter.getKeyword())));
 		parameter.getContent().forEach(value -> {
 			response.getData().add(new SelectDto(value.getParameterValue(), value.getParameter().getParameterCode(), !value.getParameter().isActive(), null));

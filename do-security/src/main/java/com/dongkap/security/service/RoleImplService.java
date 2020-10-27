@@ -34,8 +34,8 @@ public class RoleImplService extends CommonService {
 
 	public SelectResponseDto getSelectRole(FilterDto filter) throws Exception {
 		Page<RoleEntity> role = roleRepo.findAll(RoleSpecification.getSelect(filter.getKeyword()), page(filter.getOrder(), filter.getOffset(), filter.getLimit()));
-		SelectResponseDto response = new SelectResponseDto();
-		response.setTotalFiltered(new Long(role.getContent().size()));
+		final SelectResponseDto response = new SelectResponseDto();
+		response.setTotalFiltered(Long.valueOf(role.getContent().size()));
 		response.setTotalRecord(roleRepo.count(RoleSpecification.getSelect(filter.getKeyword())));
 		role.getContent().forEach(value -> {
 			response.getData().add(new SelectDto(value.getDescription(), value.getAuthority(), !value.isActive(), null));
@@ -45,9 +45,9 @@ public class RoleImplService extends CommonService {
 
 	public SelectResponseDto getSelectAllLocale() throws Exception {
 		List<RoleEntity> role = roleRepo.findAll();
-		SelectResponseDto response = new SelectResponseDto();
-		response.setTotalFiltered(new Long(role.size()));
-		response.setTotalRecord(new Long(role.size()));
+		final SelectResponseDto response = new SelectResponseDto();
+		response.setTotalFiltered(Long.valueOf(role.size()));
+		response.setTotalRecord(Long.valueOf(role.size()));
 		role.forEach(value -> {
 			response.getData().add(new SelectDto(value.getDescription(), value.getAuthority(), !value.isActive(), null));
 		});
@@ -56,7 +56,7 @@ public class RoleImplService extends CommonService {
 
 	public List<RoleDto> getAllLocale() throws Exception {
 		List<RoleEntity> role = roleRepo.findAll();
-		List<RoleDto> response = new ArrayList<RoleDto>();
+		final List<RoleDto> response = new ArrayList<RoleDto>();
 		role.forEach(value -> {
 			RoleDto temp = new RoleDto();
 			temp.setAuthority(value.getAuthority());
@@ -74,8 +74,8 @@ public class RoleImplService extends CommonService {
 
 	public CommonResponseDto<RoleDto> getDatatableLocale(FilterDto filter) throws Exception {
 		Page<RoleEntity> role = roleRepo.findAll(RoleSpecification.getDatatable(filter.getKeyword()), page(filter.getOrder(), filter.getOffset(), filter.getLimit()));
-		CommonResponseDto<RoleDto> response = new CommonResponseDto<RoleDto>();
-		response.setTotalFiltered(new Long(role.getContent().size()));
+		final CommonResponseDto<RoleDto> response = new CommonResponseDto<RoleDto>();
+		response.setTotalFiltered(Long.valueOf(role.getContent().size()));
 		response.setTotalRecord(roleRepo.count(RoleSpecification.getDatatable(filter.getKeyword())));
 		role.getContent().forEach(value -> {
 			RoleDto temp = new RoleDto();

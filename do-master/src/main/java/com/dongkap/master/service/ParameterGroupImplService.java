@@ -33,8 +33,8 @@ public class ParameterGroupImplService extends CommonService {
 
 	public CommonResponseDto<ParameterGroupDto> getDatatableParameterGroup(FilterDto filter) throws Exception {
 		Page<ParameterGroupEntity> paramGroup = parameterGroupRepo.findAll(ParameterGroupSpecification.getDatatable(filter.getKeyword()), page(filter.getOrder(), filter.getOffset(), filter.getLimit()));
-		CommonResponseDto<ParameterGroupDto> response = new CommonResponseDto<ParameterGroupDto>();
-		response.setTotalFiltered(new Long(paramGroup.getContent().size()));
+		final CommonResponseDto<ParameterGroupDto> response = new CommonResponseDto<ParameterGroupDto>();
+		response.setTotalFiltered(Long.valueOf(paramGroup.getContent().size()));
 		response.setTotalRecord(parameterGroupRepo.count(ParameterGroupSpecification.getDatatable(filter.getKeyword())));
 		paramGroup.getContent().forEach(value -> {
 			ParameterGroupDto temp = new ParameterGroupDto();

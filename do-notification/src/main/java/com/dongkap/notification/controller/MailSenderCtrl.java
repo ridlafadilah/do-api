@@ -37,7 +37,7 @@ public class MailSenderCtrl extends BaseControllerException {
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("info", HttpStatus.OK.value());
 		data.put("info_description", "Success");
-		return new ResponseEntity<>(data, HttpStatus.OK);
+		return new ResponseEntity<Map<String, Object>>(data, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/trx/post/mail/broadcast/v.1", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -51,7 +51,7 @@ public class MailSenderCtrl extends BaseControllerException {
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("info", HttpStatus.OK.value());
 		data.put("info_description", "Success");
-		return new ResponseEntity<>(data, HttpStatus.OK);
+		return new ResponseEntity<Map<String, Object>>(data, HttpStatus.OK);
     }
 
 }

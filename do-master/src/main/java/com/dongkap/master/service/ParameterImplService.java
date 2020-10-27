@@ -32,8 +32,8 @@ public class ParameterImplService extends CommonService {
 
 	public CommonResponseDto<ParameterDto> getDatatableParameter(FilterDto filter) throws Exception {
 		Page<ParameterEntity> param = parameterRepo.findAll(ParameterSpecification.getDatatable(filter.getKeyword()), page(filter.getOrder(), filter.getOffset(), filter.getLimit()));
-		CommonResponseDto<ParameterDto> response = new CommonResponseDto<ParameterDto>();
-		response.setTotalFiltered(new Long(param.getContent().size()));
+		final CommonResponseDto<ParameterDto> response = new CommonResponseDto<ParameterDto>();
+		response.setTotalFiltered(Long.valueOf(param.getContent().size()));
 		response.setTotalRecord(parameterRepo.count(ParameterSpecification.getDatatable(filter.getKeyword())));
 		param.getContent().forEach(value -> {
 			ParameterDto temp = new ParameterDto();
@@ -58,8 +58,8 @@ public class ParameterImplService extends CommonService {
 	    	}
 	    	filter.getKeyword().put("localeCode", locale);
 		Page<ParameterEntity> parameter = parameterRepo.findAll(ParameterSpecification.getSelect(filter.getKeyword()), page(filter.getOrder(), filter.getOffset(), filter.getLimit()));
-		SelectResponseDto response = new SelectResponseDto();
-		response.setTotalFiltered(new Long(parameter.getContent().size()));
+		final SelectResponseDto response = new SelectResponseDto();
+		response.setTotalFiltered(Long.valueOf(parameter.getContent().size()));
 		response.setTotalRecord(parameterRepo.count(ParameterSpecification.getSelect(filter.getKeyword())));
 		parameter.getContent().forEach(value -> {
 			value.getParameterI18n().forEach(data -> {

@@ -34,8 +34,8 @@ public class LocaleImplService extends CommonService {
 
 	public SelectResponseDto getSelectLocale(FilterDto filter) throws Exception {
 		Page<LocaleEntity> locale = localeRepo.findAll(LocaleSpecification.getSelect(filter.getKeyword()), page(filter.getOrder(), filter.getOffset(), filter.getLimit()));
-		SelectResponseDto response = new SelectResponseDto();
-		response.setTotalFiltered(new Long(locale.getContent().size()));
+		final SelectResponseDto response = new SelectResponseDto();
+		response.setTotalFiltered(Long.valueOf(locale.getContent().size()));
 		response.setTotalRecord(localeRepo.count(LocaleSpecification.getSelect(filter.getKeyword())));
 		locale.getContent().forEach(value -> {
 			response.getData().add(new SelectDto(value.getIdentifier(), value.getLocaleCode(), !value.isActive(), value.getIcon()));
@@ -45,9 +45,9 @@ public class LocaleImplService extends CommonService {
 
 	public SelectResponseDto getSelectAllLocale() throws Exception {
 		List<LocaleEntity> locale = localeRepo.findAll();
-		SelectResponseDto response = new SelectResponseDto();
-		response.setTotalFiltered(new Long(locale.size()));
-		response.setTotalRecord(new Long(locale.size()));
+		final SelectResponseDto response = new SelectResponseDto();
+		response.setTotalFiltered(Long.valueOf(locale.size()));
+		response.setTotalRecord(Long.valueOf(locale.size()));
 		locale.forEach(value -> {
 			response.getData().add(new SelectDto(value.getIdentifier(), value.getLocaleCode(), !value.isActive(), value.getIcon()));
 		});
@@ -56,7 +56,7 @@ public class LocaleImplService extends CommonService {
 
 	public List<LocaleDto> getAllLocale() throws Exception {
 		List<LocaleEntity> locale = localeRepo.findAll();
-		List<LocaleDto> response = new ArrayList<LocaleDto>();
+		final List<LocaleDto> response = new ArrayList<LocaleDto>();
 		locale.forEach(value -> {
 			LocaleDto temp = new LocaleDto();
 			temp.setLocaleCode(value.getLocaleCode());
@@ -77,8 +77,8 @@ public class LocaleImplService extends CommonService {
 
 	public CommonResponseDto<LocaleDto> getDatatableLocale(FilterDto filter) throws Exception {
 		Page<LocaleEntity> locale = localeRepo.findAll(LocaleSpecification.getDatatable(filter.getKeyword()), page(filter.getOrder(), filter.getOffset(), filter.getLimit()));
-		CommonResponseDto<LocaleDto> response = new CommonResponseDto<LocaleDto>();
-		response.setTotalFiltered(new Long(locale.getContent().size()));
+		final CommonResponseDto<LocaleDto> response = new CommonResponseDto<LocaleDto>();
+		response.setTotalFiltered(Long.valueOf(locale.getContent().size()));
 		response.setTotalRecord(localeRepo.count(LocaleSpecification.getDatatable(filter.getKeyword())));
 		locale.getContent().forEach(value -> {
 			LocaleDto temp = new LocaleDto();

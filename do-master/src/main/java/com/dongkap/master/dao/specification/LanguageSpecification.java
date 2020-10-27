@@ -15,7 +15,7 @@ public class LanguageSpecification {
 	
 	private static final String IS_ACTIVE = "active";
 
-	public static Specification<LanguageEntity> getSelect(Map<String, Object> keyword) {
+	public static Specification<LanguageEntity> getSelect(final Map<String, Object> keyword) {
 		return new Specification<LanguageEntity>() {
 
 			/**
@@ -50,7 +50,7 @@ public class LanguageSpecification {
 		};
 	}
 
-	public static Specification<LanguageEntity> getDatatable(Map<String, Object> keyword) {
+	public static Specification<LanguageEntity> getDatatable(final Map<String, Object> keyword) {
 		return new Specification<LanguageEntity>() {
 
 			/**

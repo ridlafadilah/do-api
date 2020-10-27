@@ -18,7 +18,7 @@ public class ParameterI18nSpecification {
 	
 	private static final String IS_ACTIVE = "active";
 
-	public static Specification<ParameterI18nEntity> getSelect(Map<String, Object> keyword) {
+	public static Specification<ParameterI18nEntity> getSelect(final Map<String, Object> keyword) {
 		return new Specification<ParameterI18nEntity>() {
 
 			/**

@@ -24,8 +24,8 @@ public class DistrictImplService extends CommonService {
 
 	public SelectResponseDto getSelectDistrict(FilterDto filter) throws Exception {
 		Page<DistrictEntity> district = districtRepo.findAll(DistrictSpecification.getSelect(filter.getKeyword()), page(filter.getOrder(), filter.getOffset(), filter.getLimit()));
-		SelectResponseDto response = new SelectResponseDto();
-		response.setTotalFiltered(new Long(district.getContent().size()));
+		final SelectResponseDto response = new SelectResponseDto();
+		response.setTotalFiltered(Long.valueOf(district.getContent().size()));
 		response.setTotalRecord(districtRepo.count(DistrictSpecification.getSelect(filter.getKeyword())));
 		district.getContent().forEach(value -> {
 			response.getData().add(new SelectDto(value.getDistrictName(), value.getDistrictCode(), !value.isActive(), null));

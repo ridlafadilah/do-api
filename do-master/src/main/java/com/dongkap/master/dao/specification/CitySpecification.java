@@ -18,7 +18,7 @@ public class CitySpecification {
 	
 	private static final String IS_ACTIVE = "active";
 
-	public static Specification<CityEntity> getSelect(Map<String, Object> keyword) {
+	public static Specification<CityEntity> getSelect(final Map<String, Object> keyword) {
 		return new Specification<CityEntity>() {
 
 			/**
@@ -56,7 +56,7 @@ public class CitySpecification {
 		};
 	}
 
-	public static Specification<CityEntity> getDatatable(Map<String, Object> keyword) {
+	public static Specification<CityEntity> getDatatable(final Map<String, Object> keyword) {
 		return new Specification<CityEntity>() {
 
 			/**

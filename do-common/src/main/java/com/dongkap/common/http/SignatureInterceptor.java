@@ -91,7 +91,7 @@ public class SignatureInterceptor implements Filter {
             	if(!request.getHeader(this.paramKey).equals(publicKey))
     				throw new SystemErrorException(ErrorCode.ERR_XDOKEY);
             	try {
-            		datenow = DateUtil.formatDate(new Date(new Long(request.getHeader(this.paramTimestamp)) * 1000), DateUtil.DEFAULT_FORMAT_DATE);
+            		datenow = DateUtil.formatDate(new Date(Long.valueOf(request.getHeader(this.paramTimestamp)) * 1000), DateUtil.DEFAULT_FORMAT_DATE);
     			} catch (Exception e) {
     				throw new SystemErrorException(ErrorCode.ERR_XDOTIMESTAMP);
     			}

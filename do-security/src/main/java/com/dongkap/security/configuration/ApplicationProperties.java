@@ -32,7 +32,7 @@ public class ApplicationProperties {
     }
 
     public static final class OAuth2 {
-        private List<String> authorizedRedirectUris = new ArrayList<>();
+        private List<String> authorizedRedirectUris = new ArrayList<String>();
 
         public List<String> getAuthorizedRedirectUris() {
             return authorizedRedirectUris;

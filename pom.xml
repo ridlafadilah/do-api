@@ -6,7 +6,7 @@
 	<groupId>com.dongkap</groupId>
 	<artifactId>do-root</artifactId>
 	<packaging>pom</packaging>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>2.0.0-SNAPSHOT</version>
 
 	<properties>
 		<!-- LIBRARY VERSION PROPERTIES -->
@@ -27,11 +27,14 @@
 		<hibernate.version>5.0.12.Final</hibernate.version>
 		<jasperreports.version>6.3.1</jasperreports.version>
 		<java.jms.version>1.1</java.jms.version>
-		<java.version>1.8</java.version>
+		<!-- <java.version>1.8</java.version> -->
+		<java.version>12</java.version>
 		<javax.mail.version>1.4.7</javax.mail.version>
+		<jaxb.version>2.3.1</jaxb.version>
+		<jaxb-core.version>2.3.0.1</jaxb-core.version>
 		<jersey.version>1.19.1</jersey.version>
 		<jgroups.version>3.6.4.Final</jgroups.version>
-		<maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
+		<maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
 		<neo4j-cypher-compiler-2.2.version>2.2.5</neo4j-cypher-compiler-2.2.version>
 		<org.codehaus.jackson.version>2.6.5</org.codehaus.jackson.version>
 		<org.neo4j.version>2.1.5</org.neo4j.version>
@@ -103,8 +106,9 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>${maven-compiler-plugin.version}</version>
 				<configuration>
-					<source>${java.version}</source>
-					<target>${java.version}</target>
+					<release>${java.version}</release> 
+					<!-- <source>${java.version}</source>
+					<target>${java.version}</target> -->
 				</configuration>
 			</plugin>
 		</plugins>

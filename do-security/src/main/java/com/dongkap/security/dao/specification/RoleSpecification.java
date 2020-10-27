@@ -15,7 +15,7 @@ public class RoleSpecification {
 	
 	private static final String IS_ACTIVE = "active";
 
-	public static Specification<RoleEntity> getSelect(Map<String, Object> keyword) {
+	public static Specification<RoleEntity> getSelect(final Map<String, Object> keyword) {
 		return new Specification<RoleEntity>() {
 
 			/**
@@ -51,7 +51,7 @@ public class RoleSpecification {
 		};
 	}
 
-	public static Specification<RoleEntity> getDatatable(Map<String, Object> keyword) {
+	public static Specification<RoleEntity> getDatatable(final Map<String, Object> keyword) {
 		return new Specification<RoleEntity>() {
 
 			/**

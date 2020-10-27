@@ -15,7 +15,7 @@ public class LocaleSpecification {
 	
 	private static final String IS_ACTIVE = "active";
 
-	public static Specification<LocaleEntity> getSelect(Map<String, Object> keyword) {
+	public static Specification<LocaleEntity> getSelect(final Map<String, Object> keyword) {
 		return new Specification<LocaleEntity>() {
 
 			/**
@@ -51,7 +51,7 @@ public class LocaleSpecification {
 		};
 	}
 
-	public static Specification<LocaleEntity> getDatatable(Map<String, Object> keyword) {
+	public static Specification<LocaleEntity> getDatatable(final Map<String, Object> keyword) {
 		return new Specification<LocaleEntity>() {
 
 			/**

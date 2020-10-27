@@ -45,7 +45,7 @@ public class WebPushNotificationImplService implements WebPushNotificationServic
 	
 	private static PushService pushService = new PushService();
     private static final int ONE_DAY_DURATION_IN_SECONDS = 86400;
-    private static Long DEFAULT_TTL = new Long(28) * ONE_DAY_DURATION_IN_SECONDS;
+    private static Long DEFAULT_TTL = Long.valueOf(28) * ONE_DAY_DURATION_IN_SECONDS;
     
     @PostConstruct
     public void initKeys() throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException {

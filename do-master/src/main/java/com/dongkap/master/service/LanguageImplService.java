@@ -26,8 +26,8 @@ public class LanguageImplService extends CommonService {
 
 	public SelectResponseDto getSelectLocale(FilterDto filter) throws Exception {
 		Page<LanguageEntity> locale = languageRepo.findAll(LanguageSpecification.getSelect(filter.getKeyword()), page(filter.getOrder(), filter.getOffset(), filter.getLimit()));
-		SelectResponseDto response = new SelectResponseDto();
-		response.setTotalFiltered(new Long(locale.getContent().size()));
+		final SelectResponseDto response = new SelectResponseDto();
+		response.setTotalFiltered(Long.valueOf(locale.getContent().size()));
 		response.setTotalRecord(languageRepo.count(LanguageSpecification.getSelect(filter.getKeyword())));
 		locale.getContent().forEach(value -> {
 			response.getData().add(new SelectDto(value.getIdentifier(), value.getLanguageCode(), !value.isActive(), null));
@@ -37,8 +37,8 @@ public class LanguageImplService extends CommonService {
 
 	public CommonResponseDto<LanguageDto> getDatatableLocale(FilterDto filter) throws Exception {
 		Page<LanguageEntity> locale = languageRepo.findAll(LanguageSpecification.getDatatable(filter.getKeyword()), page(filter.getOrder(), filter.getOffset(), filter.getLimit()));
-		CommonResponseDto<LanguageDto> response = new CommonResponseDto<LanguageDto>();
-		response.setTotalFiltered(new Long(locale.getContent().size()));
+		final CommonResponseDto<LanguageDto> response = new CommonResponseDto<LanguageDto>();
+		response.setTotalFiltered(Long.valueOf(locale.getContent().size()));
 		response.setTotalRecord(languageRepo.count(LanguageSpecification.getDatatable(filter.getKeyword())));
 		locale.getContent().forEach(value -> {
 			LanguageDto temp = new LanguageDto();

@@ -16,7 +16,7 @@ import com.dongkap.security.entity.UserEntity;
 
 public class UserSpecification {
 
-	public static Specification<UserEntity> getDatatable(Map<String, Object> keyword) {
+	public static Specification<UserEntity> getDatatable(final Map<String, Object> keyword) {
 		return new Specification<UserEntity>() {
 
 			/**
