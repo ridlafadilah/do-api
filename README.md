@@ -93,3 +93,9 @@ Make sure following software is installed on your PC.
 * __Test__
   
   Please testing with [Dongkap Angular](https://github.com/ridlafadilah/do-ngx)
+
+## Donation
+
+If this project help you reduce time to develop, you can give me a cup of coffee :smiley:
+
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](http://paypal.me/ridlafadilah)
