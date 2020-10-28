@@ -1,4 +1,4 @@
-# do-api
+# do-api [![Actions Status](https://github.com/ridlafadilah/do-api/workflows/Dongkap%20CI/badge.svg)](https://github.com/ridlafadilah/do-api/actions)
 Dongkap | Web Service Application
 
 ```
