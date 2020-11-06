@@ -8,6 +8,10 @@ INSERT INTO security.sec_role (role_uuid, role_name, description, "version", is_
 
 --
 -- Dumping data for table sec_user
+-- admin | admin123
+-- user | user123
+-- male | user123
+-- female | user123
 --
 
 INSERT INTO security.sec_user (user_uuid, username, password, account_enabled, account_non_expired, account_non_locked, credentials_non_expired, email, verification_code, raw, authority_default, "version", is_active, created_date, created_by, modified_date, modified_by) VALUES
@@ -18,8 +22,8 @@ INSERT INTO security.sec_user (user_uuid, username, password, account_enabled, a
 
 --
 -- Dumping data for table oauth_client_details
--- do-core = secretxa01
--- do-mobile = secretxa02
+-- do-core | secretdo01
+-- do-mobile | secretdo02
 --
 
 INSERT INTO security.oauth_client_details (client_id, resource_ids, client_secret, scope, authorized_grant_types, web_server_redirect_uri, authorities, access_token_validity, refresh_token_validity, additional_information, autoapprove) VALUES
