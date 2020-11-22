@@ -100,3 +100,5 @@ Make sure following software is installed on your PC.
   * If this project help you reduce time to develop, you can give me a cup of coffee :smiley:
     
     [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](http://paypal.me/ridlafadilah)
+	
+	[![Buy Me A Coffee](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/ridlafadilah)
