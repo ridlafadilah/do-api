@@ -108,6 +108,7 @@ CREATE TABLE master.mst_locale (
 	locale_uuid varchar(36) NOT NULL,
 	locale_code varchar(10) NOT NULL,
 	locale_identifier varchar(100) NOT NULL,
+	locale_sub_identifier varchar(100) NOT NULL,
 	locale_icon varchar(100) DEFAULT 'flag-icon flag-icon-us',
 	locale_default boolean DEFAULT false NOT NULL,
 	locale_enabled boolean DEFAULT true NOT NULL,

@@ -21,6 +21,7 @@ public class LocaleDto extends BaseAuditDto {
 	private static final long serialVersionUID = -8125190677227153892L;
 	private String localeCode;
 	private String identifier;
+	private String subIdentifier;
 	private String icon;
 	private boolean localeDefault;
 	private boolean localeEnabled;

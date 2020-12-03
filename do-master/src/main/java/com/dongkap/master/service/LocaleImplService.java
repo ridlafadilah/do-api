@@ -61,6 +61,7 @@ public class LocaleImplService extends CommonService {
 			LocaleDto temp = new LocaleDto();
 			temp.setLocaleCode(value.getLocaleCode());
 			temp.setIdentifier(value.getIdentifier());
+			temp.setSubIdentifier(value.getSubIdentifier());
 			temp.setIcon(value.getIcon());
 			temp.setLocaleDefault(value.isLocaleDefault());
 			temp.setLocaleEnabled(value.isLocaleEnabled());
@@ -84,6 +85,7 @@ public class LocaleImplService extends CommonService {
 			LocaleDto temp = new LocaleDto();
 			temp.setLocaleCode(value.getLocaleCode());
 			temp.setIdentifier(value.getIdentifier());
+			temp.setSubIdentifier(value.getSubIdentifier());
 			temp.setIcon(value.getIcon());
 			temp.setLocaleDefault(value.isLocaleDefault());
 			temp.setLocaleEnabled(value.isLocaleEnabled());
@@ -121,6 +123,7 @@ public class LocaleImplService extends CommonService {
 			}
 			locale.setLocaleEnabled(request.isLocaleEnabled());
 			locale.setIdentifier(request.getIdentifier());
+			locale.setSubIdentifier(request.getSubIdentifier());
 			locale.setIcon(request.getIcon());
 			locale = localeRepo.saveAndFlush(locale);
 		} else {

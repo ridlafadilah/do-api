@@ -43,6 +43,9 @@ public class LocaleEntity extends BaseAuditEntity {
 	@Column(name = "locale_identifier", nullable = false)
 	private String identifier;
 
+	@Column(name = "locale_sub_identifier")
+	private String subIdentifier;
+
 	@Column(name = "locale_icon")
 	private String icon;
 
