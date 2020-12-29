@@ -39,7 +39,7 @@ public class PhotoProfileController extends BaseControllerException {
     protected String path;
 
     @ResponseSuccess(SuccessCode.OK_SCR005)
-	@RequestMapping(value = "/trx/auth/photo-profile/v.1", method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)	
+	@RequestMapping(value = "/trx/post/photo-profile/v.1", method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)	
 	public ResponseEntity<ApiBaseResponse> putPhotoProfile(Authentication authentication,
 			@RequestPart @Valid MultipartFile photo,
 			@RequestHeader(name = HttpHeaders.ACCEPT_LANGUAGE, required = false) String locale) throws Exception {

@@ -41,7 +41,8 @@ public class ProfileImplService implements ProfileService {
 		if (p_user.getUsername() != null) {
 			ContactUserEntity contactUser = this.contactUserRepo.findByUser_Username(p_user.getUsername());
 			if (contactUser != null) {
-				contactUser.setAddress(p_dto.getAddress());
+				if (p_dto.getAddress() != null)
+					contactUser.setAddress(p_dto.getAddress());
 				contactUser.setCountry(p_dto.getCountry());
 				contactUser.setCountryCode(p_dto.getCountryCode());
 				contactUser.setProvince(p_dto.getProvince());
@@ -85,9 +86,12 @@ public class ProfileImplService implements ProfileService {
 					if(parameterI18nService.getParameter(temp, p_locale).getParameterValue() != null)
 						personalInfo.setGender(p_dto.getGenderCode());
 				} catch (Exception e) {}
-				personalInfo.setIdNumber(p_dto.getIdNumber());
-				personalInfo.setPlaceOfBirth(p_dto.getPlaceOfBirth());
-				personalInfo.setDateOfBirth(DateUtil.DATE.parse(p_dto.getDateOfBirth()));
+				if(p_dto.getIdNumber() != null)
+					personalInfo.setIdNumber(p_dto.getIdNumber());
+				if(p_dto.getPlaceOfBirth() != null)
+					personalInfo.setPlaceOfBirth(p_dto.getPlaceOfBirth());
+				if(p_dto.getDateOfBirth() != null)
+					personalInfo.setDateOfBirth(DateUtil.DATE.parse(p_dto.getDateOfBirth()));
 				personalInfo.setContactUser(contactUser);
 				contactUser.setPersonalInfo(personalInfo);
 				this.contactUserRepo.save(contactUser);
