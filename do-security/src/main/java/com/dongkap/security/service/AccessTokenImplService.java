@@ -55,6 +55,10 @@ public class AccessTokenImplService {
 
 	public OAuth2AccessToken grantAuthDefault(Authentication authentication) throws Exception {
         UserEntity userEntity = (UserEntity)authentication.getPrincipal();
+		return grantAuthDefault(userEntity);
+	}
+
+	public OAuth2AccessToken grantAuthDefault(UserEntity userEntity) throws Exception {
 
         ClientDetails clientDetails;
 		try {

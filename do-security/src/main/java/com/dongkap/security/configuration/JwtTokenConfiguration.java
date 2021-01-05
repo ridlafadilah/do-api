@@ -34,6 +34,7 @@ public class JwtTokenConfiguration {
 					Map<String, Object> temp = new LinkedHashMap<String, Object>(accessToken.getAdditionalInformation());
 					accessToken.getAdditionalInformation().clear();
 					accessToken.getAdditionalInformation().put("image", temp.get("image"));
+					accessToken.getAdditionalInformation().put("username", temp.get("username"));
 					accessToken.getAdditionalInformation().put("authority", temp.get("authority"));
 					accessToken.getAdditionalInformation().put("provider", temp.get("provider"));
 					accessToken.getAdditionalInformation().put("email", temp.get("email"));
