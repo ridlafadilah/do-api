@@ -34,6 +34,14 @@ public class ForgotPasswordController extends BaseControllerException {
 		return new ResponseEntity<ApiBaseResponse>(forgotPassword.requestForgotPassword(p_dto, locale), HttpStatus.OK);
 	}
 
+	@ResponseSuccess(SuccessCode.OK_VERIFICATION_FORGOT_PASSWORD)
+	@RequestMapping(value = "/oauth/verification-forgot-password", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ApiBaseResponse> verificationForgotPassword(Authentication authentication,
+			@RequestHeader(name = HttpHeaders.ACCEPT_LANGUAGE, required = false) String locale,
+			@RequestBody(required = true) ForgotPasswordDto p_dto) throws Exception {
+		return new ResponseEntity<ApiBaseResponse>(forgotPassword.verificationForgotPassword(p_dto, locale), HttpStatus.OK);
+	}
+
 	@ResponseSuccess(SuccessCode.OK_FORGOT_PASSWORD)
 	@RequestMapping(value = "/oauth/forgot-password", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ApiBaseResponse> forgotPassword(Authentication authentication,

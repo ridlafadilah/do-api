@@ -13,6 +13,7 @@ public enum SuccessCode {
 	OK_REGISTERED(HttpStatus.OK),
 	OK_FORGOT_PASSWORD(HttpStatus.OK),
 	OK_REQUEST_FORGOT_PASSWORD(HttpStatus.OK),
+	OK_VERIFICATION_FORGOT_PASSWORD(HttpStatus.OK),
 	OK_SCR002(HttpStatus.OK),
 	OK_SCR003(HttpStatus.OK),
 	OK_SCR004(HttpStatus.OK),

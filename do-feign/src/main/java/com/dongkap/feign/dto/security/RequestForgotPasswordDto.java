@@ -21,5 +21,6 @@ public class RequestForgotPasswordDto implements Serializable {
 	private static final long serialVersionUID = 5796428849651043391L;
 	private String email;
 	private String urlForgotPassword;
+	private Boolean mobile = true;
 
 }
