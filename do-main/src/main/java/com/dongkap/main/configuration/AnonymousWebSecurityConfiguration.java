@@ -90,6 +90,7 @@ public class AnonymousWebSecurityConfiguration extends WebSecurityConfigurerAdap
 		String signupEndpointPath = handlerMapping.getServletPath("/oauth/signup");
 		String forgotPasswordEndpointPath = handlerMapping.getServletPath("/oauth/forgot-password");
 		String requestForgotPasswordEndpointPath = handlerMapping.getServletPath("/oauth/request-forgot-password");
+		String verificationForgotPasswordEndpointPath = handlerMapping.getServletPath("/oauth/verification-forgot-password");
 		String checkUserPath = handlerMapping.getServletPath("/oauth/check-user");
 
 		if (!endpoints.getEndpointsConfigurer().isUserDetailsServiceOverride()) {
@@ -113,6 +114,7 @@ public class AnonymousWebSecurityConfiguration extends WebSecurityConfigurerAdap
 	        	.antMatchers(signupEndpointPath).authenticated()
 	        	.antMatchers(forgotPasswordEndpointPath).authenticated()
 	        	.antMatchers(requestForgotPasswordEndpointPath).authenticated()
+	        	.antMatchers(verificationForgotPasswordEndpointPath).authenticated()
 	        	.antMatchers(checkUserPath).authenticated()
 	        	.antMatchers(OPENAPI_PATH_SECURITY_VIEW).authenticated()
         .and()
@@ -122,6 +124,7 @@ public class AnonymousWebSecurityConfiguration extends WebSecurityConfigurerAdap
             			checkTokenPath, extractTokenPath,
             			forceEndpointPath, signupEndpointPath, 
             			forgotPasswordEndpointPath, requestForgotPasswordEndpointPath,
+            			verificationForgotPasswordEndpointPath,
             			checkUserPath, tokenVerifierPath,
             			OAUTH2_PATH,
             			OPENAPI_PATH_SECURITY_VIEW)
