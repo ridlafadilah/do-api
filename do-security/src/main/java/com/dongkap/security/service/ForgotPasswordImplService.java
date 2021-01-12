@@ -51,22 +51,32 @@ public class ForgotPasswordImplService {
 	private MessageSource messageSource;
 
 	public ApiBaseResponse requestForgotPassword(RequestForgotPasswordDto p_dto, String p_locale) throws Exception {
-		if(p_dto.getMobile()) {
-			return requestForgotPasswordMobile(p_dto, p_locale);			
-		} else {
-			return requestForgotPasswordWeb(p_dto, p_locale);
-		}
+		if(p_dto.getEmail() != null) {
+			UserEntity userEntity = userRepo.loadByUser(p_dto.getEmail().toLowerCase());	
+			if(p_dto.getPin()) {
+				return requestForgotPasswordPin(userEntity, p_locale);			
+			} else {
+				if(p_dto.getUrlForgotPassword() != null) {
+					return requestForgotPasswordUrl(userEntity, p_dto.getUrlForgotPassword(), p_locale);
+				} else
+					throw new SystemErrorException(ErrorCode.ERR_SYS0404);
+			}		
+		} else
+			throw new SystemErrorException(ErrorCode.ERR_SYS0404);
 	}
 
 	public ApiBaseResponse verificationForgotPassword(ForgotPasswordDto p_dto, String p_locale) throws Exception {
 		if(p_dto.getVerificationId() != null && p_dto.getVerificationCode() != null) {
 			UserEntity userEntity = userRepo.loadByIdAndVerificationCode(p_dto.getVerificationId(), p_dto.getVerificationCode());
 			if(userEntity != null) {
-				return null;
+				if(!(new Date().after(userEntity.getVerificationExpired()))) {
+					return null;
+				} else
+					throw new SystemErrorException(ErrorCode.ERR_SYS0002);
 			} else
-				throw new SystemErrorException(ErrorCode.ERR_SYS0002);
+				throw new SystemErrorException(ErrorCode.ERR_SCR0014);
 		} else
-			throw new SystemErrorException(ErrorCode.ERR_SYS0404);
+			throw new SystemErrorException(ErrorCode.ERR_SYS0002);
 	}
 
 	public ApiBaseResponse forgotPassword(ForgotPasswordDto p_dto, String p_locale) throws Exception {
@@ -97,77 +107,69 @@ public class ForgotPasswordImplService {
 			throw new SystemErrorException(ErrorCode.ERR_SYS0404);
 	}
 	
-	private ApiBaseResponse requestForgotPasswordMobile(RequestForgotPasswordDto p_dto, String p_locale) throws Exception {
-		if(p_dto.getEmail() != null) {
-			UserEntity userEntity = userRepo.loadByUser(p_dto.getEmail().toLowerCase());
-			if(userEntity != null) {
-				if(userEntity.getProvider().equals(AuthorizationProvider.local.toString())) {
-					Calendar cal = Calendar.getInstance();
-					cal.setTime(new Date());
-					cal.add(Calendar.DATE, 1);
-					userEntity.setVerificationExpired(cal.getTime());
-					userEntity.setVerificationCode(new RandomString(6, new SecureRandom(), RandomString.digits).nextString());
-					Locale locale = Locale.getDefault();
-					if(p_locale != null)
-						locale = Locale.forLanguageTag(p_locale);
-					userEntity = this.userRepo.saveAndFlush(userEntity);
-					String template = "forgot-password-mobile_"+locale.getLanguage()+".ftl";
-					if(locale == Locale.US)
-						template = "forgot-password-mobile.ftl";
-					Map<String, Object> content = new HashMap<String, Object>();
-					content.put("name", userEntity.getContactUser().getName());
-					content.put("verificationCode", userEntity.getVerificationCode());
-					MailNotificationDto mail = new MailNotificationDto();
-					mail.setTo(userEntity.getEmail());
-					mail.setSubject(messageSource.getMessage("subject.mail.forgot-password", null, locale));
-					mail.setContentTemplate(content);
-					mail.setFileNameTemplate(template);
-					this.mailSenderService.sendMessageWithTemplate(mail, locale);
-					ApiBaseResponse response = new ApiBaseResponse();
-					response.setRespStatusCode(SuccessCode.OK_FORGOT_PASSWORD.name());
-					response.getRespStatusMessage().put(response.getRespStatusCode(), userEntity.getId());
-					return response;					
-				} else
-					throw new SystemErrorException(ErrorCode.ERR_SYS0401);
+	private ApiBaseResponse requestForgotPasswordPin(UserEntity userEntity, String p_locale) throws Exception {
+		if(userEntity != null) {
+			if(userEntity.getProvider().equals(AuthorizationProvider.local.toString())) {
+				Calendar cal = Calendar.getInstance();
+				cal.setTime(new Date());
+				cal.add(Calendar.SECOND, 120);
+				userEntity.setVerificationExpired(cal.getTime());
+				userEntity.setVerificationCode(new RandomString(6, new SecureRandom(), RandomString.digits).nextString());
+				Locale locale = Locale.getDefault();
+				if(p_locale != null)
+					locale = Locale.forLanguageTag(p_locale);
+				userEntity = this.userRepo.saveAndFlush(userEntity);
+				String template = "forgot-password-pin_"+locale.getLanguage()+".ftl";
+				if(locale == Locale.US)
+					template = "forgot-password-pin.ftl";
+				Map<String, Object> content = new HashMap<String, Object>();
+				content.put("name", userEntity.getContactUser().getName());
+				content.put("verificationCode", userEntity.getVerificationCode());
+				MailNotificationDto mail = new MailNotificationDto();
+				mail.setTo(userEntity.getEmail());
+				mail.setSubject(messageSource.getMessage("subject.mail.forgot-password", null, locale));
+				mail.setContentTemplate(content);
+				mail.setFileNameTemplate(template);
+				this.mailSenderService.sendMessageWithTemplate(mail, locale);
+				ApiBaseResponse response = new ApiBaseResponse();
+				response.setRespStatusCode(SuccessCode.OK_FORGOT_PASSWORD.name());
+				response.getRespStatusMessage().put(response.getRespStatusCode(), userEntity.getId());
+				return response;
 			} else
-				throw new SystemErrorException(ErrorCode.ERR_SCR0012);
+				throw new SystemErrorException(ErrorCode.ERR_SYS0401);
 		} else
-			throw new SystemErrorException(ErrorCode.ERR_SYS0404);		
+			throw new SystemErrorException(ErrorCode.ERR_SCR0012);		
 	}
 	
-	private ApiBaseResponse requestForgotPasswordWeb(RequestForgotPasswordDto p_dto, String p_locale) throws Exception {
-		if(p_dto.getEmail() != null && p_dto.getUrlForgotPassword() != null) {
-			UserEntity userEntity = userRepo.loadByUser(p_dto.getEmail().toLowerCase());
-			if(userEntity != null) {
-				if(userEntity.getProvider().equals(AuthorizationProvider.local.toString())) {
-					Calendar cal = Calendar.getInstance();
-					cal.setTime(new Date());
-					cal.add(Calendar.DATE, 1);
-					userEntity.setVerificationExpired(cal.getTime());
-					userEntity.setVerificationCode(new RandomString(8).nextString());
-					Locale locale = Locale.getDefault();
-					if(p_locale != null)
-						locale = Locale.forLanguageTag(p_locale);
-					userEntity = this.userRepo.saveAndFlush(userEntity);
-					String template = "forgot-password_"+locale.getLanguage()+".ftl";
-					if(locale == Locale.US)
-						template = "forgot-password.ftl";
-					Map<String, Object> content = new HashMap<String, Object>();
-					content.put("name", userEntity.getContactUser().getName());
-					content.put("urlForgotPassword", p_dto.getUrlForgotPassword()+"/"+userEntity.getId()+"/"+userEntity.getVerificationCode());
-					MailNotificationDto mail = new MailNotificationDto();
-					mail.setTo(userEntity.getEmail());
-					mail.setSubject(messageSource.getMessage("subject.mail.forgot-password", null, locale));
-					mail.setContentTemplate(content);
-					mail.setFileNameTemplate(template);
-					this.mailSenderService.sendMessageWithTemplate(mail, locale);
-					return null;					
-				} else
-					throw new SystemErrorException(ErrorCode.ERR_SYS0401);
+	private ApiBaseResponse requestForgotPasswordUrl(UserEntity userEntity, String urlForgotPassword, String p_locale) throws Exception {
+		if(userEntity != null) {
+			if(userEntity.getProvider().equals(AuthorizationProvider.local.toString())) {
+				Calendar cal = Calendar.getInstance();
+				cal.setTime(new Date());
+				cal.add(Calendar.MINUTE, 5);
+				userEntity.setVerificationExpired(cal.getTime());
+				userEntity.setVerificationCode(new RandomString(8).nextString());
+				Locale locale = Locale.getDefault();
+				if(p_locale != null)
+					locale = Locale.forLanguageTag(p_locale);
+				userEntity = this.userRepo.saveAndFlush(userEntity);
+				String template = "forgot-password_"+locale.getLanguage()+".ftl";
+				if(locale == Locale.US)
+					template = "forgot-password.ftl";
+				Map<String, Object> content = new HashMap<String, Object>();
+				content.put("name", userEntity.getContactUser().getName());
+				content.put("urlForgotPassword", urlForgotPassword +"/"+userEntity.getId()+"/"+userEntity.getVerificationCode());
+				MailNotificationDto mail = new MailNotificationDto();
+				mail.setTo(userEntity.getEmail());
+				mail.setSubject(messageSource.getMessage("subject.mail.forgot-password", null, locale));
+				mail.setContentTemplate(content);
+				mail.setFileNameTemplate(template);
+				this.mailSenderService.sendMessageWithTemplate(mail, locale);
+				return null;					
 			} else
-				throw new SystemErrorException(ErrorCode.ERR_SCR0012);
+				throw new SystemErrorException(ErrorCode.ERR_SYS0401);
 		} else
-			throw new SystemErrorException(ErrorCode.ERR_SYS0404);
+			throw new SystemErrorException(ErrorCode.ERR_SCR0012);
 	}
 
 }

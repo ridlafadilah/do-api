@@ -65,7 +65,7 @@ public class MailSenderImplService implements MailSenderService {
 				this.from = mail.getFrom();
 			if(mail.getContentTemplate() != null) {
 				Calendar calendar = Calendar.getInstance();
-				mail.getContentTemplate().put("yearCopyright", calendar.get(Calendar.YEAR));
+				mail.getContentTemplate().put("yearCopyright", String.valueOf(calendar.get(Calendar.YEAR)));
 			}
 			InternetAddress addressFrom = new InternetAddress(this.from, personal);
 			helper.setFrom(addressFrom);
