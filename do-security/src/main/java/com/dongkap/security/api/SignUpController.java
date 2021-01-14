@@ -32,5 +32,13 @@ public class SignUpController extends BaseControllerException {
 			@RequestBody(required = true) SignUpDto p_dto) throws Exception {
 		return new ResponseEntity<ApiBaseResponse>(userService.doSignUp(p_dto, locale), HttpStatus.OK);
 	}
+
+	@ResponseSuccess(SuccessCode.OK_REGISTERED)
+	@RequestMapping(value = "/oauth/signup/v2", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ApiBaseResponse> doSignUpV2(Authentication authentication,
+			@RequestHeader(name = HttpHeaders.ACCEPT_LANGUAGE, required = false) String locale,
+			@RequestBody(required = true) SignUpDto p_dto) throws Exception {
+		return new ResponseEntity<ApiBaseResponse>(userService.doSignUpV2(p_dto, locale), HttpStatus.OK);
+	}
 	
 }
