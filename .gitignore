@@ -7,4 +7,4 @@ target
 /.metadata/
 /.recommenders/
 .DS_Store
-/xa-main/src/main/webapp/META-INF/MANIFEST.MF
+/do-main/src/main/webapp/META-INF/MANIFEST.MF
