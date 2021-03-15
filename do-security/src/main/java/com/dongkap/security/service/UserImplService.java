@@ -7,9 +7,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -38,7 +35,7 @@ import com.dongkap.security.entity.SettingsEntity;
 import com.dongkap.security.entity.UserEntity;
 
 @Service("userService")
-public class UserImplService extends CommonService implements UserDetailsService {
+public class UserImplService extends CommonService {
 
 	protected Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 	
@@ -79,13 +76,6 @@ public class UserImplService extends CommonService implements UserDetailsService
 
     private static final String RECAPTCHA_URL = "https://www.google.com/recaptcha/api/siteverify";
 	
-	@Override
-	public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
-		UserEntity user = userRepo.loadByUsername(username.toLowerCase());
-		if (user == null) throw new UsernameNotFoundException("User '" + username + "' not found.");
-		return user;
-	}
-
 	public CommonResponseDto<ProfileDto> getDatatableUser(FilterDto filter) throws Exception {
 		Page<UserEntity> user = userRepo.findAll(UserSpecification.getDatatable(filter.getKeyword()), page(filter.getOrder(), filter.getOffset(), filter.getLimit()));
 		final CommonResponseDto<ProfileDto> response = new CommonResponseDto<ProfileDto>();

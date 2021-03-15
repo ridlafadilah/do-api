@@ -12,7 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import com.dongkap.security.service.UserImplService;
+import com.dongkap.security.service.UserDetailsImplService;
 
 @Component
 public class AccountAuthenticationProvider extends AbstractUserDetailsAuthenticationProvider{
@@ -20,7 +20,7 @@ public class AccountAuthenticationProvider extends AbstractUserDetailsAuthentica
     protected Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    private UserImplService userDetailsService;
+    private UserDetailsImplService userDetailsService;
 
     @Autowired
     @Qualifier("passwordEncoder")

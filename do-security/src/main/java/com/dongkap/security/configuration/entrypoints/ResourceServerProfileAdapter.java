@@ -1,4 +1,4 @@
-package com.dongkap.security.configuration;
+package com.dongkap.security.configuration.entrypoints;
 
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

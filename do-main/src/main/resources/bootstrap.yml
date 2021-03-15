@@ -65,24 +65,24 @@ spring:
             clientSecret: ${GOOGLE_OAUTH_CLIENT_SECRET}
             redirectUri: "{baseUrl}/oauth2/callback/{registrationId}"
             scope:
-              email
-              profile
+              - email
+              - profile
           github:
             client-name: Github
             clientId: ${GITHUB_OAUTH_CLIENT_ID}
             clientSecret: ${GITHUB_OAUTH_CLIENT_SECRET}
             redirectUri: "{baseUrl}/oauth2/callback/{registrationId}"
             scope:
-              user:email
-              read:user
+              - user:email
+              - read:user
           facebook:
             client-name: Facebook
             clientId: ${FACEBOOK_OAUTH_CLIENT_ID}
             clientSecret: ${FACEBOOK_OAUTH_CLIENT_SECRET}
             redirectUri: "{baseUrl}/oauth2/callback/{registrationId}"
             scope:
-              email
-              public_profile
+              - email
+              - public_profile
         provider:
           facebook:
             authorizationUri: https://www.facebook.com/v3.0/dialog/oauth

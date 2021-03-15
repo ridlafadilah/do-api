@@ -29,7 +29,7 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 
 import com.dongkap.security.service.JdbcOauth2ClientDetailsService;
 import com.dongkap.security.service.JdbcOauth2TokenStore;
-import com.dongkap.security.service.UserImplService;
+import com.dongkap.security.service.UserDetailsImplService;
 
 @Configuration
 @EnableAuthorizationServer
@@ -46,7 +46,7 @@ public class OAuth2ServerConfiguration extends AuthorizationServerConfigurerAdap
     private DataSource dataSource;
     
     @Autowired
-    private UserImplService userDetailsService;
+    private UserDetailsImplService userDetailsService;
 	
     @Autowired
     private AccessDeniedHandler accessDeniedHandler;

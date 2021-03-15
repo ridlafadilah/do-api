@@ -1,4 +1,4 @@
-package com.dongkap.security.configuration;
+package com.dongkap.security.authentication;
 
 import java.io.IOException;
 

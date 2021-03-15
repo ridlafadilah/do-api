@@ -30,9 +30,9 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 
 import com.dongkap.common.utils.AnonymousPrecedenceOrder;
 import com.dongkap.common.utils.ResourceCode;
-import com.dongkap.security.configuration.HttpCookieOAuth2AuthorizationRequestRepository;
-import com.dongkap.security.configuration.OAuth2AuthenticationFailureHandler;
-import com.dongkap.security.configuration.OAuth2AuthenticationSuccessHandler;
+import com.dongkap.security.authentication.HttpCookieOAuth2AuthorizationRequestRepository;
+import com.dongkap.security.authentication.OAuth2AuthenticationFailureHandler;
+import com.dongkap.security.authentication.OAuth2AuthenticationSuccessHandler;
 import com.dongkap.security.service.GrantOAuth2UserImplService;
 
 @Configuration

@@ -51,6 +51,7 @@ public class JsonUtils {
 		return this.objectMapper.convertValue(map, cls);
 	}
 
+	@SuppressWarnings("unchecked")
 	public <T> Object fromListMap(List<Map<String, Object>> list,
 			@SuppressWarnings("rawtypes") TypeReference typeReference) throws JsonParseException, IOException {
 		return this.objectMapper.convertValue(list, typeReference);

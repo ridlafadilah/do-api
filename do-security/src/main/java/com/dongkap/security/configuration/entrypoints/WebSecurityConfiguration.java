@@ -1,4 +1,4 @@
-package com.dongkap.security.configuration;
+package com.dongkap.security.configuration.entrypoints;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -8,10 +8,10 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.dongkap.security.service.UserImplService;
+import com.dongkap.security.configuration.AccountAuthenticationProvider;
+import com.dongkap.security.service.UserDetailsImplService;
 
 @Configuration
 @EnableWebSecurity
@@ -23,21 +23,19 @@ import com.dongkap.security.service.UserImplService;
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private UserImplService userDetailsService;
+    private UserDetailsImplService userDetailsService;
 
     @Autowired
     private AccountAuthenticationProvider accountAuthenticationProvider;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
     	auth.eraseCredentials(false);
-        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
         auth.authenticationProvider(accountAuthenticationProvider);
-    }
-
-	@Bean(name = "passwordEncoder")
-    public PasswordEncoder passwordEncoder() {
-    	return new BCryptPasswordEncoder(13);
     }
 
     @Override

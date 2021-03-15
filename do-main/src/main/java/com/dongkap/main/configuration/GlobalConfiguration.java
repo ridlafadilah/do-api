@@ -4,6 +4,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.common.exceptions.OAuth2Exception;
 import org.springframework.security.oauth2.provider.error.DefaultWebResponseExceptionTranslator;
 import org.springframework.security.oauth2.provider.error.OAuth2AccessDeniedHandler;
@@ -15,7 +17,7 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 import com.dongkap.common.exceptions.CustomOauthException;
 
 @Configuration
-public class ResourceServerHandlerConfiguration {
+public class GlobalConfiguration {
     
     @Bean
     public AuthenticationEntryPoint authenticationEntryPoint() {
@@ -45,6 +47,11 @@ public class ResourceServerHandlerConfiguration {
         final OAuth2AccessDeniedHandler handler = new OAuth2AccessDeniedHandler();
         handler.setExceptionTranslator(exceptionTranslator());
         return handler;
+    }
+
+	@Bean(name = "passwordEncoder")
+    public PasswordEncoder passwordEncoder() {
+    	return new BCryptPasswordEncoder(13);
     }
 	
 }

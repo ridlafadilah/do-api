@@ -45,6 +45,7 @@
 		<dependency>
 			<groupId>io.github.openfeign.form</groupId>
 			<artifactId>feign-form-spring</artifactId>
+			<version>${openfeign.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.dongkap</groupId>

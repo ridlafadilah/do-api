@@ -20,9 +20,9 @@ public class CommonService {
 			Sort sort = null;
 			for(Map.Entry<String, List<String>> direction : order.entrySet()) {
 				if(Direction.ASC.toString().equalsIgnoreCase(direction.getKey())) {
-					sort = new Sort(Direction.ASC, direction.getValue());
+					sort = Sort.by(Direction.ASC, (String[])direction.getValue().toArray());
 				} else {
-					sort = new Sort(Direction.DESC, direction.getValue());
+					sort = Sort.by(Direction.DESC, (String[])direction.getValue().toArray());
 				}
 			}
 			return PageRequest.of(page, limit, sort);

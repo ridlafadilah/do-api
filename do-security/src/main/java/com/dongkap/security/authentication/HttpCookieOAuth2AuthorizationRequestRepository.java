@@ -1,4 +1,4 @@
-package com.dongkap.security.configuration;
+package com.dongkap.security.authentication;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

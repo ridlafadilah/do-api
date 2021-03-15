@@ -1,4 +1,4 @@
-package com.dongkap.security.configuration;
+package com.dongkap.security.authentication;
 
 import java.io.IOException;
 import java.net.URI;
@@ -19,6 +19,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.dongkap.common.utils.CookieUtils;
+import com.dongkap.security.configuration.ApplicationProperties;
 import com.dongkap.security.exception.BadRequestException;
 import com.dongkap.security.service.AccessTokenImplService;
 

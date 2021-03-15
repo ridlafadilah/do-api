@@ -17,8 +17,8 @@ import com.dongkap.file.configuration.ResourceServerFileAdapter;
 import com.dongkap.general.configuration.ResourceServerGeneralAdapter;
 import com.dongkap.master.configuration.ResourceServerMasterAdapter;
 import com.dongkap.notification.configuration.ResourceServerNotificationAdapter;
-import com.dongkap.security.configuration.ResourceServerProfileAdapter;
-import com.dongkap.security.configuration.ResourceServerSecurityAdapter;
+import com.dongkap.security.configuration.entrypoints.ResourceServerProfileAdapter;
+import com.dongkap.security.configuration.entrypoints.ResourceServerSecurityAdapter;
 
 @Configuration
 public class ResourceServerListConfiguration {

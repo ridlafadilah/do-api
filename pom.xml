@@ -43,21 +43,23 @@
 		<scala-library.version>2.10.4</scala-library.version>
 		<spring-boot-maven.version>2.2.5.RELEASE</spring-boot-maven.version>
 		<spring-boot.version>2.2.5.RELEASE</spring-boot.version>
-		<spring-cloud.version>Greenwich.RELEASE</spring-cloud.version>
+		<spring-cloud.version>Hoxton.SR7</spring-cloud.version>
 		<spring.cloud.version>2.2.5.RELEASE</spring.cloud.version>
 		<spring.cloud.version>2.2.5.RELEASE</spring.cloud.version>
 		<spring.cloud.feign.version>1.4.6.RELEASE</spring.cloud.feign.version>
 		<spring.cloud.zipkin.version>2.2.5.RELEASE</spring.cloud.zipkin.version>
 		<spring.cloud.kafka.version>2.2.5.RELEASE</spring.cloud.kafka.version>
 		<spring.cloud.starter.config.version>2.2.5.RELEASE</spring.cloud.starter.config.version>
+		<spring.cloud.starter.openfeign.version>2.2.5.RELEASE</spring.cloud.starter.openfeign.version>
 		<spring.cloud.starter.eureka.version>1.4.6.RELEASE</spring.cloud.starter.eureka.version>
 		<spring.cloud.starter.zuul.version>1.4.6.RELEASE</spring.cloud.starter.zuul.version>
 		<spring-session.version>1.3.5.RELEASE</spring-session.version>
 		<spring-security-oauth2.version>2.3.6.RELEASE</spring-security-oauth2.version>
-		<spring-security-oauth2-resource-server.version>5.1.3.RELEASE</spring-security-oauth2-resource-server.version>
+		<spring-security-oauth2-resource-server.version>5.2.2.RELEASE</spring-security-oauth2-resource-server.version>
 		<spring-security-jwt.version>1.0.10.RELEASE</spring-security-jwt.version>
 		<spring-batch-integration.version>4.1.1.RELEASE</spring-batch-integration.version>
 		<spring-support.version>2.0.8</spring-support.version>
+		<openfeign.version>3.8.0</openfeign.version>
 		<thymeleaf-security.version>3.0.2.RELEASE</thymeleaf-security.version>
 		<thymeleaf.version>3.0.6.RELEASE</thymeleaf.version>
 		<thymeleaf-layout-dialect.version>2.2.2</thymeleaf-layout-dialect.version>
@@ -118,14 +120,6 @@
 		<dependencies>
 			
 			<dependency>
-			    <groupId>org.springframework.cloud</groupId>
-			    <artifactId>spring-cloud-starter-parent</artifactId>
-			    <version>${spring-cloud.version}</version>
-			    <type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			
-			<dependency>
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-starter-feign</artifactId>
 				<version>${spring.cloud.feign.version}</version>
@@ -136,16 +130,10 @@
 					</exclusion>				
 				</exclusions>
 			</dependency>
-					
 			<dependency>
-				<groupId>org.springframework.cloud</groupId>
-				<artifactId>spring-cloud-starter-eureka-server</artifactId>
-				<version>${spring.cloud.starter.eureka.version}</version>
-			</dependency>
-			<dependency>		
-				<groupId>org.springframework.cloud</groupId>
-				<artifactId>spring-cloud-starter-eureka</artifactId>
-				<version>${spring.cloud.starter.eureka.version}</version>
+			    <groupId>org.springframework.cloud</groupId>
+			    <artifactId>spring-cloud-starter-openfeign</artifactId>
+			    <version>${spring.cloud.starter.openfeign.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
@@ -169,12 +157,6 @@
 	            <artifactId>spring-cloud-netflix</artifactId>
 	            <version>${spring.cloud.version}</version>
 	        </dependency>
-			
-		    <dependency>
-		        <groupId>org.springframework.cloud</groupId>
-		        <artifactId>spring-cloud-starter-zuul</artifactId>
-				<version>${spring.cloud.starter.zuul.version}</version>
-		    </dependency>
 			
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
