@@ -33,7 +33,7 @@
 		<jaxb.version>2.3.1</jaxb.version>
 		<jaxb-core.version>2.3.0.1</jaxb-core.version>
 		<jersey.version>1.19.1</jersey.version>
-		<jgroups.version>3.6.4.Final</jgroups.version>
+		<jgroups.version>4.0.0.Final</jgroups.version>
 		<maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
 		<neo4j-cypher-compiler-2.2.version>2.2.5</neo4j-cypher-compiler-2.2.version>
 		<org.codehaus.jackson.version>2.6.5</org.codehaus.jackson.version>
