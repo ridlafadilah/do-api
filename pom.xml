@@ -63,7 +63,7 @@
 		<thymeleaf-security.version>3.0.2.RELEASE</thymeleaf-security.version>
 		<thymeleaf.version>3.0.6.RELEASE</thymeleaf.version>
 		<thymeleaf-layout-dialect.version>2.2.2</thymeleaf-layout-dialect.version>
-		<xalan.version>2.7.1</xalan.version>
+		<xalan.version>2.7.2</xalan.version>
 		<netflix.common.util>0.3.0</netflix.common.util>
 		<svnkit.version>1.9.0</svnkit.version>
 		<postgresql.version>42.2.5</postgresql.version>
